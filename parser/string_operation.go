@@ -1,6 +1,8 @@
 package parser
 
-import "strings"
+import (
+	"strings"
+)
 
 type StringOperation struct {
 }
