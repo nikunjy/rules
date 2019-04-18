@@ -1,6 +1,7 @@
 package parser
 
 type FloatOperation struct {
+	NullOperation
 }
 
 func toNum(op Operand) (float64, bool) {

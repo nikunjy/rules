@@ -122,9 +122,12 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 		apply = currentOp.SW
 	case JsonQueryParserEW:
 		apply = currentOp.EW
+	case JsonQueryParserIN:
+		apply = currentOp.IN
 	default:
 		panic("unknown operation")
 	}
+	defer func() { j.rightOp = nil }()
 	return apply(j.leftOp, j.rightOp)
 }
 
@@ -158,7 +161,6 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubAttr(ctx *SubAttrContext) interface{} {
-	// TODO fix this if it is okay
 	return ctx.AttrPath().Accept(j).(bool)
 }
 
@@ -215,4 +217,29 @@ func (j *JsonQueryVisitorImpl) VisitLong(ctx *LongContext) interface{} {
 	}
 	j.rightOp = int(val)
 	return true
+}
+func (j *JsonQueryVisitorImpl) VisitListOfInts(ctx *ListOfIntsContext) interface{} {
+	j.currentOperation = &IntOperation{}
+	return ctx.ListInts().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitListInts(ctx *ListIntsContext) interface{} {
+	return ctx.SubListOfInts().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitSubListOfInts(ctx *SubListOfIntsContext) interface{} {
+	if j.rightOp == nil {
+		j.rightOp = make([]int, 0)
+	}
+	list := j.rightOp.([]int)
+	val, err := strconv.ParseInt(ctx.INT().GetText(), 10, 64)
+	if err != nil {
+		// TODO handle error
+		panic(err)
+	}
+	j.rightOp = append(list, int(val))
+	if ctx.SubListOfInts() == nil || ctx.SubListOfInts().IsEmpty() {
+		return nil
+	}
+	return ctx.SubListOfInts().Accept(j)
 }

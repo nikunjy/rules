@@ -12,4 +12,5 @@ type Operation interface {
 	CO(left Operand, right Operand) bool
 	SW(left Operand, right Operand) bool
 	EW(left Operand, right Operand) bool
+	IN(left Operand, right Operand) bool
 }

@@ -38,3 +38,7 @@ func (o *NullOperation) SW(left Operand, right Operand) bool {
 func (o *NullOperation) EW(left Operand, right Operand) bool {
 	panic("not supported")
 }
+
+func (o *NullOperation) IN(left Operand, right Operand) bool {
+	panic("not supported")
+}

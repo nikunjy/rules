@@ -5,6 +5,7 @@ import (
 )
 
 type StringOperation struct {
+	NullOperation
 }
 
 func (o *StringOperation) get(left Operand, right Operand) (string, string, bool) {

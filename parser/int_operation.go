@@ -1,4 +1,5 @@
 package parser
+
 type IntOperation struct {
 }
 
@@ -72,3 +73,19 @@ func (o *IntOperation) EW(left Operand, right Operand) bool {
 	panic("not supported")
 }
 
+func (o *IntOperation) IN(left Operand, right Operand) bool {
+	leftVal, ok := left.(int)
+	if !ok {
+		return ok
+	}
+	rightVal, ok := right.([]int)
+	if !ok {
+		return ok
+	}
+	for _, num := range rightVal {
+		if num == leftVal {
+			return true
+		}
+	}
+	return false
+}

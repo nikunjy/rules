@@ -40,4 +40,13 @@ type JsonQueryVisitor interface {
 
 	// Visit a parse tree produced by JsonQueryParser#long.
 	VisitLong(ctx *LongContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#listOfInts.
+	VisitListOfInts(ctx *ListOfIntsContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#listInts.
+	VisitListInts(ctx *ListIntsContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#subListOfInts.
+	VisitSubListOfInts(ctx *SubListOfIntsContext) interface{}
 }

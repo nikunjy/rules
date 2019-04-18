@@ -4,8 +4,7 @@ query
    : NOT? SP? '(' query ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
-   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW ) SP value       #compareExp
-
+   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value       #compareExp
    ;
 
 NOT
@@ -24,6 +23,7 @@ NULL
    : 'null'
    ;
 
+IN:  'IN' | 'in';
 EQ : 'eq' | 'EQ';
 NE : 'ne' | 'NE';
 GT : 'gt' | 'GT';
@@ -63,6 +63,7 @@ value
    | STRING            #string
    | DOUBLE            #double
    | '-'? INT EXP?     #long
+   | listInts          #listOfInts
    ;
 
 STRING
@@ -84,6 +85,14 @@ fragment HEX
 DOUBLE
    : '-'? INT '.' [0-9] + EXP?
    ;
+
+listInts
+   : '[' subListOfInts
+   ;
+
+subListOfInts
+   : INT SP subListOfInts
+   | INT ']';
 
 // INT no leading zeros.
 INT

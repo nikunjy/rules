@@ -51,3 +51,15 @@ func (v *BaseJsonQueryVisitor) VisitDouble(ctx *DoubleContext) interface{} {
 func (v *BaseJsonQueryVisitor) VisitLong(ctx *LongContext) interface{} {
 	return v.VisitChildren(ctx)
 }
+
+func (v *BaseJsonQueryVisitor) VisitListOfInts(ctx *ListOfIntsContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseJsonQueryVisitor) VisitListInts(ctx *ListIntsContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseJsonQueryVisitor) VisitSubListOfInts(ctx *SubListOfIntsContext) interface{} {
+	return v.VisitChildren(ctx)
+}

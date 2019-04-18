@@ -1,6 +1,7 @@
 package parser
 
 type BoolOperation struct {
+	NullOperation
 }
 
 func (o *BoolOperation) get(left Operand, right Operand) (bool, bool, bool) {
