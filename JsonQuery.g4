@@ -64,6 +64,7 @@ value
    | DOUBLE            #double
    | '-'? INT EXP?     #long
    | listInts          #listOfInts
+   | listDoubles       #listOfDoubles
    ;
 
 STRING
@@ -85,6 +86,14 @@ fragment HEX
 DOUBLE
    : '-'? INT '.' [0-9] + EXP?
    ;
+
+listDoubles
+   : '[' subListOfDoubles
+   ;
+
+subListOfDoubles
+   : DOUBLE SP subListOfDoubles
+   | DOUBLE ']';
 
 listInts
    : '[' subListOfInts

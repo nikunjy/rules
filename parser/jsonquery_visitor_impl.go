@@ -218,6 +218,7 @@ func (j *JsonQueryVisitorImpl) VisitLong(ctx *LongContext) interface{} {
 	j.rightOp = int(val)
 	return true
 }
+
 func (j *JsonQueryVisitorImpl) VisitListOfInts(ctx *ListOfIntsContext) interface{} {
 	j.currentOperation = &IntOperation{}
 	return ctx.ListInts().Accept(j)
@@ -242,4 +243,30 @@ func (j *JsonQueryVisitorImpl) VisitSubListOfInts(ctx *SubListOfIntsContext) int
 		return nil
 	}
 	return ctx.SubListOfInts().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitListOfDoubles(ctx *ListOfDoublesContext) interface{} {
+	j.currentOperation = &FloatOperation{}
+	return ctx.ListDoubles().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitListDoubles(ctx *ListDoublesContext) interface{} {
+	return ctx.SubListOfDoubles().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitSubListOfDoubles(ctx *SubListOfDoublesContext) interface{} {
+	if j.rightOp == nil {
+		j.rightOp = make([]float64, 0)
+	}
+	list := j.rightOp.([]float64)
+	val, err := strconv.ParseFloat(ctx.DOUBLE().GetText(), 10)
+	if err != nil {
+		// TODO handle error
+		panic(err)
+	}
+	j.rightOp = append(list, val)
+	if ctx.SubListOfDoubles() == nil || ctx.SubListOfDoubles().IsEmpty() {
+		return nil
+	}
+	return ctx.SubListOfDoubles().Accept(j)
 }

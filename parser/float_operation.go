@@ -74,14 +74,19 @@ func (o *FloatOperation) LE(left Operand, right Operand) bool {
 	return l <= r
 }
 
-func (o *FloatOperation) CO(left Operand, right Operand) bool {
-	panic("not supported")
-}
-
-func (o *FloatOperation) SW(left Operand, right Operand) bool {
-	panic("not supported")
-}
-
-func (o *FloatOperation) EW(left Operand, right Operand) bool {
-	panic("not supported")
+func (o *FloatOperation) IN(left Operand, right Operand) bool {
+	leftVal, ok := toNum(left)
+	if !ok {
+		return ok
+	}
+	rightVal, ok := right.([]float64)
+	if !ok {
+		return ok
+	}
+	for _, num := range rightVal {
+		if num == leftVal {
+			return true
+		}
+	}
+	return false
 }

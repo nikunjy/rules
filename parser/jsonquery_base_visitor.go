@@ -56,6 +56,18 @@ func (v *BaseJsonQueryVisitor) VisitListOfInts(ctx *ListOfIntsContext) interface
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseJsonQueryVisitor) VisitListOfDoubles(ctx *ListOfDoublesContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseJsonQueryVisitor) VisitListDoubles(ctx *ListDoublesContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseJsonQueryVisitor) VisitSubListOfDoubles(ctx *SubListOfDoublesContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseJsonQueryVisitor) VisitListInts(ctx *ListIntsContext) interface{} {
 	return v.VisitChildren(ctx)
 }
