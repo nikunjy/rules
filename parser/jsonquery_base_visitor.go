@@ -40,6 +40,10 @@ func (v *BaseJsonQueryVisitor) VisitNull(ctx *NullContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseJsonQueryVisitor) VisitVersion(ctx *VersionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseJsonQueryVisitor) VisitString(ctx *StringContext) interface{} {
 	return v.VisitChildren(ctx)
 }

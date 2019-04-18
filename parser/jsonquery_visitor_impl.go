@@ -209,6 +209,12 @@ func (j *JsonQueryVisitorImpl) VisitDouble(ctx *DoubleContext) interface{} {
 	return true
 }
 
+func (j *JsonQueryVisitorImpl) VisitVersion(ctx *VersionContext) interface{} {
+	j.currentOperation = &VersionOperation{}
+	j.rightOp = ctx.VERSION().GetText()
+	return true
+}
+
 func (j *JsonQueryVisitorImpl) VisitLong(ctx *LongContext) interface{} {
 	j.currentOperation = &IntOperation{}
 	val, err := strconv.ParseInt(ctx.GetText(), 10, 64)

@@ -32,6 +32,9 @@ type JsonQueryVisitor interface {
 	// Visit a parse tree produced by JsonQueryParser#null.
 	VisitNull(ctx *NullContext) interface{}
 
+	// Visit a parse tree produced by JsonQueryParser#version.
+	VisitVersion(ctx *VersionContext) interface{}
+
 	// Visit a parse tree produced by JsonQueryParser#string.
 	VisitString(ctx *StringContext) interface{}
 

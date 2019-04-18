@@ -16,6 +16,119 @@ type testCase struct {
 
 type obj map[string]interface{}
 
+func TestVersions(t *testing.T) {
+	tests := []testCase{
+		{
+			`x EQ 1.0.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+		},
+		{
+			`x EQ 1.0.0`,
+			obj{},
+			false,
+		},
+		{
+			`x EQ 1.0.0`,
+			obj{
+				"x": "1.1.1",
+			},
+			false,
+		},
+		{
+			`x NE 1.0.0`,
+			obj{
+				"x": "1.0.0.",
+			},
+			false,
+		},
+		{
+			`x NE 1.0.0`,
+			obj{
+				"x": "1.1.0",
+			},
+			true,
+		},
+		{
+			`x LT 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+		},
+		{
+			`x LT 1.1.0`,
+			obj{
+				"x": "2.0.0",
+			},
+			false,
+		},
+		{
+			`x LE 1.1.0`,
+			obj{
+				"x": "1.1.0",
+			},
+			true,
+		},
+		{
+			`x LE 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+		},
+		{
+			`x LE 1.1.0`,
+			obj{
+				"x": "2.0.0",
+			},
+			false,
+		},
+		{
+			`x GT 1.1.0`,
+			obj{
+				"x": "2.0.0",
+			},
+			true,
+		},
+		{
+			`x GT 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			false,
+		},
+		{
+			`x GE 1.1.0`,
+			obj{
+				"x": "2.0.0",
+			},
+			true,
+		},
+		{
+			`x GE 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			false,
+		},
+		{
+			`x GE 1.1.0`,
+			obj{
+				"x": "1.1.0",
+			},
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+	}
+}
+
 func TestListOfStrings(t *testing.T) {
 	tests := []testCase{
 		{

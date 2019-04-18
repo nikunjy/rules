@@ -60,12 +60,17 @@ fragment ALPHA
 value
    : BOOLEAN           #boolean
    | NULL              #null
+   | VERSION           #version
    | STRING            #string
    | DOUBLE            #double
    | '-'? INT EXP?     #long
    | listInts          #listOfInts
    | listDoubles       #listOfDoubles
    | listStrings       #listOfStrings
+   ;
+
+VERSION
+   : INT '.' INT '.' INT 
    ;
 
 STRING
