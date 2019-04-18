@@ -4,12 +4,12 @@ query
    : NOT? SP? '(' query ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
-   | attrPath SP op=( 'eq' | 'ne' | 'gt' | 'lt' | 'ge' | 'le' | 'co' | 'sw' | 'ew' ) SP value       #compareExp
+   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW ) SP value       #compareExp
 
    ;
 
 NOT
-   : 'not'
+   : 'not' | 'NOT'
    ;
 
 LOGICAL_OPERATOR
@@ -24,15 +24,15 @@ NULL
    : 'null'
    ;
 
-EQ : 'eq' ;
-NE : 'ne' ;
-GT : 'gt' ;
-LT : 'lt' ;
-GE : 'ge' ;
-LE : 'le' ;
-CO : 'co' ;
-SW : 'sw' ;
-EW : 'ew' ;
+EQ : 'eq' | 'EQ';
+NE : 'ne' | 'NE';
+GT : 'gt' | 'GT';
+LT : 'lt' | 'LT';
+GE : 'ge' | 'GE';
+LE : 'le' | 'LE';
+CO : 'co' | 'CO';
+SW : 'sw' | 'SW';
+EW : 'ew' | 'EW';
 
 attrPath
    : ATTRNAME subAttr?

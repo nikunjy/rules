@@ -37,6 +37,13 @@ func TestPresent(t *testing.T) {
 			},
 			false,
 		},
+		{
+			`NOT (x pr)`,
+			obj{
+				"x": true,
+			},
+			false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -50,6 +57,13 @@ func TestNull(t *testing.T) {
 	tests := []testCase{
 		{
 			`x eq null`,
+			obj{
+				"x": true,
+			},
+			false,
+		},
+		{
+			`x EQ null`,
 			obj{
 				"x": true,
 			},
@@ -137,6 +151,13 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x NE 1`,
+			obj{
+				"x": 1,
+			},
+			false,
+		},
+		{
 			`x le 1`,
 			obj{
 				"x": 0,
@@ -144,7 +165,7 @@ func TestInt(t *testing.T) {
 			true,
 		},
 		{
-			`x le 1`,
+			`x LE 1`,
 			obj{
 				"x": 1,
 			},
@@ -156,23 +177,23 @@ func TestInt(t *testing.T) {
 				"x": 2,
 			},
 			false,
+		},
+		{
+			`x LT 1`,
+			obj{
+				"x": 0,
+			},
+			true,
 		},
 		{
 			`x lt 1`,
 			obj{
-				"x": 0,
-			},
-			true,
-		},
-		{
-			`x lt 1`,
-			obj{
 				"x": 1,
 			},
 			false,
 		},
 		{
-			`x gt 1`,
+			`x GT 1`,
 			obj{
 				"x": 2,
 			},
@@ -186,7 +207,7 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
-			`x ge 1`,
+			`x GE 1`,
 			obj{
 				"x": 2,
 			},
@@ -207,7 +228,7 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
-			`x ne 1`,
+			`x NE 1`,
 			obj{
 				"x": 2,
 			},
@@ -458,7 +479,21 @@ func TestString(t *testing.T) {
 			false,
 		},
 		{
+			`x CO "ab"`,
+			obj{
+				"x": "bbc",
+			},
+			false,
+		},
+		{
 			`x sw "ab"`,
+			obj{
+				"x": "abc",
+			},
+			true,
+		},
+		{
+			`x SW "ab"`,
 			obj{
 				"x": "abc",
 			},
@@ -479,7 +514,7 @@ func TestString(t *testing.T) {
 			true,
 		},
 		{
-			`x ew "ab"`,
+			`x EW "ab"`,
 			obj{
 				"x": "bbc",
 			},

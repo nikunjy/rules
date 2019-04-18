@@ -49,9 +49,8 @@ var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
 
 var literalNames = []string{
-	"", "'('", "')'", "'pr'", "'.'", "'-'", "'not'", "", "", "'null'", "'eq'",
-	"'ne'", "'gt'", "'lt'", "'ge'", "'le'", "'co'", "'sw'", "'ew'", "", "",
-	"", "", "", "'\n'",
+	"", "'('", "')'", "'pr'", "'.'", "'-'", "", "", "", "'null'", "", "", "",
+	"", "", "", "", "", "", "", "", "", "", "", "'\n'",
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "NOT", "LOGICAL_OPERATOR", "BOOLEAN", "NULL", "EQ",
@@ -225,6 +224,42 @@ func (s *CompareExpContext) Value() IValueContext {
 	}
 
 	return t.(IValueContext)
+}
+
+func (s *CompareExpContext) EQ() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserEQ, 0)
+}
+
+func (s *CompareExpContext) NE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserNE, 0)
+}
+
+func (s *CompareExpContext) GT() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserGT, 0)
+}
+
+func (s *CompareExpContext) LT() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserLT, 0)
+}
+
+func (s *CompareExpContext) GE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserGE, 0)
+}
+
+func (s *CompareExpContext) LE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserLE, 0)
+}
+
+func (s *CompareExpContext) CO() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserCO, 0)
+}
+
+func (s *CompareExpContext) SW() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserSW, 0)
+}
+
+func (s *CompareExpContext) EW() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserEW, 0)
 }
 
 func (s *CompareExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
