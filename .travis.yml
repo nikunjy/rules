@@ -1,0 +1,12 @@
+language: go
+sudo: false
+go:
+  - 1.11.0
+  - tip
+cache:
+  directories:
+    - vendor
+install:
+  - make dependencies
+script:
+  - make test
