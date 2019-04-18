@@ -16,6 +16,36 @@ type testCase struct {
 
 type obj map[string]interface{}
 
+func TestPresent(t *testing.T) {
+	tests := []testCase{
+		{
+			`x pr`,
+			obj{
+				"x": true,
+			},
+			true,
+		},
+		{
+			`x pr`,
+			obj{},
+			false,
+		},
+		{
+			`not (x pr)`,
+			obj{
+				"x": true,
+			},
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+	}
+
+}
+
 func TestNull(t *testing.T) {
 	tests := []testCase{
 		{
@@ -48,6 +78,7 @@ func TestNull(t *testing.T) {
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 }
 
@@ -78,6 +109,7 @@ func TestBool(t *testing.T) {
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input))
+		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 }
 

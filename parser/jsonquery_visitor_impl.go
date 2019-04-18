@@ -61,6 +61,8 @@ func (j *JsonQueryVisitorImpl) Visit(tree antlr.ParseTree) interface{} {
 		return val.Accept(j).(bool)
 	case *ParenExpContext:
 		return val.Accept(j).(bool)
+	case *PresentExpContext:
+		return val.Accept(j).(bool)
 	default:
 		fmt.Println(reflect.TypeOf(tree))
 	}
