@@ -25,7 +25,7 @@ dependencies:
 	dep version || go get -u github.com/golang/dep/cmd/dep
 	dep ensure
 	go get -u github.com/axw/gocov/gocov
-	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/lint/golint
 
 .PHONY: fmt
 fmt:
