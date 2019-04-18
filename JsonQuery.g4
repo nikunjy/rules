@@ -65,11 +65,20 @@ value
    | '-'? INT EXP?     #long
    | listInts          #listOfInts
    | listDoubles       #listOfDoubles
+   | listStrings       #listOfStrings
    ;
 
 STRING
    : '"' (ESC | ~ ["\\])* '"'
    ;
+
+listStrings
+   : '[' subListOfStrings
+   ;
+
+subListOfStrings
+   : STRING SP subListOfStrings
+   | STRING ']';
 
 fragment ESC
    : '\\' (["\\/bfnrt] | UNICODE)

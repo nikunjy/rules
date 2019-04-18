@@ -89,3 +89,21 @@ func (o *StringOperation) EW(left Operand, right Operand) bool {
 	}
 	return strings.HasSuffix(l, r)
 }
+
+func (o *StringOperation) IN(left Operand, right Operand) bool {
+	leftVal, ok := left.(string)
+	if !ok {
+		return ok
+	}
+
+	rightVal, ok := right.([]string)
+	if !ok {
+		return ok
+	}
+	for _, val := range rightVal {
+		if leftVal == val {
+			return true
+		}
+	}
+	return false
+}

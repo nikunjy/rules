@@ -47,6 +47,15 @@ type JsonQueryVisitor interface {
 	// Visit a parse tree produced by JsonQueryParser#listOfDoubles.
 	VisitListOfDoubles(ctx *ListOfDoublesContext) interface{}
 
+	// Visit a parse tree produced by JsonQueryParser#listOfStrings.
+	VisitListOfStrings(ctx *ListOfStringsContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#listStrings.
+	VisitListStrings(ctx *ListStringsContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#subListOfStrings.
+	VisitSubListOfStrings(ctx *SubListOfStringsContext) interface{}
+
 	// Visit a parse tree produced by JsonQueryParser#listDoubles.
 	VisitListDoubles(ctx *ListDoublesContext) interface{}
 

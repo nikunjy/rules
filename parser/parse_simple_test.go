@@ -16,6 +16,55 @@ type testCase struct {
 
 type obj map[string]interface{}
 
+func TestListOfStrings(t *testing.T) {
+	tests := []testCase{
+		{
+			`x IN ["abc" "cde" "fgh"]`,
+			obj{
+				"x": "abc",
+			},
+			true,
+		},
+		{
+			`y eq 5 and x IN ["abc" "cde" "fgh"]`,
+			obj{
+				"x": "abc",
+				"y": 5,
+			},
+			true,
+		},
+		{
+			`y eq 5 and (x IN ["abc" "cde" "fgh"])`,
+			obj{
+				"x": "abc",
+				"y": 5,
+			},
+			true,
+		},
+		{
+			`y eq 5 and not (x IN ["abc" "cde" "fgh"])`,
+			obj{
+				"x": "abc",
+				"y": 5,
+			},
+			false,
+		},
+		{
+			`x IN ["abc" "cde" "fgh"]`,
+			obj{
+				"x": "xyz",
+			},
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+	}
+
+}
+
 func TestListOfDoubles(t *testing.T) {
 	tests := []testCase{
 		{

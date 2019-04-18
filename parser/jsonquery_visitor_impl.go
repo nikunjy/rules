@@ -183,15 +183,17 @@ func (j *JsonQueryVisitorImpl) VisitNull(ctx *NullContext) interface{} {
 	return true
 }
 
+func getString(s string) string {
+	if len(s) > 2 {
+		return s[1 : len(s)-1]
+	}
+
+	return ""
+}
+
 func (j *JsonQueryVisitorImpl) VisitString(ctx *StringContext) interface{} {
 	j.currentOperation = &StringOperation{}
-
-	s := ctx.GetText()
-	if len(s) > 2 {
-		j.rightOp = s[1 : len(s)-1]
-	} else {
-		j.rightOp = ""
-	}
+	j.rightOp = getString(ctx.GetText())
 	return true
 }
 
@@ -269,4 +271,26 @@ func (j *JsonQueryVisitorImpl) VisitSubListOfDoubles(ctx *SubListOfDoublesContex
 		return nil
 	}
 	return ctx.SubListOfDoubles().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitListOfStrings(ctx *ListOfStringsContext) interface{} {
+	j.currentOperation = &StringOperation{}
+	return ctx.ListStrings().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitListStrings(ctx *ListStringsContext) interface{} {
+	return ctx.SubListOfStrings().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitSubListOfStrings(ctx *SubListOfStringsContext) interface{} {
+	if j.rightOp == nil {
+		j.rightOp = make([]string, 0)
+	}
+	val := getString(ctx.STRING().GetText())
+	list := j.rightOp.([]string)
+	j.rightOp = append(list, val)
+	if ctx.SubListOfStrings() == nil || ctx.SubListOfStrings().IsEmpty() {
+		return nil
+	}
+	return ctx.SubListOfStrings().Accept(j)
 }
