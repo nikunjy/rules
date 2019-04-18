@@ -1,4 +1,4 @@
-# Golang Rules Engine
+# Golang Rules Engine  [![Build Status][ci-img]][ci]
 Rules engine written in golang with the help of antlr.
 
 This package will be very helpful in situations where you have a generic rule and want to verify if your values (specified using `map[string]interface{}`) satisfy the rule. 
@@ -52,4 +52,5 @@ pr: present
 not: not of a logical expression
 ```
 
-
+[ci-img]: https://api.travis-ci.org/nikunjy/rules.svg?branch=master
+[ci]: https://travis-ci.org/nikunjy/rules
