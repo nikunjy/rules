@@ -11,10 +11,17 @@ type testCase struct {
 	rule  string
 	input map[string]interface{}
 
-	result bool
+	result   bool
+	hasError bool
 }
 
 type obj map[string]interface{}
+
+func eval(t *testing.T, rule string, input obj) (bool, error) {
+	ev, err := NewEvaluator(rule)
+	assert.NoError(t, err)
+	return ev.Process(input)
+}
 
 func TestVersions(t *testing.T) {
 	tests := []testCase{
@@ -24,10 +31,28 @@ func TestVersions(t *testing.T) {
 				"x": "1.0.0",
 			},
 			true,
+			false,
+		},
+		{
+			`x EQ 1.0.0`,
+			obj{
+				"x": 2,
+			},
+			false,
+			false,
+		},
+		{
+			`x EQ 1.0.0`,
+			obj{
+				"y": "1.0.0",
+			},
+			false,
+			false,
 		},
 		{
 			`x EQ 1.0.0`,
 			obj{},
+			false,
 			false,
 		},
 		{
@@ -36,6 +61,7 @@ func TestVersions(t *testing.T) {
 				"x": "1.1.1",
 			},
 			false,
+			false,
 		},
 		{
 			`x NE 1.0.0`,
@@ -43,6 +69,15 @@ func TestVersions(t *testing.T) {
 				"x": "1.0.0.",
 			},
 			false,
+			false,
+		},
+		{
+			`x NE 1.0.0`,
+			obj{
+				"x": 2.3,
+			},
+			false,
+			false,
 		},
 		{
 			`x NE 1.0.0`,
@@ -50,6 +85,7 @@ func TestVersions(t *testing.T) {
 				"x": "1.1.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x LT 1.1.0`,
@@ -57,12 +93,22 @@ func TestVersions(t *testing.T) {
 				"x": "1.0.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x LT 1.1.0`,
 			obj{
 				"x": "2.0.0",
 			},
+			false,
+			false,
+		},
+		{
+			`x LT 1.1.0`,
+			obj{
+				"x": 1,
+			},
+			false,
 			false,
 		},
 		{
@@ -71,6 +117,7 @@ func TestVersions(t *testing.T) {
 				"x": "1.1.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x LE 1.1.0`,
@@ -78,12 +125,22 @@ func TestVersions(t *testing.T) {
 				"x": "1.0.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x LE 1.1.0`,
 			obj{
 				"x": "2.0.0",
 			},
+			false,
+			false,
+		},
+		{
+			`x LE 1.1.0`,
+			obj{
+				"x": 2,
+			},
+			false,
 			false,
 		},
 		{
@@ -92,12 +149,22 @@ func TestVersions(t *testing.T) {
 				"x": "2.0.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x GT 1.1.0`,
 			obj{
 				"x": "1.0.0",
 			},
+			false,
+			false,
+		},
+		{
+			`x GT 1.1.0`,
+			obj{
+				"x": 1,
+			},
+			false,
 			false,
 		},
 		{
@@ -106,12 +173,14 @@ func TestVersions(t *testing.T) {
 				"x": "2.0.0",
 			},
 			true,
+			false,
 		},
 		{
 			`x GE 1.1.0`,
 			obj{
 				"x": "1.0.0",
 			},
+			false,
 			false,
 		},
 		{
@@ -119,16 +188,60 @@ func TestVersions(t *testing.T) {
 			obj{
 				"x": "1.1.0",
 			},
+			true,
+			false,
+		},
+		{
+			`x GE 1.1.0`,
+			obj{
+				"x": 1,
+			},
+			false,
+			false,
+		},
+		{
+			`x CO 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+			true,
+		},
+		{
+			`x SW 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+			true,
+		},
+		{
+			`x EW 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
+			true,
+		},
+		{
+			`x SW 1.1.0`,
+			obj{
+				"x": "1.0.0",
+			},
+			true,
 			true,
 		},
 	}
 
 	for _, tt := range tests {
-		ev, err := NewEvaluator(tt.rule)
-		assert.NoError(t, err)
-		result, err := ev.Process(tt.input)
-		assert.NoError(t, err)
-		assert.Equal(t, result, tt.result)
+		result, err := eval(t, tt.rule, tt.input)
+		if tt.hasError {
+			assert.Error(t, err)
+			continue
+		} else {
+			assert.NoError(t, err)
+			assert.Equal(t, result, tt.result, fmt.Sprintf("rule :%s, input :%v", tt.rule, tt.input))
+		}
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 }
@@ -141,6 +254,7 @@ func TestListOfStrings(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and x IN ["abc" "cde" "fgh"]`,
@@ -149,6 +263,7 @@ func TestListOfStrings(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and (x IN ["abc" "cde" "fgh"])`,
@@ -157,6 +272,7 @@ func TestListOfStrings(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and not (x IN ["abc" "cde" "fgh"])`,
@@ -165,12 +281,14 @@ func TestListOfStrings(t *testing.T) {
 				"y": 5,
 			},
 			false,
+			false,
 		},
 		{
 			`x IN ["abc" "cde" "fgh"]`,
 			obj{
 				"x": "xyz",
 			},
+			false,
 			false,
 		},
 	}
@@ -190,6 +308,7 @@ func TestListOfDoubles(t *testing.T) {
 				"x": 1.1,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and x IN [1.1 2.1 3.3]`,
@@ -198,6 +317,7 @@ func TestListOfDoubles(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and (x IN [1.4 2.1 3.3])`,
@@ -206,6 +326,7 @@ func TestListOfDoubles(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and not (x IN [1.1 2.2 3.3])`,
@@ -214,12 +335,14 @@ func TestListOfDoubles(t *testing.T) {
 				"y": 5,
 			},
 			false,
+			false,
 		},
 		{
 			`x IN [1.0 2.2 3.3]`,
 			obj{
 				"x": 4.0,
 			},
+			false,
 			false,
 		},
 	}
@@ -239,6 +362,7 @@ func TestListOfInts(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and x IN [1 2 3]`,
@@ -247,6 +371,7 @@ func TestListOfInts(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and (x IN [1 2 3])`,
@@ -255,6 +380,7 @@ func TestListOfInts(t *testing.T) {
 				"y": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`y eq 5 and not (x IN [1 2 3])`,
@@ -263,12 +389,14 @@ func TestListOfInts(t *testing.T) {
 				"y": 5,
 			},
 			false,
+			false,
 		},
 		{
 			`x IN [1 2 3]`,
 			obj{
 				"x": 4,
 			},
+			false,
 			false,
 		},
 	}
@@ -288,10 +416,12 @@ func TestPresent(t *testing.T) {
 				"x": true,
 			},
 			true,
+			false,
 		},
 		{
 			`x pr`,
 			obj{},
+			false,
 			false,
 		},
 		{
@@ -300,12 +430,14 @@ func TestPresent(t *testing.T) {
 				"x": true,
 			},
 			false,
+			false,
 		},
 		{
 			`NOT (x pr)`,
 			obj{
 				"x": true,
 			},
+			false,
 			false,
 		},
 	}
@@ -325,12 +457,14 @@ func TestNull(t *testing.T) {
 				"x": true,
 			},
 			false,
+			false,
 		},
 		{
 			`x EQ null`,
 			obj{
 				"x": true,
 			},
+			false,
 			false,
 		},
 		{
@@ -339,6 +473,7 @@ func TestNull(t *testing.T) {
 				"x": true,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq null`,
@@ -346,17 +481,38 @@ func TestNull(t *testing.T) {
 				"x": nil,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq null`,
 			obj{},
 			true,
+			false,
 		},
 	}
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+	}
+}
+
+func TestNullInvalids(t *testing.T) {
+	badRules := []string{
+		`x lt null`,
+		`x le null`,
+		`x ge null`,
+		`x gt null`,
+		`x co null`,
+		`x sw null`,
+		`x ew null`,
+		`x in null`,
+	}
+	for _, rule := range badRules {
+		_, err := eval(t, rule, obj{
+			"x": nil,
+		})
+		assert.Error(t, err)
 	}
 }
 
@@ -368,12 +524,38 @@ func TestBool(t *testing.T) {
 				"x": true,
 			},
 			true,
+			false,
+		},
+		{
+			`x ne true`,
+			obj{
+				"x": false,
+			},
+			true,
+			false,
+		},
+		{
+			`x eq true`,
+			obj{
+				"x": 1,
+			},
+			false,
+			false,
+		},
+		{
+			`x ne true`,
+			obj{
+				"x": 2,
+			},
+			false,
+			false,
 		},
 		{
 			`x eq false`,
 			obj{
 				"x": true,
 			},
+			false,
 			false,
 		},
 		{
@@ -382,12 +564,35 @@ func TestBool(t *testing.T) {
 				"x": true,
 			},
 			false,
+			false,
 		},
 	}
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input))
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+	}
+}
+
+func TestBoolInvalids(t *testing.T) {
+	badRules := []string{
+		`x le true`,
+		`x ge true`,
+		`x gt true`,
+		`x lt true`,
+		`x le true`,
+		`x co true`,
+		`x sw true`,
+		`x ew true`,
+		`x in true`,
+	}
+
+	for _, rule := range badRules {
+		result, err := eval(t, rule, obj{
+			"x": true,
+		})
+		assert.Error(t, err)
+		assert.False(t, result)
 	}
 }
 
@@ -399,12 +604,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1`,
 			obj{
 				"y": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -413,12 +620,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			false,
+			false,
 		},
 		{
 			`x NE 1`,
 			obj{
 				"x": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -427,6 +636,7 @@ func TestInt(t *testing.T) {
 				"x": 0,
 			},
 			true,
+			false,
 		},
 		{
 			`x LE 1`,
@@ -434,12 +644,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`x le 1`,
 			obj{
 				"x": 2,
 			},
+			false,
 			false,
 		},
 		{
@@ -448,12 +660,14 @@ func TestInt(t *testing.T) {
 				"x": 0,
 			},
 			true,
+			false,
 		},
 		{
 			`x lt 1`,
 			obj{
 				"x": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -462,12 +676,14 @@ func TestInt(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x gt 1`,
 			obj{
 				"x": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -476,6 +692,7 @@ func TestInt(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x ge 1`,
@@ -483,12 +700,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`x ge 1`,
 			obj{
 				"x": 0,
 			},
+			false,
 			false,
 		},
 		{
@@ -497,12 +716,14 @@ func TestInt(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1`,
 			obj{
 				"y": 1.0,
 			},
+			false,
 			false,
 		},
 	}
@@ -521,12 +742,14 @@ func TestFloat(t *testing.T) {
 				"x": 1.0,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1.0`,
 			obj{
 				"y": 1.0,
 			},
+			false,
 			false,
 		},
 		{
@@ -535,6 +758,7 @@ func TestFloat(t *testing.T) {
 				"x": 1.1,
 			},
 			false,
+			false,
 		},
 		{
 			`x le 1.1`,
@@ -542,6 +766,7 @@ func TestFloat(t *testing.T) {
 				"x": 0,
 			},
 			true,
+			false,
 		},
 		{
 			`x le 1.1`,
@@ -549,12 +774,14 @@ func TestFloat(t *testing.T) {
 				"x": 1.1,
 			},
 			true,
+			false,
 		},
 		{
 			`x le 1.1`,
 			obj{
 				"x": 2.0,
 			},
+			false,
 			false,
 		},
 		{
@@ -563,12 +790,14 @@ func TestFloat(t *testing.T) {
 				"x": 0.0,
 			},
 			true,
+			false,
 		},
 		{
 			`x lt 1.0`,
 			obj{
 				"x": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -577,12 +806,14 @@ func TestFloat(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x gt 1.0`,
 			obj{
 				"x": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -591,6 +822,7 @@ func TestFloat(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x ge 1.0`,
@@ -598,12 +830,14 @@ func TestFloat(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`x ge 1.0`,
 			obj{
 				"x": 0,
 			},
+			false,
 			false,
 		},
 		{
@@ -612,12 +846,14 @@ func TestFloat(t *testing.T) {
 				"x": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1.0`,
 			obj{
 				"y": 1.0,
 			},
+			false,
 			false,
 		},
 	}
@@ -636,6 +872,7 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x eq "abc"`,
@@ -643,12 +880,14 @@ func TestString(t *testing.T) {
 				"y": "abc",
 			},
 			false,
+			false,
 		},
 		{
 			`x ne "abc"`,
 			obj{
 				"x": "abc",
 			},
+			false,
 			false,
 		},
 		{
@@ -657,6 +896,7 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x le "cde"`,
@@ -664,6 +904,7 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x le "cde"`,
@@ -671,6 +912,7 @@ func TestString(t *testing.T) {
 				"x": "efg",
 			},
 			false,
+			false,
 		},
 		{
 			`x lt "cde"`,
@@ -678,12 +920,14 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x lt "cde"`,
 			obj{
 				"x": "cde",
 			},
+			false,
 			false,
 		},
 		{
@@ -692,12 +936,14 @@ func TestString(t *testing.T) {
 				"x": "def",
 			},
 			true,
+			false,
 		},
 		{
 			`x gt "cde"`,
 			obj{
 				"x": "abc",
 			},
+			false,
 			false,
 		},
 		{
@@ -706,6 +952,7 @@ func TestString(t *testing.T) {
 				"x": "cde",
 			},
 			true,
+			false,
 		},
 		{
 			`x ge "cde"`,
@@ -713,12 +960,14 @@ func TestString(t *testing.T) {
 				"x": "def",
 			},
 			true,
+			false,
 		},
 		{
 			`x ge "cde"`,
 			obj{
 				"x": "abc",
 			},
+			false,
 			false,
 		},
 		{
@@ -727,6 +976,7 @@ func TestString(t *testing.T) {
 				"x": "cde",
 			},
 			true,
+			false,
 		},
 		{
 			`x co "ab"`,
@@ -734,12 +984,14 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x co "ab"`,
 			obj{
 				"x": "bbc",
 			},
+			false,
 			false,
 		},
 		{
@@ -748,6 +1000,7 @@ func TestString(t *testing.T) {
 				"x": "bbc",
 			},
 			false,
+			false,
 		},
 		{
 			`x sw "ab"`,
@@ -755,6 +1008,7 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x SW "ab"`,
@@ -762,12 +1016,14 @@ func TestString(t *testing.T) {
 				"x": "abc",
 			},
 			true,
+			false,
 		},
 		{
 			`x sw "ab"`,
 			obj{
 				"x": "bbc",
 			},
+			false,
 			false,
 		},
 		{
@@ -776,12 +1032,14 @@ func TestString(t *testing.T) {
 				"x": "bab",
 			},
 			true,
+			false,
 		},
 		{
 			`x EW "ab"`,
 			obj{
 				"x": "bbc",
 			},
+			false,
 			false,
 		},
 	}

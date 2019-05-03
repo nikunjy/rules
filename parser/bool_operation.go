@@ -34,31 +34,3 @@ func (o *BoolOperation) NE(left Operand, right Operand) (bool, error) {
 	}
 	return l != r, nil
 }
-
-func (o *BoolOperation) GT(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) LT(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) GE(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) LE(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) CO(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) SW(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *BoolOperation) EW(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}

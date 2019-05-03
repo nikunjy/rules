@@ -160,6 +160,11 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 	if err != nil {
 		switch err {
 		case ErrInvalidOperation:
+			// in case of invalid operation lets rather
+			// be conservative and return false because the rule doesn't even make
+			// sense. It can be argued that it would be false positive if we were
+			// to return true
+			j.setErr(err)
 			j.setDebugErr(
 				newDebugError(err, "Not a valid operation for datatypes").Set(ErrVals{
 					"operation":           ctx.op.GetTokenType(),

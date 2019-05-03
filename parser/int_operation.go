@@ -1,6 +1,7 @@
 package parser
 
 type IntOperation struct {
+	NullOperation
 }
 
 func (o *IntOperation) get(left Operand, right Operand) (int, int, error) {
@@ -65,18 +66,6 @@ func (o *IntOperation) LE(left Operand, right Operand) (bool, error) {
 		return false, err
 	}
 	return l <= r, nil
-}
-
-func (o *IntOperation) CO(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *IntOperation) SW(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
-}
-
-func (o *IntOperation) EW(left Operand, right Operand) (bool, error) {
-	return false, ErrInvalidOperation
 }
 
 func (o *IntOperation) IN(left Operand, right Operand) (bool, error) {

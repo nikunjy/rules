@@ -1,4 +1,4 @@
-# Golang Rules Engine  [![Build Status][ci-img]][ci]
+# Golang Rules Engine  [![Build Status][ci-img]][ci] [![codecov](https://codecov.io/gh/nikunjy/rules/branch/master/graph/badge.svg)](https://codecov.io/gh/nikunjy/rules)
 Rules engine written in golang with the help of antlr.
 
 This package will be very helpful in situations where you have a generic rule and want to verify if your values (specified using `map[string]interface{}`) satisfy the rule. 

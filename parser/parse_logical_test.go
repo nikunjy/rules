@@ -16,6 +16,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"y": 2,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1 and y gt 1`,
@@ -23,6 +24,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"x": 1,
 				"y": 1,
 			},
+			false,
 			false,
 		},
 		{
@@ -32,6 +34,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"y": 1,
 			},
 			true,
+			false,
 		},
 		{
 			`x eq 1 and not (y gt 1)`,
@@ -39,6 +42,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"x": 1,
 				"y": 2,
 			},
+			false,
 			false,
 		},
 		{
@@ -49,6 +53,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"z": 3,
 			},
 			true,
+			false,
 		},
 		{
 			`(x eq 1 and y gt 1) and z eq 3 or a gt 4`,
@@ -58,6 +63,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"a": 5,
 			},
 			true,
+			false,
 		},
 		{
 			`(x eq 1 and y gt 1) and (z eq 3 or a gt 4)`,
@@ -67,6 +73,7 @@ func TestLogicalExpWithAnd(t *testing.T) {
 				"a": 5,
 			},
 			true,
+			false,
 		},
 	}
 
