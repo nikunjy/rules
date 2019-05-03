@@ -101,7 +101,7 @@ func (j *JsonQueryVisitorImpl) VisitPresentExp(ctx *PresentExpContext) interface
 func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface{} {
 	ctx.AttrPath().Accept(j)
 	ctx.Value().Accept(j)
-	var apply func(Operand, Operand) bool
+	var apply func(Operand, Operand) (bool, error)
 	currentOp := j.currentOperation
 	switch ctx.op.GetTokenType() {
 	case JsonQueryParserEQ:
@@ -128,7 +128,11 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 		panic("unknown operation")
 	}
 	defer func() { j.rightOp = nil }()
-	return apply(j.leftOp, j.rightOp)
+	ret, err := apply(j.leftOp, j.rightOp)
+	if err != nil {
+		panic(err)
+	}
+	return ret
 }
 
 func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {

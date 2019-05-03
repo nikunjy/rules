@@ -26,67 +26,67 @@ func (o *FloatOperation) get(left Operand, right Operand) (float64, float64, boo
 
 }
 
-func (o *FloatOperation) EQ(left Operand, right Operand) bool {
+func (o *FloatOperation) EQ(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l == r
+	return l == r, nil
 }
 
-func (o *FloatOperation) NE(left Operand, right Operand) bool {
+func (o *FloatOperation) NE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l != r
+	return l != r, nil
 }
 
-func (o *FloatOperation) GT(left Operand, right Operand) bool {
+func (o *FloatOperation) GT(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l > r
+	return l > r, nil
 }
 
-func (o *FloatOperation) LT(left Operand, right Operand) bool {
+func (o *FloatOperation) LT(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l < r
+	return l < r, nil
 }
 
-func (o *FloatOperation) GE(left Operand, right Operand) bool {
+func (o *FloatOperation) GE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l >= r
+	return l >= r, nil
 }
 
-func (o *FloatOperation) LE(left Operand, right Operand) bool {
+func (o *FloatOperation) LE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l <= r
+	return l <= r, nil
 }
 
-func (o *FloatOperation) IN(left Operand, right Operand) bool {
+func (o *FloatOperation) IN(left Operand, right Operand) (bool, error) {
 	leftVal, ok := toNum(left)
 	if !ok {
-		return ok
+		return ok, nil
 	}
 	rightVal, ok := right.([]float64)
 	if !ok {
-		return ok
+		return ok, nil
 	}
 	for _, num := range rightVal {
 		if num == leftVal {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }

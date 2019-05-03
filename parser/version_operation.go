@@ -32,49 +32,49 @@ func (v *VersionOperation) get(left Operand, right Operand) (semver.Version, sem
 	return leftVer, rightVer, true
 }
 
-func (v *VersionOperation) EQ(left Operand, right Operand) bool {
+func (v *VersionOperation) EQ(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.EQ(rightVer)
+	return leftVer.EQ(rightVer), nil
 }
 
-func (v *VersionOperation) NE(left Operand, right Operand) bool {
+func (v *VersionOperation) NE(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.NE(rightVer)
+	return leftVer.NE(rightVer), nil
 }
 
-func (v *VersionOperation) LT(left Operand, right Operand) bool {
+func (v *VersionOperation) LT(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.LT(rightVer)
+	return leftVer.LT(rightVer), nil
 }
 
-func (v *VersionOperation) GT(left Operand, right Operand) bool {
+func (v *VersionOperation) GT(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.GT(rightVer)
+	return leftVer.GT(rightVer), nil
 }
 
-func (v *VersionOperation) LE(left Operand, right Operand) bool {
+func (v *VersionOperation) LE(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.LE(rightVer)
+	return leftVer.LE(rightVer), nil
 }
-func (v *VersionOperation) GE(left Operand, right Operand) bool {
+func (v *VersionOperation) GE(left Operand, right Operand) (bool, error) {
 	leftVer, rightVer, ok := v.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return leftVer.GE(rightVer)
+	return leftVer.GE(rightVer), nil
 }
