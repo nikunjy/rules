@@ -1,12 +1,33 @@
 package parser
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"reflect"
+)
 
 type Operand interface{}
 
 var (
-	ErrInvalidOperation = errors.New("Invalid operation on the type")
+	ErrInvalidOperation   = errors.New("Invalid operation on the type")
+	ErrEvalOperandMissing = errors.New("Operand not present")
 )
+
+type ErrInvalidOperand struct {
+	Val     interface{}
+	typeObj interface{}
+}
+
+func newErrInvalidOperand(val Operand, typeObj interface{}) *ErrInvalidOperand {
+	return &ErrInvalidOperand{
+		Val:     val,
+		typeObj: typeObj,
+	}
+}
+
+func (e *ErrInvalidOperand) Error() string {
+	return fmt.Sprintf("Operand %v is not of type %s", e.Val, reflect.TypeOf(e.typeObj).String())
+}
 
 type Operation interface {
 	EQ(left Operand, right Operand) (bool, error)
