@@ -1,16 +1,22 @@
 package parser
 
+import "errors"
+
 type Operand interface{}
 
+var (
+	ErrInvalidOperation = errors.New("Invalid operation on the type")
+)
+
 type Operation interface {
-	EQ(left Operand, right Operand) bool
-	NE(left Operand, right Operand) bool
-	GT(left Operand, right Operand) bool
-	LT(left Operand, right Operand) bool
-	GE(left Operand, right Operand) bool
-	LE(left Operand, right Operand) bool
-	CO(left Operand, right Operand) bool
-	SW(left Operand, right Operand) bool
-	EW(left Operand, right Operand) bool
-	IN(left Operand, right Operand) bool
+	EQ(left Operand, right Operand) (bool, error)
+	NE(left Operand, right Operand) (bool, error)
+	GT(left Operand, right Operand) (bool, error)
+	LT(left Operand, right Operand) (bool, error)
+	GE(left Operand, right Operand) (bool, error)
+	LE(left Operand, right Operand) (bool, error)
+	CO(left Operand, right Operand) (bool, error)
+	SW(left Operand, right Operand) (bool, error)
+	EW(left Operand, right Operand) (bool, error)
+	IN(left Operand, right Operand) (bool, error)
 }

@@ -13,79 +13,79 @@ func (o *IntOperation) get(left Operand, right Operand) (int, int, bool) {
 
 }
 
-func (o *IntOperation) EQ(left Operand, right Operand) bool {
+func (o *IntOperation) EQ(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l == r
+	return l == r, nil
 }
 
-func (o *IntOperation) NE(left Operand, right Operand) bool {
+func (o *IntOperation) NE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l != r
+	return l != r, nil
 }
 
-func (o *IntOperation) GT(left Operand, right Operand) bool {
+func (o *IntOperation) GT(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l > r
+	return l > r, nil
 }
 
-func (o *IntOperation) LT(left Operand, right Operand) bool {
+func (o *IntOperation) LT(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l < r
+	return l < r, nil
 }
 
-func (o *IntOperation) GE(left Operand, right Operand) bool {
+func (o *IntOperation) GE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l >= r
+	return l >= r, nil
 }
 
-func (o *IntOperation) LE(left Operand, right Operand) bool {
+func (o *IntOperation) LE(left Operand, right Operand) (bool, error) {
 	l, r, ok := o.get(left, right)
 	if !ok {
-		return ok
+		return ok, nil
 	}
-	return l <= r
+	return l <= r, nil
 }
 
-func (o *IntOperation) CO(left Operand, right Operand) bool {
-	panic("not supported")
+func (o *IntOperation) CO(left Operand, right Operand) (bool, error) {
+	return false, ErrInvalidOperation
 }
 
-func (o *IntOperation) SW(left Operand, right Operand) bool {
-	panic("not supported")
+func (o *IntOperation) SW(left Operand, right Operand) (bool, error) {
+	return false, ErrInvalidOperation
 }
 
-func (o *IntOperation) EW(left Operand, right Operand) bool {
-	panic("not supported")
+func (o *IntOperation) EW(left Operand, right Operand) (bool, error) {
+	return false, ErrInvalidOperation
 }
 
-func (o *IntOperation) IN(left Operand, right Operand) bool {
+func (o *IntOperation) IN(left Operand, right Operand) (bool, error) {
 	leftVal, ok := left.(int)
 	if !ok {
-		return ok
+		return ok, nil
 	}
 	rightVal, ok := right.([]int)
 	if !ok {
-		return ok
+		return ok, nil
 	}
 	for _, num := range rightVal {
 		if num == leftVal {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
