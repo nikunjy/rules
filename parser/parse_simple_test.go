@@ -23,6 +23,21 @@ func eval(t *testing.T, rule string, input obj) (bool, error) {
 	return ev.Process(input)
 }
 
+func TestInvalidRule(t *testing.T) {
+	invalidRules := []string{
+		`x eq 1 and y > 1`,
+		`y > 1`,
+		`y > 1 and x eq true`,
+	}
+
+	for _, rule := range invalidRules {
+		result, err := eval(t, rule, obj{"x": 1})
+		assert.Error(t, err, rule)
+		assert.False(t, result)
+
+	}
+}
+
 func TestVersions(t *testing.T) {
 	tests := []testCase{
 		{
@@ -242,6 +257,7 @@ func TestVersions(t *testing.T) {
 			assert.NoError(t, err)
 			assert.Equal(t, result, tt.result, fmt.Sprintf("rule :%s, input :%v", tt.rule, tt.input))
 		}
+		assert.Equal(t, false, Evaluate(tt.rule, obj{"x": 4.5}), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 }
@@ -349,6 +365,7 @@ func TestListOfDoubles(t *testing.T) {
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, false, Evaluate(tt.rule, obj{"x": "abc"}), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 
@@ -403,6 +420,7 @@ func TestListOfInts(t *testing.T) {
 
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+		assert.Equal(t, false, Evaluate(tt.rule, obj{"x": "123"}), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 	}
 
@@ -596,6 +614,22 @@ func TestBoolInvalids(t *testing.T) {
 	}
 }
 
+func TestIntInvalids(t *testing.T) {
+	badRules := []string{
+		`x co 1`,
+		`x sw 1`,
+		`x ew 1`,
+	}
+
+	for _, rule := range badRules {
+		result, err := eval(t, rule, obj{
+			"x": 2,
+		})
+		assert.Error(t, err)
+		assert.False(t, result)
+	}
+}
+
 func TestInt(t *testing.T) {
 	tests := []testCase{
 		{
@@ -604,6 +638,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
+		},
+		{
+			`x eq 1`,
+			obj{
+				"x": "1",
+			},
+			false,
 			false,
 		},
 		{
@@ -623,6 +665,14 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x ne 1`,
+			obj{
+				"x": "1",
+			},
+			false,
+			false,
+		},
+		{
 			`x NE 1`,
 			obj{
 				"x": 1,
@@ -636,6 +686,14 @@ func TestInt(t *testing.T) {
 				"x": 0,
 			},
 			true,
+			false,
+		},
+		{
+			`x le 1`,
+			obj{
+				"x": "1",
+			},
+			false,
 			false,
 		},
 		{
@@ -671,6 +729,14 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x lt 1`,
+			obj{
+				"x": "1",
+			},
+			false,
+			false,
+		},
+		{
 			`x GT 1`,
 			obj{
 				"x": 2,
@@ -682,6 +748,14 @@ func TestInt(t *testing.T) {
 			`x gt 1`,
 			obj{
 				"x": 1,
+			},
+			false,
+			false,
+		},
+		{
+			`x gt 1`,
+			obj{
+				"x": "1",
 			},
 			false,
 			false,
@@ -700,6 +774,14 @@ func TestInt(t *testing.T) {
 				"x": 1,
 			},
 			true,
+			false,
+		},
+		{
+			`x ge 1`,
+			obj{
+				"x": "1",
+			},
+			false,
 			false,
 		},
 		{
@@ -861,6 +943,7 @@ func TestFloat(t *testing.T) {
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		assert.Equal(t, false, Evaluate(tt.rule, obj{"x": "2.4"}), tt.rule)
 	}
 }
 
@@ -1047,5 +1130,6 @@ func TestString(t *testing.T) {
 	for _, tt := range tests {
 		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
 		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		assert.Equal(t, false, Evaluate(tt.rule, obj{"x": 3}), tt.rule)
 	}
 }

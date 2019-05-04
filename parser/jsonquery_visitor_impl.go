@@ -1,8 +1,8 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
-	"reflect"
 	"strconv"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -79,9 +79,10 @@ func (j *JsonQueryVisitorImpl) Visit(tree antlr.ParseTree) interface{} {
 	case *PresentExpContext:
 		return val.Accept(j).(bool)
 	default:
-		fmt.Println(reflect.TypeOf(tree))
+		fmt.Println("Came here ", tree.GetText())
+		j.setErr(errors.New("Invalid rule"))
+		return false
 	}
-	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitParenExp(ctx *ParenExpContext) interface{} {

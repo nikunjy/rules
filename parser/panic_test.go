@@ -1,10 +1,17 @@
 package parser
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestDebugError(t *testing.T) {
+	err := errors.New("some random error")
+	ne := newDebugError(newDebugError(err, "a"), "b")
+	assert.EqualValues(t, ne.Original(), err)
+}
 
 func TestEvaluatorPanic(t *testing.T) {
 	ev, err := NewEvaluator(`x eq 1`)
