@@ -21,22 +21,22 @@ func (e ErrVals) Merge(vals ErrVals) {
 	}
 }
 
-type DebugError struct {
+type NestedError struct {
 	Err  error
 	Msg  string
 	Vals ErrVals
 }
 
-func (e *DebugError) Original() error {
+func (e *NestedError) Original() error {
 	switch val := e.Err.(type) {
-	case *DebugError:
+	case *NestedError:
 		return val.Original()
 	default:
 		return e.Err
 	}
 }
 
-func (e *DebugError) Error() string {
+func (e *NestedError) Error() string {
 	if e.Vals == nil {
 		e.Vals = make(map[string]interface{})
 	}
@@ -49,7 +49,7 @@ func (e *DebugError) Error() string {
 	return string(data)
 }
 
-func (e *DebugError) Set(vals ErrVals) *DebugError {
+func (e *NestedError) Set(vals ErrVals) *NestedError {
 	if e.Vals == nil {
 		e.Vals = make(ErrVals)
 	}
@@ -57,8 +57,8 @@ func (e *DebugError) Set(vals ErrVals) *DebugError {
 	return e
 }
 
-func newDebugError(err error, msg string) *DebugError {
-	return &DebugError{
+func newNestedError(err error, msg string) *NestedError {
+	return &NestedError{
 		Err: err,
 		Msg: msg,
 	}

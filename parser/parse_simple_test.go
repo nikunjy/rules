@@ -25,9 +25,9 @@ func eval(t *testing.T, rule string, input obj) (bool, error) {
 
 func TestInvalidRule(t *testing.T) {
 	invalidRules := []string{
-		`x eq 1 and y > 1`,
-		`y > 1`,
-		`y > 1 and x eq true`,
+		`x eq 1 and y ~ 1`,
+		`y ~ 1`,
+		`y ~ 1 and x eq true`,
 	}
 
 	for _, rule := range invalidRules {
@@ -949,6 +949,20 @@ func TestFloat(t *testing.T) {
 
 func TestString(t *testing.T) {
 	tests := []testCase{
+		{
+			`x eq ""`,
+			obj{},
+			false,
+			false,
+		},
+		{
+			`x eq ""`,
+			obj{
+				"x": "",
+			},
+			true,
+			false,
+		},
 		{
 			`x eq "abc"`,
 			obj{
