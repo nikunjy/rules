@@ -24,12 +24,12 @@ NULL
    ;
 
 IN:  'IN' | 'in';
-EQ : 'eq' | 'EQ';
-NE : 'ne' | 'NE';
-GT : 'gt' | 'GT';
-LT : 'lt' | 'LT';
-GE : 'ge' | 'GE';
-LE : 'le' | 'LE';
+EQ : 'eq' | 'EQ' | '==';
+NE : 'ne' | 'NE' | '!=';
+GT : 'gt' | 'GT' | '>';
+LT : 'lt' | 'LT' | '<';
+GE : 'ge' | 'GE' | '>=';
+LE : 'le' | 'LE' | '<=';
 CO : 'co' | 'CO';
 SW : 'sw' | 'SW';
 EW : 'ew' | 'EW';

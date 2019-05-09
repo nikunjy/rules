@@ -641,6 +641,14 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x == 1`,
+			obj{
+				"x": 1,
+			},
+			true,
+			false,
+		},
+		{
 			`x eq 1`,
 			obj{
 				"x": "1",
@@ -665,7 +673,23 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x != 1`,
+			obj{
+				"x": 1,
+			},
+			false,
+			false,
+		},
+		{
 			`x ne 1`,
+			obj{
+				"x": "1",
+			},
+			false,
+			false,
+		},
+		{
+			`x != 1`,
 			obj{
 				"x": "1",
 			},
@@ -682,6 +706,14 @@ func TestInt(t *testing.T) {
 		},
 		{
 			`x le 1`,
+			obj{
+				"x": 0,
+			},
+			true,
+			false,
+		},
+		{
+			`x <= 1`,
 			obj{
 				"x": 0,
 			},
@@ -721,6 +753,14 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x < 1`,
+			obj{
+				"x": 0,
+			},
+			true,
+			false,
+		},
+		{
 			`x lt 1`,
 			obj{
 				"x": 1,
@@ -737,7 +777,23 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x < 1`,
+			obj{
+				"x": "1",
+			},
+			false,
+			false,
+		},
+		{
 			`x GT 1`,
+			obj{
+				"x": 2,
+			},
+			true,
+			false,
+		},
+		{
+			`x > 1`,
 			obj{
 				"x": 2,
 			},
@@ -761,7 +817,23 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x > 1`,
+			obj{
+				"x": "1",
+			},
+			false,
+			false,
+		},
+		{
 			`x GE 1`,
+			obj{
+				"x": 2,
+			},
+			true,
+			false,
+		},
+		{
+			`x >= 1`,
 			obj{
 				"x": 2,
 			},
@@ -793,6 +865,14 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x >= 1`,
+			obj{
+				"x": 0,
+			},
+			false,
+			false,
+		},
+		{
 			`x NE 1`,
 			obj{
 				"x": 2,
@@ -801,7 +881,23 @@ func TestInt(t *testing.T) {
 			false,
 		},
 		{
+			`x != 1`,
+			obj{
+				"x": 2,
+			},
+			true,
+			false,
+		},
+		{
 			`x eq 1`,
+			obj{
+				"y": 1.0,
+			},
+			false,
+			false,
+		},
+		{
+			`x == 1`,
 			obj{
 				"y": 1.0,
 			},
