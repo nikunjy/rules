@@ -10,8 +10,6 @@ func toNum(op Operand) (float64, error) {
 		return float64(val), nil
 	case float64:
 		return val, nil
-	case int64:
-		return float64(val), nil
 	}
 	var exp float64
 	return 0, newErrInvalidOperand(op, exp)
@@ -26,11 +24,7 @@ func (o *FloatOperation) get(left Operand, right Operand) (float64, float64, err
 		return 0, 0, err
 	}
 	rightVal, err := toNum(right)
-	if err != nil {
-		return 0, 0, err
-	}
-	return leftVal, rightVal, nil
-
+	return leftVal, rightVal, err
 }
 
 func (o *FloatOperation) EQ(left Operand, right Operand) (bool, error) {

@@ -69,6 +69,9 @@ func (j *JsonQueryVisitorImpl) hasErr() bool {
 }
 
 func (j *JsonQueryVisitorImpl) Visit(tree antlr.ParseTree) interface{} {
+	if j.hasErr() {
+		return false
+	}
 	switch val := tree.(type) {
 	case *LogicalExpContext:
 		return val.Accept(j).(bool)
@@ -79,16 +82,12 @@ func (j *JsonQueryVisitorImpl) Visit(tree antlr.ParseTree) interface{} {
 	case *PresentExpContext:
 		return val.Accept(j).(bool)
 	default:
-		fmt.Println("Came here ", tree.GetText())
 		j.setErr(errors.New("Invalid rule"))
 		return false
 	}
 }
 
 func (j *JsonQueryVisitorImpl) VisitParenExp(ctx *ParenExpContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	result := ctx.Query().Accept(j).(bool)
 	if ctx.NOT() != nil {
 		return !result
@@ -97,9 +96,6 @@ func (j *JsonQueryVisitorImpl) VisitParenExp(ctx *ParenExpContext) interface{} {
 }
 
 func (j *JsonQueryVisitorImpl) VisitLogicalExp(ctx *LogicalExpContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	left := ctx.Query(0).Accept(j).(bool)
 	op := ctx.LOGICAL_OPERATOR().GetText()
 	if op == "or" {
@@ -116,19 +112,16 @@ func (j *JsonQueryVisitorImpl) VisitLogicalExp(ctx *LogicalExpContext) interface
 }
 
 func (j *JsonQueryVisitorImpl) VisitPresentExp(ctx *PresentExpContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	ctx.AttrPath().Accept(j)
 	return j.leftOp != nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface{} {
+	ctx.AttrPath().Accept(j)
+	ctx.Value().Accept(j)
 	if j.hasErr() {
 		return false
 	}
-	ctx.AttrPath().Accept(j)
-	ctx.Value().Accept(j)
 	var apply func(Operand, Operand) (bool, error)
 	currentOp := j.currentOperation
 	switch ctx.op.GetTokenType() {
@@ -167,7 +160,7 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 			// to return true
 			j.setErr(err)
 			j.setDebugErr(
-				newDebugError(err, "Not a valid operation for datatypes").Set(ErrVals{
+				newNestedError(err, "Not a valid operation for datatypes").Set(ErrVals{
 					"operation":           ctx.op.GetTokenType(),
 					"object_path_operand": j.leftOp,
 					"rule_operand":        j.rightOp,
@@ -175,7 +168,7 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 			)
 		case ErrEvalOperandMissing:
 			j.setDebugErr(
-				newDebugError(err, "Eval operand missing in input object").Set(ErrVals{
+				newNestedError(err, "Eval operand missing in input object").Set(ErrVals{
 					"attr_path": ctx.AttrPath().GetText(),
 				}),
 			)
@@ -183,7 +176,7 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 			switch err.(type) {
 			case *ErrInvalidOperand:
 				j.setDebugErr(
-					newDebugError(err, "operands are not the right value type").Set(ErrVals{
+					newNestedError(err, "operands are not the right value type").Set(ErrVals{
 						"attr_path":           ctx.AttrPath().GetText(),
 						"object_path_operand": j.leftOp,
 						"rule_operand":        j.rightOp,
@@ -191,7 +184,7 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 				)
 			default:
 				j.setDebugErr(
-					newDebugError(err, "unknown error").Set(ErrVals{
+					newNestedError(err, "unknown error").Set(ErrVals{
 						"attr_path":           ctx.AttrPath().GetText(),
 						"object_path_operand": j.leftOp,
 						"rule_operand":        j.rightOp,
@@ -207,9 +200,6 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 }
 
 func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	var item interface{}
 	if ctx.SubAttr() == nil || ctx.SubAttr().IsEmpty() {
 		if !j.stack.empty() {
@@ -218,12 +208,12 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 			item = j.item
 		}
 		if item == nil {
-			return false
+			return nil
 		}
 		m := item.(map[string]interface{})
 		j.leftOp = m[ctx.ATTRNAME().GetText()]
 		j.stack.clear()
-		return true
+		return nil
 	}
 	if !j.stack.empty() {
 		item = j.stack.peek()
@@ -231,63 +221,50 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 		item = j.item
 	}
 	if item == nil {
-		return false
+		return nil
 	}
 	m := item.(map[string]interface{})
 	j.stack.push(m[ctx.ATTRNAME().GetText()])
-	return ctx.SubAttr().Accept(j).(bool)
+	return ctx.SubAttr().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubAttr(ctx *SubAttrContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
-	return ctx.AttrPath().Accept(j).(bool)
+	return ctx.AttrPath().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitBoolean(ctx *BooleanContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &BoolOperation{}
 
 	val, err := strconv.ParseBool(ctx.GetText())
 	if err != nil {
 		j.rightOp = nil
-		j.setErr(err)
-		return false
+		j.setErr(newNestedError(err, "Error converting boolean"))
+		return nil
 	}
 	j.rightOp = val
-	return true
+	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitNull(ctx *NullContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &NullOperation{}
 	j.rightOp = nil
-	return true
+	return nil
 }
 
 func getString(s string) string {
 	if len(s) > 2 {
 		return s[1 : len(s)-1]
 	}
-
 	return ""
 }
 
 func (j *JsonQueryVisitorImpl) VisitString(ctx *StringContext) interface{} {
 	j.currentOperation = &StringOperation{}
 	j.rightOp = getString(ctx.GetText())
-	return true
+	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitDouble(ctx *DoubleContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &FloatOperation{}
 	val, err := strconv.ParseFloat(ctx.GetText(), 10)
 	if err != nil {
@@ -296,52 +273,37 @@ func (j *JsonQueryVisitorImpl) VisitDouble(ctx *DoubleContext) interface{} {
 		return false
 	}
 	j.rightOp = val
-	return true
+	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitVersion(ctx *VersionContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &VersionOperation{}
 	j.rightOp = ctx.VERSION().GetText()
-	return true
+	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitLong(ctx *LongContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &IntOperation{}
 	val, err := strconv.ParseInt(ctx.GetText(), 10, 64)
 	if err != nil {
 		j.rightOp = nil
 		j.setErr(err)
-		return false
+		return nil
 	}
 	j.rightOp = int(val)
-	return true
+	return nil
 }
 
 func (j *JsonQueryVisitorImpl) VisitListOfInts(ctx *ListOfIntsContext) interface{} {
-	if j.hasErr() {
-		return false
-	}
 	j.currentOperation = &IntOperation{}
 	return ctx.ListInts().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitListInts(ctx *ListIntsContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	return ctx.SubListOfInts().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubListOfInts(ctx *SubListOfIntsContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	if j.rightOp == nil {
 		j.rightOp = make([]int, 0)
 	}
@@ -359,9 +321,6 @@ func (j *JsonQueryVisitorImpl) VisitSubListOfInts(ctx *SubListOfIntsContext) int
 }
 
 func (j *JsonQueryVisitorImpl) VisitListOfDoubles(ctx *ListOfDoublesContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	j.currentOperation = &FloatOperation{}
 	return ctx.ListDoubles().Accept(j)
 }
@@ -371,9 +330,6 @@ func (j *JsonQueryVisitorImpl) VisitListDoubles(ctx *ListDoublesContext) interfa
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubListOfDoubles(ctx *SubListOfDoublesContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	if j.rightOp == nil {
 		j.rightOp = make([]float64, 0)
 	}
@@ -391,24 +347,15 @@ func (j *JsonQueryVisitorImpl) VisitSubListOfDoubles(ctx *SubListOfDoublesContex
 }
 
 func (j *JsonQueryVisitorImpl) VisitListOfStrings(ctx *ListOfStringsContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	j.currentOperation = &StringOperation{}
 	return ctx.ListStrings().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitListStrings(ctx *ListStringsContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	return ctx.SubListOfStrings().Accept(j)
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubListOfStrings(ctx *SubListOfStringsContext) interface{} {
-	if j.hasErr() {
-		return nil
-	}
 	if j.rightOp == nil {
 		j.rightOp = make([]string, 0)
 	}

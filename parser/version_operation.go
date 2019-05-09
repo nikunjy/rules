@@ -24,10 +24,7 @@ func (v *VersionOperation) get(left Operand, right Operand) (semver.Version, sem
 		return leftVer, rightVer, err
 	}
 	rightVer, err = semver.Make(rightVal)
-	if err != nil {
-		return leftVer, rightVer, err
-	}
-	return leftVer, rightVer, nil
+	return leftVer, rightVer, err
 }
 
 func (v *VersionOperation) EQ(left Operand, right Operand) (bool, error) {

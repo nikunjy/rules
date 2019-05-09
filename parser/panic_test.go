@@ -1,16 +1,20 @@
 package parser
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDebugError(t *testing.T) {
+func TestNestedError(t *testing.T) {
 	err := errors.New("some random error")
-	ne := newDebugError(newDebugError(err, "a"), "b")
+	ne := newNestedError(newNestedError(err, "a"), "b")
 	assert.EqualValues(t, ne.Original(), err)
+	m := make(map[string]interface{})
+	assert.NoError(t, json.Unmarshal([]byte(ne.Error()), &m))
+	assert.True(t, len(m) > 0)
 }
 
 func TestEvaluatorPanic(t *testing.T) {
