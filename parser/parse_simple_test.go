@@ -265,7 +265,7 @@ func TestVersions(t *testing.T) {
 func TestListOfStrings(t *testing.T) {
 	tests := []testCase{
 		{
-			`x IN ["abc" "cde" "fgh"]`,
+			`x IN ["abc", "cde", "fgh"]`,
 			obj{
 				"x": "abc",
 			},
@@ -273,7 +273,7 @@ func TestListOfStrings(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and x IN ["abc" "cde" "fgh"]`,
+			`y eq 5 and x IN ["abc", "cde", "fgh"]`,
 			obj{
 				"x": "abc",
 				"y": 5,
@@ -282,16 +282,16 @@ func TestListOfStrings(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and (x IN ["abc" "cde" "fgh"])`,
+			`y eq 5 and (x IN ["abc","cde","fgh"])`,
 			obj{
-				"x": "abc",
+				"x": "cde",
 				"y": 5,
 			},
 			true,
 			false,
 		},
 		{
-			`y eq 5 and not (x IN ["abc" "cde" "fgh"])`,
+			`y eq 5 and not (x IN ["abc","cde","fgh"])`,
 			obj{
 				"x": "abc",
 				"y": 5,
@@ -300,7 +300,7 @@ func TestListOfStrings(t *testing.T) {
 			false,
 		},
 		{
-			`x IN ["abc" "cde" "fgh"]`,
+			`x IN ["abc", "cde", "fgh"]`,
 			obj{
 				"x": "xyz",
 			},
@@ -319,7 +319,7 @@ func TestListOfStrings(t *testing.T) {
 func TestListOfDoubles(t *testing.T) {
 	tests := []testCase{
 		{
-			`x IN [1.1 2.2 3.3]`,
+			`x IN [1.1, 2.2, 3.3]`,
 			obj{
 				"x": 1.1,
 			},
@@ -327,7 +327,7 @@ func TestListOfDoubles(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and x IN [1.1 2.1 3.3]`,
+			`y eq 5 and x IN [1.1, 2.1, 3.3]`,
 			obj{
 				"x": 1.1,
 				"y": 5,
@@ -336,7 +336,7 @@ func TestListOfDoubles(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and (x IN [1.4 2.1 3.3])`,
+			`y eq 5 and (x IN [1.4, 2.1, 3.3])`,
 			obj{
 				"x": 1.4,
 				"y": 5,
@@ -345,7 +345,7 @@ func TestListOfDoubles(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and not (x IN [1.1 2.2 3.3])`,
+			`y eq 5 and not (x IN [1.1, 2.2, 3.3])`,
 			obj{
 				"x": 1.1,
 				"y": 5,
@@ -354,7 +354,7 @@ func TestListOfDoubles(t *testing.T) {
 			false,
 		},
 		{
-			`x IN [1.0 2.2 3.3]`,
+			`x IN [1.0, 2.2, 3.3]`,
 			obj{
 				"x": 4.0,
 			},
@@ -374,7 +374,7 @@ func TestListOfDoubles(t *testing.T) {
 func TestListOfInts(t *testing.T) {
 	tests := []testCase{
 		{
-			`x IN [1 2 3]`,
+			`x IN [1, 2, 3]`,
 			obj{
 				"x": 1,
 			},
@@ -382,7 +382,7 @@ func TestListOfInts(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and x IN [1 2 3]`,
+			`y eq 5 and x IN [1, 2, 3]`,
 			obj{
 				"x": 1,
 				"y": 5,
@@ -391,7 +391,7 @@ func TestListOfInts(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and (x IN [1 2 3])`,
+			`y eq 5 and (x IN [1, 2, 3])`,
 			obj{
 				"x": 1,
 				"y": 5,
@@ -400,7 +400,7 @@ func TestListOfInts(t *testing.T) {
 			false,
 		},
 		{
-			`y eq 5 and not (x IN [1 2 3])`,
+			`y eq 5 and not (x IN [1, 2, 3])`,
 			obj{
 				"x": 1,
 				"y": 5,
@@ -409,7 +409,7 @@ func TestListOfInts(t *testing.T) {
 			false,
 		},
 		{
-			`x IN [1 2 3]`,
+			`x IN [1, 2, 3]`,
 			obj{
 				"x": 4,
 			},

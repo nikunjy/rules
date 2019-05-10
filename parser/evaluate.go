@@ -26,14 +26,22 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 	}()
 	input := antlr.NewInputStream(rule)
 	lex := NewJsonQueryLexer(input)
+	lex.RemoveErrorListeners()
 	tokens := antlr.NewCommonTokenStream(lex, antlr.TokenDefaultChannel)
 	p := NewJsonQueryParser(tokens)
+	// TODO: maybe log properly
+	p.RemoveErrorListeners()
 	tree := p.Query()
 
 	return &Evaluator{
 		rule: rule,
 		tree: tree,
 	}, nil
+}
+
+func (e *Evaluator) Reset() error {
+	e.lastDebugErr = nil
+	return nil
 }
 
 func (e *Evaluator) LastDebugErr() error {
