@@ -16,7 +16,7 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 31, 110,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 110,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 3, 2, 3, 2, 5, 2, 25,
 	10, 2, 3, 2, 5, 2, 28, 10, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2,
@@ -32,14 +32,14 @@ var parserATN = []uint16{
 	3, 2, 2, 2, 10, 79, 3, 2, 2, 2, 12, 87, 3, 2, 2, 2, 14, 89, 3, 2, 2, 2,
 	16, 97, 3, 2, 2, 2, 18, 99, 3, 2, 2, 2, 20, 107, 3, 2, 2, 2, 22, 24, 8,
 	2, 1, 2, 23, 25, 7, 10, 2, 2, 24, 23, 3, 2, 2, 2, 24, 25, 3, 2, 2, 2, 25,
-	27, 3, 2, 2, 2, 26, 28, 7, 31, 2, 2, 27, 26, 3, 2, 2, 2, 27, 28, 3, 2,
+	27, 3, 2, 2, 2, 26, 28, 7, 32, 2, 2, 27, 26, 3, 2, 2, 2, 27, 28, 3, 2,
 	2, 2, 28, 29, 3, 2, 2, 2, 29, 30, 7, 3, 2, 2, 30, 31, 5, 2, 2, 2, 31, 32,
-	7, 4, 2, 2, 32, 44, 3, 2, 2, 2, 33, 34, 5, 4, 3, 2, 34, 35, 7, 31, 2, 2,
+	7, 4, 2, 2, 32, 44, 3, 2, 2, 2, 33, 34, 5, 4, 3, 2, 34, 35, 7, 32, 2, 2,
 	35, 36, 7, 5, 2, 2, 36, 44, 3, 2, 2, 2, 37, 38, 5, 4, 3, 2, 38, 39, 7,
-	31, 2, 2, 39, 40, 9, 2, 2, 2, 40, 41, 7, 31, 2, 2, 41, 42, 5, 8, 5, 2,
+	32, 2, 2, 39, 40, 9, 2, 2, 2, 40, 41, 7, 32, 2, 2, 41, 42, 5, 8, 5, 2,
 	42, 44, 3, 2, 2, 2, 43, 22, 3, 2, 2, 2, 43, 33, 3, 2, 2, 2, 43, 37, 3,
-	2, 2, 2, 44, 52, 3, 2, 2, 2, 45, 46, 12, 5, 2, 2, 46, 47, 7, 31, 2, 2,
-	47, 48, 7, 11, 2, 2, 48, 49, 7, 31, 2, 2, 49, 51, 5, 2, 2, 6, 50, 45, 3,
+	2, 2, 2, 44, 52, 3, 2, 2, 2, 45, 46, 12, 5, 2, 2, 46, 47, 7, 32, 2, 2,
+	47, 48, 7, 11, 2, 2, 48, 49, 7, 32, 2, 2, 49, 51, 5, 2, 2, 6, 50, 45, 3,
 	2, 2, 2, 51, 54, 3, 2, 2, 2, 52, 50, 3, 2, 2, 2, 52, 53, 3, 2, 2, 2, 53,
 	3, 3, 2, 2, 2, 54, 52, 3, 2, 2, 2, 55, 57, 7, 24, 2, 2, 56, 58, 5, 6, 4,
 	2, 57, 56, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 5, 3, 2, 2, 2, 59, 60, 7,
@@ -73,7 +73,7 @@ var literalNames = []string{
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "NOT", "LOGICAL_OPERATOR", "BOOLEAN", "NULL",
 	"IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW", "EW", "ATTRNAME",
-	"VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE", "SP",
+	"VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE", "COMMA", "SP",
 }
 
 var ruleNames = []string{
@@ -137,7 +137,8 @@ const (
 	JsonQueryParserINT              = 26
 	JsonQueryParserEXP              = 27
 	JsonQueryParserNEWLINE          = 28
-	JsonQueryParserSP               = 29
+	JsonQueryParserCOMMA            = 29
+	JsonQueryParserSP               = 30
 )
 
 // JsonQueryParser rules.
@@ -1466,8 +1467,8 @@ func (s *SubListOfStringsContext) STRING() antlr.TerminalNode {
 	return s.GetToken(JsonQueryParserSTRING, 0)
 }
 
-func (s *SubListOfStringsContext) SP() antlr.TerminalNode {
-	return s.GetToken(JsonQueryParserSP, 0)
+func (s *SubListOfStringsContext) COMMA() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserCOMMA, 0)
 }
 
 func (s *SubListOfStringsContext) SubListOfStrings() ISubListOfStringsContext {
@@ -1529,7 +1530,7 @@ func (p *JsonQueryParser) SubListOfStrings() (localctx ISubListOfStringsContext)
 		}
 		{
 			p.SetState(81)
-			p.Match(JsonQueryParserSP)
+			p.Match(JsonQueryParserCOMMA)
 		}
 		{
 			p.SetState(82)
@@ -1693,8 +1694,8 @@ func (s *SubListOfDoublesContext) DOUBLE() antlr.TerminalNode {
 	return s.GetToken(JsonQueryParserDOUBLE, 0)
 }
 
-func (s *SubListOfDoublesContext) SP() antlr.TerminalNode {
-	return s.GetToken(JsonQueryParserSP, 0)
+func (s *SubListOfDoublesContext) COMMA() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserCOMMA, 0)
 }
 
 func (s *SubListOfDoublesContext) SubListOfDoubles() ISubListOfDoublesContext {
@@ -1756,7 +1757,7 @@ func (p *JsonQueryParser) SubListOfDoubles() (localctx ISubListOfDoublesContext)
 		}
 		{
 			p.SetState(91)
-			p.Match(JsonQueryParserSP)
+			p.Match(JsonQueryParserCOMMA)
 		}
 		{
 			p.SetState(92)
@@ -1920,8 +1921,8 @@ func (s *SubListOfIntsContext) INT() antlr.TerminalNode {
 	return s.GetToken(JsonQueryParserINT, 0)
 }
 
-func (s *SubListOfIntsContext) SP() antlr.TerminalNode {
-	return s.GetToken(JsonQueryParserSP, 0)
+func (s *SubListOfIntsContext) COMMA() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserCOMMA, 0)
 }
 
 func (s *SubListOfIntsContext) SubListOfInts() ISubListOfIntsContext {
@@ -1983,7 +1984,7 @@ func (p *JsonQueryParser) SubListOfInts() (localctx ISubListOfIntsContext) {
 		}
 		{
 			p.SetState(101)
-			p.Match(JsonQueryParserSP)
+			p.Match(JsonQueryParserCOMMA)
 		}
 		{
 			p.SetState(102)

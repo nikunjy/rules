@@ -82,7 +82,7 @@ listStrings
    ;
 
 subListOfStrings
-   : STRING SP subListOfStrings
+   : STRING COMMA subListOfStrings
    | STRING ']';
 
 fragment ESC
@@ -106,7 +106,7 @@ listDoubles
    ;
 
 subListOfDoubles
-   : DOUBLE SP subListOfDoubles
+   : DOUBLE COMMA subListOfDoubles
    | DOUBLE ']';
 
 listInts
@@ -114,7 +114,7 @@ listInts
    ;
 
 subListOfInts
-   : INT SP subListOfInts
+   : INT COMMA subListOfInts
    | INT ']';
 
 // INT no leading zeros.
@@ -130,6 +130,8 @@ EXP
 NEWLINE
    : '\n' ;
 
+COMMA
+   : ',' ' '*;
 SP
    : ' ' NEWLINE*
    ;
