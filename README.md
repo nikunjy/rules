@@ -10,10 +10,12 @@ Here are some examples:
   type obj map[string]interface{}
   
   parser.Evaluate("x eq 1", obj{"x": 1})
+  parser.Evaluate("x == 1", obj{"x": 1})
   parser.Evaluate("x lt 1", obj{"x": 1})
+  parser.Evaluate("x < 1", obj{"x": 1})
   parser.Evaluate("x gt 1", obj{"x": 1})
   
-  parser.Evaluate("x.a eq 1 and x.b.c le 2", obj{
+  parser.Evaluate("x.a == 1 and x.b.c <= 2", obj{
     "x": obj{
        "a": 1,
        "b": obj{
@@ -23,11 +25,11 @@ Here are some examples:
   })
   
 
-  parser.Evaluate("y eq 4 and (x gt 1)", obj{"x": 1})
+  parser.Evaluate("y == 4 and (x > 1)", obj{"x": 1})
 
-  parser.Evaluate("y eq 4 and (x IN [1 2 3])", obj{"x": 1})
+  parser.Evaluate("y == 4 and (x IN [1,2,3])", obj{"x": 1})
 
-  parser.Evaluate("y eq 4 and (x eq 1.2.3)", obj{"x": "1.2.3"})
+  parser.Evaluate("y == 4 and (x eq 1.2.3)", obj{"x": "1.2.3"})
   
 ```
 
@@ -36,14 +38,14 @@ All the operations can be written capitalized or lowercase (ex: `eq` or `EQ` can
 
 Logical Operations supported are `AND OR`
 
-Compare Expression and their definitions:
+Compare Expression and their definitions (a|b means you can use either one of the two a or b):
 ```
-eq: equals to 
-ne: not equals to
-lt: less than 
-gt: greater than
-le: less than equal to
-ge: greater than equal to 
+eq|==: equals to 
+ne|!=: not equals to
+lt|<: less than 
+gt|>: greater than
+le|<=: less than equal to
+ge|>=: greater than equal to 
 co: contains 
 sw: starts with 
 ew: ends with
