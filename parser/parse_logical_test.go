@@ -15,6 +15,19 @@ func TestNestedObject(t *testing.T) {
 				"x": map[string]interface{}{
 					"a": 1,
 					"b": map[string]interface{}{
+						"c": 2.0,
+					},
+				},
+			},
+			true,
+			false,
+		},
+		{
+			`x.a eq 1 and x.b.c eq 2`,
+			map[string]interface{}{
+				"x": map[string]interface{}{
+					"a": 1,
+					"b": map[string]interface{}{
 						"c": 2,
 					},
 				},
