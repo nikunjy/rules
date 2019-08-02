@@ -8,13 +8,13 @@ func (o *IntOperation) get(left Operand, right Operand) (int, int, error) {
 	if left == nil {
 		return 0, 0, ErrEvalOperandMissing
 	}
-	leftVal, ok := left.(int)
-	if !ok {
-		return 0, 0, newErrInvalidOperand(left, leftVal)
+	leftVal, err := toInt(left)
+	if err != nil {
+		return 0, 0, err
 	}
-	rightVal, ok := right.(int)
-	if !ok {
-		return 0, 0, newErrInvalidOperand(left, leftVal)
+	rightVal, err := toInt(right)
+	if err != nil {
+		return 0, 0, err
 	}
 	return leftVal, rightVal, nil
 
