@@ -1,14 +1,9 @@
 GO := go
 srcs := $(shell find . -path ./vendor -prune -o -name '*.go' | grep -v 'vendor')
-vendor_srcs := $(shell find ./vendor/ -name '*.go')
 PKGS ?= $(shell go list ./...)
 PKG_FILES ?= *.go
-GO_VERSION := $(shell go version | cut -d " " -f 3)
 GO_MINOR_VERSION := $(word 2,$(subst ., ,$(GO_VERSION)))
-LINTABLE_MINOR_VERSIONS := 6 7 8
-ifneq ($(filter $(LINTABLE_MINOR_VERSIONS),$(GO_MINOR_VERSION)),)
 SHOULD_LINT := true
-endif
 
 RACE=-race
 GOTEST=go test -v $(RACE)
@@ -19,13 +14,10 @@ FMT_LOG=fmt.log
 LINT_LOG=lint.log
 
 
-.PHONY: dependencies
-dependencies:
-	@echo "Installing golang dep if needed and looking for dependencies"
-	dep version || go get -u github.com/golang/dep/cmd/dep
-	dep ensure
-	go get -u github.com/axw/gocov/gocov
-	go get -u golang.org/x/lint/golint
+.PHONY: build 
+build:
+	@echo "Building the go module"
+	go build ./...
 
 .PHONY: fmt
 fmt:
@@ -51,12 +43,6 @@ ifdef SHOULD_LINT
 else
 	@echo "Skipping linters on" $(GO_VERSION)
 endif
-
-.PHONY: fix
-fix: $(pkg_file)
-	@echo " > go fix"
-	$(shell find . -path ./vendor -prune -o -name '*.go' -exec go tool fix --force context {} \;)
-	$(shell find ./vendor/ -name \*.go -exec go tool fix --force context {} \;)
 
 .PHONY: test
 test:
