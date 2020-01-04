@@ -54,5 +54,11 @@ pr: present
 not: not of a logical expression
 ```
 
+## How to use it 
+Use your dependency manager to import `github.com/nikunjy/rules/parser`. This will let you parse a rule and keep the parsed representation around. 
+Alternatively, you can also use `github.com/nikunjy/rules` directly to call the root `Evaluate(string, map[string]interface{})` method. 
+
+I would recommend importing `github.com/nikunjy/rules/parser` 
+
 [ci-img]: https://api.travis-ci.org/nikunjy/rules.svg?branch=master
 [ci]: https://travis-ci.org/nikunjy/rules
