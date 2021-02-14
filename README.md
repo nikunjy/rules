@@ -7,18 +7,16 @@ This package will be very helpful in situations where you have a generic rule an
 Here are some examples:
 
 ```
-  type obj map[string]interface{}
-  
-  parser.Evaluate("x eq 1", obj{"x": 1})
-  parser.Evaluate("x == 1", obj{"x": 1})
-  parser.Evaluate("x lt 1", obj{"x": 1})
-  parser.Evaluate("x < 1", obj{"x": 1})
-  parser.Evaluate("x gt 1", obj{"x": 1})
+  parser.Evaluate("x eq 1", map[string]interface{}{"x": 1})
+  parser.Evaluate("x == 1", map[string]interface{}{"x": 1})
+  parser.Evaluate("x lt 1", map[string]interface{}{"x": 1})
+  parser.Evaluate("x < 1", map[string]interface{}{"x": 1})
+  parser.Evaluate("x gt 1", map[string]interface{}{"x": 1})
   
   parser.Evaluate("x.a == 1 and x.b.c <= 2", obj{
-    "x": obj{
+    "x": map[string]interface{}{
        "a": 1,
-       "b": obj{
+       "b": map[string]interface{}{
           "c": 2,
        },
     },
