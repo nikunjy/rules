@@ -13,7 +13,7 @@ Here are some examples:
   parser.Evaluate("x < 1", map[string]interface{}{"x": 1})
   parser.Evaluate("x gt 1", map[string]interface{}{"x": 1})
   
-  parser.Evaluate("x.a == 1 and x.b.c <= 2", obj{
+  parser.Evaluate("x.a == 1 and x.b.c <= 2", map[string]interface{}{
     "x": map[string]interface{}{
        "a": 1,
        "b": map[string]interface{}{
@@ -23,11 +23,11 @@ Here are some examples:
   })
   
 
-  parser.Evaluate("y == 4 and (x > 1)", obj{"x": 1})
+  parser.Evaluate("y == 4 and (x > 1)", map[string]interface{}{"x": 1})
 
-  parser.Evaluate("y == 4 and (x IN [1,2,3])", obj{"x": 1})
+  parser.Evaluate("y == 4 and (x IN [1,2,3])", map[string]interface{}{"x": 1})
 
-  parser.Evaluate("y == 4 and (x eq 1.2.3)", obj{"x": "1.2.3"})
+  parser.Evaluate("y == 4 and (x eq 1.2.3)", map[string]interface{}{"x": "1.2.3"})
   
 ```
 
