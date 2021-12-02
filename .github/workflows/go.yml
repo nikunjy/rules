@@ -1,0 +1,31 @@
+name: Go
+on: 
+  pull_request:
+    types:  [assigned, opened, synchronize, reopened]
+    braches:
+      - main
+      - develop
+      - release/*
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.17
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.17
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: go mod tidy  && go mod download
+    - name: Build
+      run: make build
+      
+    - name: test
+      run:  make test
