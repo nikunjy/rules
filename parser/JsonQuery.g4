@@ -4,7 +4,8 @@ query
    : NOT? SP? '(' query ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
-   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value       #compareExp
+   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value                    #compareExp
+   | (ASTERISK|PLUS) SP '(' attrPath ')' SP op=( EQ | NE | GT | LT | GE | LE ) SP value             #mulSumExp
    ;
 
 NOT
@@ -42,11 +43,14 @@ subAttr
    : '.' attrPath
    ;
 
+ASTERISK            : 'MLP' ;
+PLUS                : 'SUM' ;
+
 ATTRNAME
    : ALPHA ATTR_NAME_CHAR* ;
 
 fragment ATTR_NAME_CHAR
-   : '-' | '_' | ':' | DIGIT | ALPHA
+   : '-' | '_' | ':' | DIGIT | ALPHA | COMMA
    ;
 
 fragment DIGIT

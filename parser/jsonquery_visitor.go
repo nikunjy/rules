@@ -1,4 +1,4 @@
-// Code generated from JsonQuery.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from JsonQuery.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package parser // JsonQuery
 
@@ -10,6 +10,9 @@ type JsonQueryVisitor interface {
 
 	// Visit a parse tree produced by JsonQueryParser#compareExp.
 	VisitCompareExp(ctx *CompareExpContext) interface{}
+
+	// Visit a parse tree produced by JsonQueryParser#mulSumExp.
+	VisitMulSumExp(ctx *MulSumExpContext) interface{}
 
 	// Visit a parse tree produced by JsonQueryParser#parenExp.
 	VisitParenExp(ctx *ParenExpContext) interface{}

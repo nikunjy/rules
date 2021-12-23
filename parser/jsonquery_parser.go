@@ -1,4 +1,4 @@
-// Code generated from JsonQuery.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from JsonQuery.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
 package parser // JsonQuery
 
@@ -16,64 +16,71 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 110,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 34, 120,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 3, 2, 3, 2, 5, 2, 25,
 	10, 2, 3, 2, 5, 2, 28, 10, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2,
-	3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 5, 2, 44, 10, 2, 3, 2, 3, 2,
-	3, 2, 3, 2, 3, 2, 7, 2, 51, 10, 2, 12, 2, 14, 2, 54, 11, 2, 3, 3, 3, 3,
-	5, 3, 58, 10, 3, 3, 4, 3, 4, 3, 4, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5,
-	5, 5, 69, 10, 5, 3, 5, 3, 5, 5, 5, 73, 10, 5, 3, 5, 3, 5, 3, 5, 5, 5, 78,
-	10, 5, 3, 6, 3, 6, 3, 6, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 5, 7, 88, 10, 7,
-	3, 8, 3, 8, 3, 8, 3, 9, 3, 9, 3, 9, 3, 9, 3, 9, 5, 9, 98, 10, 9, 3, 10,
-	3, 10, 3, 10, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 108, 10, 11, 3,
-	11, 2, 3, 2, 12, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 2, 3, 3, 2, 14, 23,
-	2, 118, 2, 43, 3, 2, 2, 2, 4, 55, 3, 2, 2, 2, 6, 59, 3, 2, 2, 2, 8, 77,
-	3, 2, 2, 2, 10, 79, 3, 2, 2, 2, 12, 87, 3, 2, 2, 2, 14, 89, 3, 2, 2, 2,
-	16, 97, 3, 2, 2, 2, 18, 99, 3, 2, 2, 2, 20, 107, 3, 2, 2, 2, 22, 24, 8,
-	2, 1, 2, 23, 25, 7, 10, 2, 2, 24, 23, 3, 2, 2, 2, 24, 25, 3, 2, 2, 2, 25,
-	27, 3, 2, 2, 2, 26, 28, 7, 32, 2, 2, 27, 26, 3, 2, 2, 2, 27, 28, 3, 2,
-	2, 2, 28, 29, 3, 2, 2, 2, 29, 30, 7, 3, 2, 2, 30, 31, 5, 2, 2, 2, 31, 32,
-	7, 4, 2, 2, 32, 44, 3, 2, 2, 2, 33, 34, 5, 4, 3, 2, 34, 35, 7, 32, 2, 2,
-	35, 36, 7, 5, 2, 2, 36, 44, 3, 2, 2, 2, 37, 38, 5, 4, 3, 2, 38, 39, 7,
-	32, 2, 2, 39, 40, 9, 2, 2, 2, 40, 41, 7, 32, 2, 2, 41, 42, 5, 8, 5, 2,
-	42, 44, 3, 2, 2, 2, 43, 22, 3, 2, 2, 2, 43, 33, 3, 2, 2, 2, 43, 37, 3,
-	2, 2, 2, 44, 52, 3, 2, 2, 2, 45, 46, 12, 5, 2, 2, 46, 47, 7, 32, 2, 2,
-	47, 48, 7, 11, 2, 2, 48, 49, 7, 32, 2, 2, 49, 51, 5, 2, 2, 6, 50, 45, 3,
-	2, 2, 2, 51, 54, 3, 2, 2, 2, 52, 50, 3, 2, 2, 2, 52, 53, 3, 2, 2, 2, 53,
-	3, 3, 2, 2, 2, 54, 52, 3, 2, 2, 2, 55, 57, 7, 24, 2, 2, 56, 58, 5, 6, 4,
-	2, 57, 56, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 5, 3, 2, 2, 2, 59, 60, 7,
-	6, 2, 2, 60, 61, 5, 4, 3, 2, 61, 7, 3, 2, 2, 2, 62, 78, 7, 12, 2, 2, 63,
-	78, 7, 13, 2, 2, 64, 78, 7, 25, 2, 2, 65, 78, 7, 26, 2, 2, 66, 78, 7, 27,
-	2, 2, 67, 69, 7, 7, 2, 2, 68, 67, 3, 2, 2, 2, 68, 69, 3, 2, 2, 2, 69, 70,
-	3, 2, 2, 2, 70, 72, 7, 28, 2, 2, 71, 73, 7, 29, 2, 2, 72, 71, 3, 2, 2,
-	2, 72, 73, 3, 2, 2, 2, 73, 78, 3, 2, 2, 2, 74, 78, 5, 18, 10, 2, 75, 78,
-	5, 14, 8, 2, 76, 78, 5, 10, 6, 2, 77, 62, 3, 2, 2, 2, 77, 63, 3, 2, 2,
-	2, 77, 64, 3, 2, 2, 2, 77, 65, 3, 2, 2, 2, 77, 66, 3, 2, 2, 2, 77, 68,
-	3, 2, 2, 2, 77, 74, 3, 2, 2, 2, 77, 75, 3, 2, 2, 2, 77, 76, 3, 2, 2, 2,
-	78, 9, 3, 2, 2, 2, 79, 80, 7, 8, 2, 2, 80, 81, 5, 12, 7, 2, 81, 11, 3,
-	2, 2, 2, 82, 83, 7, 26, 2, 2, 83, 84, 7, 31, 2, 2, 84, 88, 5, 12, 7, 2,
-	85, 86, 7, 26, 2, 2, 86, 88, 7, 9, 2, 2, 87, 82, 3, 2, 2, 2, 87, 85, 3,
-	2, 2, 2, 88, 13, 3, 2, 2, 2, 89, 90, 7, 8, 2, 2, 90, 91, 5, 16, 9, 2, 91,
-	15, 3, 2, 2, 2, 92, 93, 7, 27, 2, 2, 93, 94, 7, 31, 2, 2, 94, 98, 5, 16,
-	9, 2, 95, 96, 7, 27, 2, 2, 96, 98, 7, 9, 2, 2, 97, 92, 3, 2, 2, 2, 97,
-	95, 3, 2, 2, 2, 98, 17, 3, 2, 2, 2, 99, 100, 7, 8, 2, 2, 100, 101, 5, 20,
-	11, 2, 101, 19, 3, 2, 2, 2, 102, 103, 7, 28, 2, 2, 103, 104, 7, 31, 2,
-	2, 104, 108, 5, 20, 11, 2, 105, 106, 7, 28, 2, 2, 106, 108, 7, 9, 2, 2,
-	107, 102, 3, 2, 2, 2, 107, 105, 3, 2, 2, 2, 108, 21, 3, 2, 2, 2, 13, 24,
-	27, 43, 52, 57, 68, 72, 77, 87, 97, 107,
+	3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2,
+	3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 5, 2, 54, 10, 2, 3, 2, 3, 2, 3, 2, 3, 2,
+	3, 2, 7, 2, 61, 10, 2, 12, 2, 14, 2, 64, 11, 2, 3, 3, 3, 3, 5, 3, 68, 10,
+	3, 3, 4, 3, 4, 3, 4, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 3, 5, 5, 5, 79, 10,
+	5, 3, 5, 3, 5, 5, 5, 83, 10, 5, 3, 5, 3, 5, 3, 5, 5, 5, 88, 10, 5, 3, 6,
+	3, 6, 3, 6, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 5, 7, 98, 10, 7, 3, 8, 3, 8,
+	3, 8, 3, 9, 3, 9, 3, 9, 3, 9, 3, 9, 5, 9, 108, 10, 9, 3, 10, 3, 10, 3,
+	10, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 118, 10, 11, 3, 11, 2, 3,
+	2, 12, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 2, 5, 3, 2, 14, 23, 3, 2, 24,
+	25, 3, 2, 15, 20, 2, 129, 2, 53, 3, 2, 2, 2, 4, 65, 3, 2, 2, 2, 6, 69,
+	3, 2, 2, 2, 8, 87, 3, 2, 2, 2, 10, 89, 3, 2, 2, 2, 12, 97, 3, 2, 2, 2,
+	14, 99, 3, 2, 2, 2, 16, 107, 3, 2, 2, 2, 18, 109, 3, 2, 2, 2, 20, 117,
+	3, 2, 2, 2, 22, 24, 8, 2, 1, 2, 23, 25, 7, 10, 2, 2, 24, 23, 3, 2, 2, 2,
+	24, 25, 3, 2, 2, 2, 25, 27, 3, 2, 2, 2, 26, 28, 7, 34, 2, 2, 27, 26, 3,
+	2, 2, 2, 27, 28, 3, 2, 2, 2, 28, 29, 3, 2, 2, 2, 29, 30, 7, 3, 2, 2, 30,
+	31, 5, 2, 2, 2, 31, 32, 7, 4, 2, 2, 32, 54, 3, 2, 2, 2, 33, 34, 5, 4, 3,
+	2, 34, 35, 7, 34, 2, 2, 35, 36, 7, 5, 2, 2, 36, 54, 3, 2, 2, 2, 37, 38,
+	5, 4, 3, 2, 38, 39, 7, 34, 2, 2, 39, 40, 9, 2, 2, 2, 40, 41, 7, 34, 2,
+	2, 41, 42, 5, 8, 5, 2, 42, 54, 3, 2, 2, 2, 43, 44, 9, 3, 2, 2, 44, 45,
+	7, 34, 2, 2, 45, 46, 7, 3, 2, 2, 46, 47, 5, 4, 3, 2, 47, 48, 7, 4, 2, 2,
+	48, 49, 7, 34, 2, 2, 49, 50, 9, 4, 2, 2, 50, 51, 7, 34, 2, 2, 51, 52, 5,
+	8, 5, 2, 52, 54, 3, 2, 2, 2, 53, 22, 3, 2, 2, 2, 53, 33, 3, 2, 2, 2, 53,
+	37, 3, 2, 2, 2, 53, 43, 3, 2, 2, 2, 54, 62, 3, 2, 2, 2, 55, 56, 12, 6,
+	2, 2, 56, 57, 7, 34, 2, 2, 57, 58, 7, 11, 2, 2, 58, 59, 7, 34, 2, 2, 59,
+	61, 5, 2, 2, 7, 60, 55, 3, 2, 2, 2, 61, 64, 3, 2, 2, 2, 62, 60, 3, 2, 2,
+	2, 62, 63, 3, 2, 2, 2, 63, 3, 3, 2, 2, 2, 64, 62, 3, 2, 2, 2, 65, 67, 7,
+	26, 2, 2, 66, 68, 5, 6, 4, 2, 67, 66, 3, 2, 2, 2, 67, 68, 3, 2, 2, 2, 68,
+	5, 3, 2, 2, 2, 69, 70, 7, 6, 2, 2, 70, 71, 5, 4, 3, 2, 71, 7, 3, 2, 2,
+	2, 72, 88, 7, 12, 2, 2, 73, 88, 7, 13, 2, 2, 74, 88, 7, 27, 2, 2, 75, 88,
+	7, 28, 2, 2, 76, 88, 7, 29, 2, 2, 77, 79, 7, 7, 2, 2, 78, 77, 3, 2, 2,
+	2, 78, 79, 3, 2, 2, 2, 79, 80, 3, 2, 2, 2, 80, 82, 7, 30, 2, 2, 81, 83,
+	7, 31, 2, 2, 82, 81, 3, 2, 2, 2, 82, 83, 3, 2, 2, 2, 83, 88, 3, 2, 2, 2,
+	84, 88, 5, 18, 10, 2, 85, 88, 5, 14, 8, 2, 86, 88, 5, 10, 6, 2, 87, 72,
+	3, 2, 2, 2, 87, 73, 3, 2, 2, 2, 87, 74, 3, 2, 2, 2, 87, 75, 3, 2, 2, 2,
+	87, 76, 3, 2, 2, 2, 87, 78, 3, 2, 2, 2, 87, 84, 3, 2, 2, 2, 87, 85, 3,
+	2, 2, 2, 87, 86, 3, 2, 2, 2, 88, 9, 3, 2, 2, 2, 89, 90, 7, 8, 2, 2, 90,
+	91, 5, 12, 7, 2, 91, 11, 3, 2, 2, 2, 92, 93, 7, 28, 2, 2, 93, 94, 7, 33,
+	2, 2, 94, 98, 5, 12, 7, 2, 95, 96, 7, 28, 2, 2, 96, 98, 7, 9, 2, 2, 97,
+	92, 3, 2, 2, 2, 97, 95, 3, 2, 2, 2, 98, 13, 3, 2, 2, 2, 99, 100, 7, 8,
+	2, 2, 100, 101, 5, 16, 9, 2, 101, 15, 3, 2, 2, 2, 102, 103, 7, 29, 2, 2,
+	103, 104, 7, 33, 2, 2, 104, 108, 5, 16, 9, 2, 105, 106, 7, 29, 2, 2, 106,
+	108, 7, 9, 2, 2, 107, 102, 3, 2, 2, 2, 107, 105, 3, 2, 2, 2, 108, 17, 3,
+	2, 2, 2, 109, 110, 7, 8, 2, 2, 110, 111, 5, 20, 11, 2, 111, 19, 3, 2, 2,
+	2, 112, 113, 7, 30, 2, 2, 113, 114, 7, 33, 2, 2, 114, 118, 5, 20, 11, 2,
+	115, 116, 7, 30, 2, 2, 116, 118, 7, 9, 2, 2, 117, 112, 3, 2, 2, 2, 117,
+	115, 3, 2, 2, 2, 118, 21, 3, 2, 2, 2, 13, 24, 27, 53, 62, 67, 78, 82, 87,
+	97, 107, 117,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
 
 var literalNames = []string{
 	"", "'('", "')'", "'pr'", "'.'", "'-'", "'['", "']'", "", "", "", "'null'",
-	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "'\n'",
+	"", "", "", "", "", "", "", "", "", "", "'MLP'", "'SUM'", "", "", "", "",
+	"", "", "'\n'",
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "NOT", "LOGICAL_OPERATOR", "BOOLEAN", "NULL",
-	"IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW", "EW", "ATTRNAME",
-	"VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE", "COMMA", "SP",
+	"IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW", "EW", "ASTERISK",
+	"PLUS", "ATTRNAME", "VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE",
+	"COMMA", "SP",
 }
 
 var ruleNames = []string{
@@ -130,15 +137,17 @@ const (
 	JsonQueryParserCO               = 19
 	JsonQueryParserSW               = 20
 	JsonQueryParserEW               = 21
-	JsonQueryParserATTRNAME         = 22
-	JsonQueryParserVERSION          = 23
-	JsonQueryParserSTRING           = 24
-	JsonQueryParserDOUBLE           = 25
-	JsonQueryParserINT              = 26
-	JsonQueryParserEXP              = 27
-	JsonQueryParserNEWLINE          = 28
-	JsonQueryParserCOMMA            = 29
-	JsonQueryParserSP               = 30
+	JsonQueryParserASTERISK         = 22
+	JsonQueryParserPLUS             = 23
+	JsonQueryParserATTRNAME         = 24
+	JsonQueryParserVERSION          = 25
+	JsonQueryParserSTRING           = 26
+	JsonQueryParserDOUBLE           = 27
+	JsonQueryParserINT              = 28
+	JsonQueryParserEXP              = 29
+	JsonQueryParserNEWLINE          = 30
+	JsonQueryParserCOMMA            = 31
+	JsonQueryParserSP               = 32
 )
 
 // JsonQueryParser rules.
@@ -300,6 +309,99 @@ func (s *CompareExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	switch t := visitor.(type) {
 	case JsonQueryVisitor:
 		return t.VisitCompareExp(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type MulSumExpContext struct {
+	*QueryContext
+	op antlr.Token
+}
+
+func NewMulSumExpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *MulSumExpContext {
+	var p = new(MulSumExpContext)
+
+	p.QueryContext = NewEmptyQueryContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*QueryContext))
+
+	return p
+}
+
+func (s *MulSumExpContext) GetOp() antlr.Token { return s.op }
+
+func (s *MulSumExpContext) SetOp(v antlr.Token) { s.op = v }
+
+func (s *MulSumExpContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *MulSumExpContext) AllSP() []antlr.TerminalNode {
+	return s.GetTokens(JsonQueryParserSP)
+}
+
+func (s *MulSumExpContext) SP(i int) antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserSP, i)
+}
+
+func (s *MulSumExpContext) AttrPath() IAttrPathContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IAttrPathContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IAttrPathContext)
+}
+
+func (s *MulSumExpContext) Value() IValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *MulSumExpContext) ASTERISK() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserASTERISK, 0)
+}
+
+func (s *MulSumExpContext) PLUS() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserPLUS, 0)
+}
+
+func (s *MulSumExpContext) EQ() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserEQ, 0)
+}
+
+func (s *MulSumExpContext) NE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserNE, 0)
+}
+
+func (s *MulSumExpContext) GT() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserGT, 0)
+}
+
+func (s *MulSumExpContext) LT() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserLT, 0)
+}
+
+func (s *MulSumExpContext) GE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserGE, 0)
+}
+
+func (s *MulSumExpContext) LE() antlr.TerminalNode {
+	return s.GetToken(JsonQueryParserLE, 0)
+}
+
+func (s *MulSumExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case JsonQueryVisitor:
+		return t.VisitMulSumExp(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -490,7 +592,7 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(41)
+	p.SetState(51)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 	case 1:
@@ -589,9 +691,71 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 			p.Value()
 		}
 
+	case 4:
+		localctx = NewMulSumExpContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+		{
+			p.SetState(41)
+			_la = p.GetTokenStream().LA(1)
+
+			if !(_la == JsonQueryParserASTERISK || _la == JsonQueryParserPLUS) {
+				p.GetErrorHandler().RecoverInline(p)
+			} else {
+				p.GetErrorHandler().ReportMatch(p)
+				p.Consume()
+			}
+		}
+		{
+			p.SetState(42)
+			p.Match(JsonQueryParserSP)
+		}
+		{
+			p.SetState(43)
+			p.Match(JsonQueryParserT__0)
+		}
+		{
+			p.SetState(44)
+			p.AttrPath()
+		}
+		{
+			p.SetState(45)
+			p.Match(JsonQueryParserT__1)
+		}
+		{
+			p.SetState(46)
+			p.Match(JsonQueryParserSP)
+		}
+		{
+			p.SetState(47)
+
+			var _lt = p.GetTokenStream().LT(1)
+
+			localctx.(*MulSumExpContext).op = _lt
+
+			_la = p.GetTokenStream().LA(1)
+
+			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<JsonQueryParserEQ)|(1<<JsonQueryParserNE)|(1<<JsonQueryParserGT)|(1<<JsonQueryParserLT)|(1<<JsonQueryParserGE)|(1<<JsonQueryParserLE))) != 0) {
+				var _ri = p.GetErrorHandler().RecoverInline(p)
+
+				localctx.(*MulSumExpContext).op = _ri
+			} else {
+				p.GetErrorHandler().ReportMatch(p)
+				p.Consume()
+			}
+		}
+		{
+			p.SetState(48)
+			p.Match(JsonQueryParserSP)
+		}
+		{
+			p.SetState(49)
+			p.Value()
+		}
+
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(50)
+	p.SetState(60)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
 
@@ -603,30 +767,30 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 			_prevctx = localctx
 			localctx = NewLogicalExpContext(p, NewQueryContext(p, _parentctx, _parentState))
 			p.PushNewRecursionContext(localctx, _startState, JsonQueryParserRULE_query)
-			p.SetState(43)
+			p.SetState(53)
 
-			if !(p.Precpred(p.GetParserRuleContext(), 3)) {
-				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+			if !(p.Precpred(p.GetParserRuleContext(), 4)) {
+				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 			}
 			{
-				p.SetState(44)
+				p.SetState(54)
 				p.Match(JsonQueryParserSP)
 			}
 			{
-				p.SetState(45)
+				p.SetState(55)
 				p.Match(JsonQueryParserLOGICAL_OPERATOR)
 			}
 			{
-				p.SetState(46)
+				p.SetState(56)
 				p.Match(JsonQueryParserSP)
 			}
 			{
-				p.SetState(47)
-				p.query(4)
+				p.SetState(57)
+				p.query(5)
 			}
 
 		}
-		p.SetState(52)
+		p.SetState(62)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
 	}
@@ -727,16 +891,16 @@ func (p *JsonQueryParser) AttrPath() (localctx IAttrPathContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(53)
+		p.SetState(63)
 		p.Match(JsonQueryParserATTRNAME)
 	}
-	p.SetState(55)
+	p.SetState(65)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == JsonQueryParserT__3 {
 		{
-			p.SetState(54)
+			p.SetState(64)
 			p.SubAttr()
 		}
 
@@ -833,11 +997,11 @@ func (p *JsonQueryParser) SubAttr() (localctx ISubAttrContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(57)
+		p.SetState(67)
 		p.Match(JsonQueryParserT__3)
 	}
 	{
-		p.SetState(58)
+		p.SetState(68)
 		p.AttrPath()
 	}
 
@@ -1225,14 +1389,14 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		}
 	}()
 
-	p.SetState(75)
+	p.SetState(85)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewBooleanContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(60)
+			p.SetState(70)
 			p.Match(JsonQueryParserBOOLEAN)
 		}
 
@@ -1240,7 +1404,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewNullContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(61)
+			p.SetState(71)
 			p.Match(JsonQueryParserNULL)
 		}
 
@@ -1248,7 +1412,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewVersionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(62)
+			p.SetState(72)
 			p.Match(JsonQueryParserVERSION)
 		}
 
@@ -1256,7 +1420,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewStringContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(63)
+			p.SetState(73)
 			p.Match(JsonQueryParserSTRING)
 		}
 
@@ -1264,34 +1428,34 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewDoubleContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(64)
+			p.SetState(74)
 			p.Match(JsonQueryParserDOUBLE)
 		}
 
 	case 6:
 		localctx = NewLongContext(p, localctx)
 		p.EnterOuterAlt(localctx, 6)
-		p.SetState(66)
+		p.SetState(76)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == JsonQueryParserT__4 {
 			{
-				p.SetState(65)
+				p.SetState(75)
 				p.Match(JsonQueryParserT__4)
 			}
 
 		}
 		{
-			p.SetState(68)
+			p.SetState(78)
 			p.Match(JsonQueryParserINT)
 		}
-		p.SetState(70)
+		p.SetState(80)
 		p.GetErrorHandler().Sync(p)
 
 		if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext()) == 1 {
 			{
-				p.SetState(69)
+				p.SetState(79)
 				p.Match(JsonQueryParserEXP)
 			}
 
@@ -1301,7 +1465,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewListOfIntsContext(p, localctx)
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(72)
+			p.SetState(82)
 			p.ListInts()
 		}
 
@@ -1309,7 +1473,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewListOfDoublesContext(p, localctx)
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(73)
+			p.SetState(83)
 			p.ListDoubles()
 		}
 
@@ -1317,7 +1481,7 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		localctx = NewListOfStringsContext(p, localctx)
 		p.EnterOuterAlt(localctx, 9)
 		{
-			p.SetState(74)
+			p.SetState(84)
 			p.ListStrings()
 		}
 
@@ -1414,11 +1578,11 @@ func (p *JsonQueryParser) ListStrings() (localctx IListStringsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(77)
+		p.SetState(87)
 		p.Match(JsonQueryParserT__5)
 	}
 	{
-		p.SetState(78)
+		p.SetState(88)
 		p.SubListOfStrings()
 	}
 
@@ -1519,32 +1683,32 @@ func (p *JsonQueryParser) SubListOfStrings() (localctx ISubListOfStringsContext)
 		}
 	}()
 
-	p.SetState(85)
+	p.SetState(95)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(80)
+			p.SetState(90)
 			p.Match(JsonQueryParserSTRING)
 		}
 		{
-			p.SetState(81)
+			p.SetState(91)
 			p.Match(JsonQueryParserCOMMA)
 		}
 		{
-			p.SetState(82)
+			p.SetState(92)
 			p.SubListOfStrings()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(83)
+			p.SetState(93)
 			p.Match(JsonQueryParserSTRING)
 		}
 		{
-			p.SetState(84)
+			p.SetState(94)
 			p.Match(JsonQueryParserT__6)
 		}
 
@@ -1641,11 +1805,11 @@ func (p *JsonQueryParser) ListDoubles() (localctx IListDoublesContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(87)
+		p.SetState(97)
 		p.Match(JsonQueryParserT__5)
 	}
 	{
-		p.SetState(88)
+		p.SetState(98)
 		p.SubListOfDoubles()
 	}
 
@@ -1746,32 +1910,32 @@ func (p *JsonQueryParser) SubListOfDoubles() (localctx ISubListOfDoublesContext)
 		}
 	}()
 
-	p.SetState(95)
+	p.SetState(105)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(90)
+			p.SetState(100)
 			p.Match(JsonQueryParserDOUBLE)
 		}
 		{
-			p.SetState(91)
+			p.SetState(101)
 			p.Match(JsonQueryParserCOMMA)
 		}
 		{
-			p.SetState(92)
+			p.SetState(102)
 			p.SubListOfDoubles()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(93)
+			p.SetState(103)
 			p.Match(JsonQueryParserDOUBLE)
 		}
 		{
-			p.SetState(94)
+			p.SetState(104)
 			p.Match(JsonQueryParserT__6)
 		}
 
@@ -1868,11 +2032,11 @@ func (p *JsonQueryParser) ListInts() (localctx IListIntsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(97)
+		p.SetState(107)
 		p.Match(JsonQueryParserT__5)
 	}
 	{
-		p.SetState(98)
+		p.SetState(108)
 		p.SubListOfInts()
 	}
 
@@ -1973,32 +2137,32 @@ func (p *JsonQueryParser) SubListOfInts() (localctx ISubListOfIntsContext) {
 		}
 	}()
 
-	p.SetState(105)
+	p.SetState(115)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 10, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(100)
+			p.SetState(110)
 			p.Match(JsonQueryParserINT)
 		}
 		{
-			p.SetState(101)
+			p.SetState(111)
 			p.Match(JsonQueryParserCOMMA)
 		}
 		{
-			p.SetState(102)
+			p.SetState(112)
 			p.SubListOfInts()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(103)
+			p.SetState(113)
 			p.Match(JsonQueryParserINT)
 		}
 		{
-			p.SetState(104)
+			p.SetState(114)
 			p.Match(JsonQueryParserT__6)
 		}
 
@@ -2024,7 +2188,7 @@ func (p *JsonQueryParser) Sempred(localctx antlr.RuleContext, ruleIndex, predInd
 func (p *JsonQueryParser) Query_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 0:
-		return p.Precpred(p.GetParserRuleContext(), 3)
+		return p.Precpred(p.GetParserRuleContext(), 4)
 
 	default:
 		panic("No predicate with index: " + fmt.Sprint(predIndex))
