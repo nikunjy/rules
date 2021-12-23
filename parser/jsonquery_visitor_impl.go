@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
@@ -81,8 +82,10 @@ func (j *JsonQueryVisitorImpl) Visit(tree antlr.ParseTree) interface{} {
 		return val.Accept(j).(bool)
 	case *PresentExpContext:
 		return val.Accept(j).(bool)
+	case *MulSumExpContext:
+		return val.Accept(j).(bool)
 	default:
-		j.setErr(errors.New("Invalid rule"))
+		j.setErr(errors.New("invalid rule"))
 		return false
 	}
 }
@@ -109,6 +112,108 @@ func (j *JsonQueryVisitorImpl) VisitLogicalExp(ctx *LogicalExpContext) interface
 		return left
 	}
 	return ctx.Query(1).Accept(j).(bool)
+}
+
+func (j *JsonQueryVisitorImpl) ProcessValues(ctx *MulSumExpContext) {
+	var result float64
+
+	if ctx.PLUS() != nil {
+		for _, elem := range j.leftOp.([]float64) {
+			result = result + elem
+		}
+		j.leftOp = result
+		return
+	}
+
+	if ctx.ASTERISK() != nil {
+		for _, elem := range j.leftOp.([]float64) {
+			if result == 0 {
+				result = 1
+			}
+			result = result * elem
+		}
+		j.leftOp = result
+		return
+	}
+
+	j.setErr(fmt.Errorf("action  is not supported yet"))
+
+}
+func (j *JsonQueryVisitorImpl) VisitMulSumExp(ctx *MulSumExpContext) interface{} {
+	ctx.AttrPath().Accept(j)
+	ctx.Value().Accept(j)
+	j.ProcessValues(ctx)
+	if j.hasErr() {
+		return false
+	}
+	var apply func(Operand, Operand) (bool, error)
+	currentOp := j.currentOperation
+	switch ctx.op.GetTokenType() {
+	case JsonQueryParserEQ:
+		apply = currentOp.EQ
+	case JsonQueryParserNE:
+		apply = currentOp.NE
+	case JsonQueryParserGT:
+		apply = currentOp.GT
+	case JsonQueryParserLT:
+		apply = currentOp.LT
+	case JsonQueryParserLE:
+		apply = currentOp.LE
+	case JsonQueryParserGE:
+		apply = currentOp.GE
+	default:
+		j.setErr(fmt.Errorf("unknown operation %s", ctx.op.GetText()))
+		return false
+	}
+	defer func() { j.rightOp = nil }()
+
+	ret, err := apply(j.leftOp, j.rightOp)
+	if err != nil {
+		switch err {
+		case ErrInvalidOperation:
+			// in case of invalid operation lets rather
+			// be conservative and return false because the rule doesn't even make
+			// sense. It can be argued that it would be false positive if we were
+			// to return true
+			j.setErr(err)
+			j.setDebugErr(
+				newNestedError(err, "Not a valid operation for datatypes").Set(ErrVals{
+					"operation":           ctx.op.GetTokenType(),
+					"object_path_operand": j.leftOp,
+					"rule_operand":        j.rightOp,
+				}),
+			)
+		case ErrEvalOperandMissing:
+			j.setDebugErr(
+				newNestedError(err, "Eval operand missing in input object").Set(ErrVals{
+					"attr_path": ctx.AttrPath().GetText(),
+				}),
+			)
+		default:
+			switch err.(type) {
+			case *ErrInvalidOperand:
+				j.setDebugErr(
+					newNestedError(err, "operands are not the right value type").Set(ErrVals{
+						"attr_path":           ctx.AttrPath().GetText(),
+						"object_path_operand": j.leftOp,
+						"rule_operand":        j.rightOp,
+					}),
+				)
+			default:
+				j.setDebugErr(
+					newNestedError(err, "unknown error").Set(ErrVals{
+						"attr_path":           ctx.AttrPath().GetText(),
+						"object_path_operand": j.leftOp,
+						"rule_operand":        j.rightOp,
+					}),
+				)
+
+			}
+		}
+
+		return false
+	}
+	return ret
 }
 
 func (j *JsonQueryVisitorImpl) VisitPresentExp(ctx *PresentExpContext) interface{} {
@@ -146,7 +251,7 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 	case JsonQueryParserIN:
 		apply = currentOp.IN
 	default:
-		j.setErr(fmt.Errorf("Unknown operation %s", ctx.op.GetText()))
+		j.setErr(fmt.Errorf("unknown operation %s", ctx.op.GetText()))
 		return false
 	}
 	defer func() { j.rightOp = nil }()
@@ -211,7 +316,17 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 			return nil
 		}
 		m := item.(map[string]interface{})
-		j.leftOp = m[ctx.ATTRNAME().GetText()]
+
+		if strings.Contains(ctx.ATTRNAME().GetText(), ",") {
+			var values []float64
+			for _, value := range strings.Split(ctx.ATTRNAME().GetText(), ",") {
+				values = append(values, ToFloat64(m[value]))
+			}
+			j.leftOp = values
+		} else {
+			j.leftOp = m[ctx.ATTRNAME().GetText()]
+		}
+
 		j.stack.clear()
 		return nil
 	}

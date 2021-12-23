@@ -80,3 +80,18 @@ func (o *FloatOperation) IN(left Operand, right Operand) (bool, error) {
 	}
 	return false, nil
 }
+
+func ToFloat64(unk interface{}) float64 {
+	switch i := unk.(type) {
+	case float64:
+		return i
+	case float32:
+		return float64(i)
+	case int64:
+		return float64(i)
+	case int:
+		return float64(i)
+	default:
+		return 0
+	}
+}
