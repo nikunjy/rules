@@ -91,6 +91,8 @@ func ToFloat64(unk interface{}) float64 {
 		return float64(i)
 	case int:
 		return float64(i)
+	case int32:
+		return float64(i)
 	default:
 		return 0
 	}
