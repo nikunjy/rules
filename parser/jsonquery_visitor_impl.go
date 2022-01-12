@@ -136,6 +136,17 @@ func (j *JsonQueryVisitorImpl) ProcessValues(ctx *MulSumExpContext) {
 		return
 	}
 
+	if ctx.MINUS() != nil {
+		if len(j.leftOp.([]float64)) < 2 {
+			return
+		}
+		a := j.leftOp.([]float64)[0]
+		b := j.leftOp.([]float64)[1]
+
+		j.leftOp = a - b
+		return
+	}
+
 	j.setErr(fmt.Errorf("action  is not supported yet"))
 
 }
