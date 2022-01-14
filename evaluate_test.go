@@ -7,21 +7,20 @@ import (
 )
 
 func TestEvaluateBasic(t *testing.T) {
-	res, err := Evaluate(`x eq "abc"`, map[string]interface{}{
-		"x": "abc",
+	res, err := Evaluate(`x.c.d eq "abc"`, map[string]interface{}{
+		"x": map[string]interface{}{
+			"c": map[string]interface{}{
+				"d": "abc",
+			},
+		},
 	})
 	require.NoError(t, err)
 	require.True(t, res)
 
-	res, err = Evaluate(`x eq abc`, map[string]interface{}{
-		"x": "abc",
-	})
-	require.Error(t, err)
-	require.False(t, res)
 }
 
 func TestSum(t *testing.T) {
-	res, err := Evaluate(`SUM ( x,y,z ) eq 10`, map[string]interface{}{
+	res, err := Evaluate(`SUM (x,y,z) eq 10`, map[string]interface{}{
 		"x": 5,
 		"y": 5,
 		"z": 0,
@@ -41,9 +40,23 @@ func TestMul(t *testing.T) {
 }
 
 func TestSubtractSuccessfully(t *testing.T) {
-	t.Run("when subtract  (5-9) the result should be -4", func(t *testing.T) {
-		res, err := Evaluate(`SUBTRACT (x,y) EQ -4`, map[string]interface{}{
-			"x": 5,
+	t.Run("when subtract  (5-9) the result should be -7", func(t *testing.T) {
+		res, err := Evaluate(`SUBTRACT (x.c,y) EQ -7`, map[string]interface{}{
+			"x": map[string]interface{}{
+				"c": 2,
+			},
+			"y": 9,
+		})
+		require.NoError(t, err)
+		require.True(t, res)
+	})
+	t.Run("when subtract  (5-9) the result should be 7", func(t *testing.T) {
+		res, err := Evaluate(`SUBTRACT (y,x.c.d) EQ 7`, map[string]interface{}{
+			"x": map[string]interface{}{
+				"c": map[string]interface{}{
+					"d": 2,
+				},
+			},
 			"y": 9,
 		})
 		require.NoError(t, err)
@@ -57,8 +70,8 @@ func TestSubtractSuccessfully(t *testing.T) {
 		require.NoError(t, err)
 		require.True(t, res)
 	})
-	t.Run("when subtract  (5-4) the result should be -1", func(t *testing.T) {
-		res, err := Evaluate(`SUBTRACT (x,y) EQ 0`, map[string]interface{}{
+	t.Run("when subtract  (5-4) the result not should be 1", func(t *testing.T) {
+		res, err := Evaluate(`SUBTRACT (x,y) EQ -1`, map[string]interface{}{
 			"x": 5,
 			"y": 4,
 		})
@@ -69,8 +82,10 @@ func TestSubtractSuccessfully(t *testing.T) {
 
 func TestSubtractUnSuccessfully(t *testing.T) {
 	t.Run("when parameters are not enough should return an error", func(t *testing.T) {
-		res, err := Evaluate(`SUBTRACT (x) EQ 0`, map[string]interface{}{
-			"x": 5,
+		res, err := Evaluate(`SUBTRACT (y.c) EQ 1`, map[string]interface{}{
+			"y": map[string]interface{}{
+				"c": 4,
+			},
 		})
 		require.Error(t, err)
 		require.False(t, res)
