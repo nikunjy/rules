@@ -138,6 +138,7 @@ func (j *JsonQueryVisitorImpl) ProcessValues(ctx *MulSumExpContext) {
 
 	if ctx.MINUS() != nil {
 		if len(j.leftOp.([]float64)) < 2 {
+			j.setErr(fmt.Errorf("parameters are not enough"))
 			return
 		}
 		a := j.leftOp.([]float64)[0]
@@ -151,7 +152,7 @@ func (j *JsonQueryVisitorImpl) ProcessValues(ctx *MulSumExpContext) {
 
 }
 func (j *JsonQueryVisitorImpl) VisitMulSumExp(ctx *MulSumExpContext) interface{} {
-	ctx.AttrPath().Accept(j)
+	ctx.ListAttrPaths().Accept(j)
 	ctx.Value().Accept(j)
 	j.ProcessValues(ctx)
 	if j.hasErr() {
@@ -197,7 +198,7 @@ func (j *JsonQueryVisitorImpl) VisitMulSumExp(ctx *MulSumExpContext) interface{}
 		case ErrEvalOperandMissing:
 			j.setDebugErr(
 				newNestedError(err, "Eval operand missing in input object").Set(ErrVals{
-					"attr_path": ctx.AttrPath().GetText(),
+					"attr_path": ctx.ListAttrPaths().GetText(),
 				}),
 			)
 		default:
@@ -205,7 +206,7 @@ func (j *JsonQueryVisitorImpl) VisitMulSumExp(ctx *MulSumExpContext) interface{}
 			case *ErrInvalidOperand:
 				j.setDebugErr(
 					newNestedError(err, "operands are not the right value type").Set(ErrVals{
-						"attr_path":           ctx.AttrPath().GetText(),
+						"attr_path":           ctx.ListAttrPaths().GetText(),
 						"object_path_operand": j.leftOp,
 						"rule_operand":        j.rightOp,
 					}),
@@ -213,7 +214,7 @@ func (j *JsonQueryVisitorImpl) VisitMulSumExp(ctx *MulSumExpContext) interface{}
 			default:
 				j.setDebugErr(
 					newNestedError(err, "unknown error").Set(ErrVals{
-						"attr_path":           ctx.AttrPath().GetText(),
+						"attr_path":           ctx.ListAttrPaths().GetText(),
 						"object_path_operand": j.leftOp,
 						"rule_operand":        j.rightOp,
 					}),
@@ -315,6 +316,49 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 	return ret
 }
 
+func (j *JsonQueryVisitorImpl) VisitListAttrPaths(ctx *ListAttrPathsContext) interface{} {
+	return ctx.SubListOfAttrPaths().Accept(j)
+}
+
+func (j *JsonQueryVisitorImpl) VisitSubListOfAttrPaths(ctx *SubListOfAttrPathsContext) interface{} {
+
+	if j.leftOp == nil {
+		j.leftOp = make([]float64, 0)
+	}
+	list := j.leftOp.([]float64)
+	for _, attribute := range strings.Split(ctx.GetText(), ",") {
+
+		if strings.Contains(attribute, ".") {
+			val, _ := NestedMapLookup(j.item, strings.Split(attribute, ".")...)
+			list = append(list, ToFloat64(val))
+
+		} else {
+			val := ToFloat64(j.item[attribute])
+			list = append(list, val)
+		}
+
+	}
+	j.leftOp = append(j.leftOp.([]float64), list...)
+	return nil
+
+}
+
+func NestedMapLookup(m map[string]interface{}, ks ...string) (rval interface{}, err error) {
+	var ok bool
+
+	if len(ks) == 0 { // degenerate input
+		return nil, fmt.Errorf("NestedMapLookup needs at least one key")
+	}
+	if rval, ok = m[ks[0]]; !ok {
+		return nil, fmt.Errorf("key not found; remaining keys: %v", ks)
+	} else if len(ks) == 1 { // we've reached the final key
+		return rval, nil
+	} else if m, ok = rval.(map[string]interface{}); !ok {
+		return nil, fmt.Errorf("malformed structure at %#v", rval)
+	} else { // 1+ more keys
+		return NestedMapLookup(m, ks[1:]...)
+	}
+}
 func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 	var item interface{}
 	if ctx.SubAttr() == nil || ctx.SubAttr().IsEmpty() {
@@ -327,17 +371,7 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 			return nil
 		}
 		m := item.(map[string]interface{})
-
-		if strings.Contains(ctx.ATTRNAME().GetText(), ",") {
-			var values []float64
-			for _, value := range strings.Split(ctx.ATTRNAME().GetText(), ",") {
-				values = append(values, ToFloat64(m[value]))
-			}
-			j.leftOp = values
-		} else {
-			j.leftOp = m[ctx.ATTRNAME().GetText()]
-		}
-
+		j.leftOp = m[ctx.ATTRNAME().GetText()]
 		j.stack.clear()
 		return nil
 	}
