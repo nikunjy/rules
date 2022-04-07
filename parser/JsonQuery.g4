@@ -5,7 +5,7 @@ query
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
    | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value                    #compareExp
-   | (ASTERISK|PLUS|MINUS) SP '(' listAttrPaths ')' SP op=( EQ | NE | GT | LT | GE | LE ) SP value       #mulSumExp
+   | (ASTERISK|PLUS|MINUS|DIVISON) SP '(' listAttrPaths ')' SP op=( EQ | NE | GT | LT | GE | LE ) SP value       #mulSumExp
    ;
 
 NOT
@@ -46,6 +46,7 @@ subAttr
 ASTERISK            : 'MLP' ;
 PLUS                : 'SUM' ;
 MINUS               : 'SUBTRACT' ;
+DIVISON             : 'DIV' ;
 
 ATTRNAME
    : ALPHA ATTR_NAME_CHAR* ;
