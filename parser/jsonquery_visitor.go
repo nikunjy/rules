@@ -2,7 +2,7 @@
 
 package parser // JsonQuery
 
-import "github.com/antlr/antlr4/runtime/Go/antlr"
+import "github.com/antlr/antlr4/runtime/Go/antlr/v4"
 
 // A complete Visitor for a parse tree produced by JsonQueryParser.
 type JsonQueryVisitor interface {
