@@ -1,5 +1,3 @@
-github.com/antlr/antlr4 v0.0.0-20181218183524-be58ebffde8e h1:yxMh4HIdsSh2EqxUESWvzszYMNzOugRyYCeohfwNULM=
-github.com/antlr/antlr4 v0.0.0-20181218183524-be58ebffde8e/go.mod h1:T7PbCXFs94rrTttyxjbyT5+/1V8T2TYDejxUfHJjw1Y=
 github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220415221154-79c36419192d h1:Kts4bTFz6tSE4bPFhcZxpCafiBnSOPSnUaame7SqSDc=
 github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220415221154-79c36419192d/go.mod h1:F7bn7fEU90QkQ3tnmaTx3LTKLEDqnwWODIYppRQ5hnY=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
