@@ -52,7 +52,7 @@ func newErrInvalidOperand(val Operand, typeObj interface{}) *ErrInvalidOperand {
 }
 
 func (e *ErrInvalidOperand) Error() string {
-	return fmt.Sprintf("Operand %v is not the correc type. Expected: %s, Actual: %s",
+	return fmt.Sprintf("Operand %v is not the correct type. Expected: %s, Actual: %s",
 		e.Val,
 		reflect.TypeOf(e.typeObj).String(),
 		reflect.TypeOf(e.Val).String(),
