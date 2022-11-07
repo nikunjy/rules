@@ -109,9 +109,9 @@ func (o *StringOperation) EW(left Operand, right Operand) (bool, error) {
 }
 
 func (o *StringOperation) IN(left Operand, right Operand) (bool, error) {
-	leftVal, ok := left.(string)
-	if !ok {
-		return false, newErrInvalidOperand(left, leftVal)
+	leftVal, err := o.getString(left)
+	if err != nil {
+		return false, err
 	}
 
 	rightVal, ok := right.([]string)
