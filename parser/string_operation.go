@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -8,17 +9,28 @@ type StringOperation struct {
 	NullOperation
 }
 
+func (o *StringOperation) getString(operand Operand) (string, error) {
+	switch opVal := operand.(type) {
+	case string:
+		return opVal, nil
+	case fmt.Stringer:
+		return opVal.String(), nil
+	default:
+		return "", newErrInvalidOperand(operand, opVal)
+	}
+}
+
 func (o *StringOperation) get(left Operand, right Operand) (string, string, error) {
 	if left == nil {
 		return "", "", ErrEvalOperandMissing
 	}
-	leftVal, ok := left.(string)
-	if !ok {
-		return "", "", newErrInvalidOperand(left, leftVal)
+	leftVal, err := o.getString(left)
+	if err != nil {
+		return "", "", err
 	}
-	rightVal, ok := right.(string)
-	if !ok {
-		return "", "", newErrInvalidOperand(right, rightVal)
+	rightVal, err := o.getString(right)
+	if err != nil {
+		return "", "", err
 	}
 	return strings.ToLower(leftVal), strings.ToLower(rightVal), nil
 
@@ -97,9 +109,9 @@ func (o *StringOperation) EW(left Operand, right Operand) (bool, error) {
 }
 
 func (o *StringOperation) IN(left Operand, right Operand) (bool, error) {
-	leftVal, ok := left.(string)
-	if !ok {
-		return false, newErrInvalidOperand(left, leftVal)
+	leftVal, err := o.getString(left)
+	if err != nil {
+		return false, err
 	}
 
 	rightVal, ok := right.([]string)
