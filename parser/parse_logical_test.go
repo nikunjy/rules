@@ -194,6 +194,55 @@ func TestLogicalExpWithAnd(t *testing.T) {
 			assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
 			assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
 		})
+	}
+}
 
+func TestLogicalExpWithAndWithExtraSpaces(t *testing.T) {
+	tests := []testCase{
+		{
+			`x < 2 and ( y > 4 or z == true )`,
+			obj{
+				"x": 1,
+				"y": 3,
+				"z": true,
+			},
+			true,
+			false,
+		},
+		{
+			`x < 2 and ( y > 4 or z == true )`,
+			obj{
+				"x": 1,
+				"y": 3,
+			},
+			false,
+			false,
+		},
+		{
+			`x < 2 and ( y > 4 or z == true )`,
+			obj{
+				"x": 1,
+				"y": 5,
+			},
+			true,
+			false,
+		},
+		{
+			`x < 2 and ( y > 4 or z == true)`,
+			obj{
+				"x": 1,
+				"y": 3,
+				"z": true,
+			},
+			true,
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.rule, func(t *testing.T) {
+			assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+			assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		})
 	}
 }

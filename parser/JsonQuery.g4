@@ -1,7 +1,7 @@
 grammar JsonQuery;
 
 query
-   : NOT? SP? '(' query ')'                                                                         #parenExp
+   : NOT? SP? '(' SP? query SP? ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
    | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value       #compareExp
@@ -70,7 +70,7 @@ value
    ;
 
 VERSION
-   : INT '.' INT '.' INT 
+   : INT '.' INT '.' INT
    ;
 
 STRING
