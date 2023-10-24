@@ -1,4 +1,4 @@
-// Code generated from JsonQuery.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from JsonQuery.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // JsonQuery
 
@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -19,34 +19,34 @@ type JsonQueryParser struct {
 	*antlr.BaseParser
 }
 
-var jsonqueryParserStaticData struct {
+var JsonQueryParserStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func jsonqueryParserInit() {
-	staticData := &jsonqueryParserStaticData
-	staticData.literalNames = []string{
+	staticData := &JsonQueryParserStaticData
+	staticData.LiteralNames = []string{
 		"", "'('", "')'", "'pr'", "'.'", "'-'", "'['", "']'", "", "", "", "'null'",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "'\\n'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "NOT", "LOGICAL_OPERATOR", "BOOLEAN",
 		"NULL", "IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW", "EW",
 		"ATTRNAME", "VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE",
 		"COMMA", "SP",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"query", "attrPath", "subAttr", "value", "listStrings", "subListOfStrings",
 		"listDoubles", "subListOfDoubles", "listInts", "subListOfInts",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 1, 30, 108, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 1, 0, 1,
@@ -109,7 +109,7 @@ func jsonqueryParserInit() {
 // NewJsonQueryParser(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func JsonQueryParserInit() {
-	staticData := &jsonqueryParserStaticData
+	staticData := &JsonQueryParserStaticData
 	staticData.once.Do(jsonqueryParserInit)
 }
 
@@ -118,11 +118,11 @@ func NewJsonQueryParser(input antlr.TokenStream) *JsonQueryParser {
 	JsonQueryParserInit()
 	this := new(JsonQueryParser)
 	this.BaseParser = antlr.NewBaseParser(input)
-	staticData := &jsonqueryParserStaticData
-	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	this.RuleNames = staticData.ruleNames
-	this.LiteralNames = staticData.literalNames
-	this.SymbolicNames = staticData.symbolicNames
+	staticData := &JsonQueryParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	this.RuleNames = staticData.RuleNames
+	this.LiteralNames = staticData.LiteralNames
+	this.SymbolicNames = staticData.SymbolicNames
 	this.GrammarFileName = "JsonQuery.g4"
 
 	return this
@@ -183,21 +183,25 @@ type IQueryContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsQueryContext differentiates from other interfaces.
 	IsQueryContext()
 }
 
 type QueryContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyQueryContext() *QueryContext {
 	var p = new(QueryContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_query
 	return p
+}
+
+func InitEmptyQueryContext(p *QueryContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_query
 }
 
 func (*QueryContext) IsQueryContext() {}
@@ -205,7 +209,7 @@ func (*QueryContext) IsQueryContext() {}
 func NewQueryContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *QueryContext {
 	var p = new(QueryContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_query
@@ -215,8 +219,8 @@ func NewQueryContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoki
 
 func (s *QueryContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *QueryContext) CopyFrom(ctx *QueryContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *QueryContext) CopyAll(ctx *QueryContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *QueryContext) GetRuleContext() antlr.RuleContext {
@@ -228,16 +232,16 @@ func (s *QueryContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) 
 }
 
 type CompareExpContext struct {
-	*QueryContext
+	QueryContext
 	op antlr.Token
 }
 
 func NewCompareExpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *CompareExpContext {
 	var p = new(CompareExpContext)
 
-	p.QueryContext = NewEmptyQueryContext()
+	InitEmptyQueryContext(&p.QueryContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*QueryContext))
+	p.CopyAll(ctx.(*QueryContext))
 
 	return p
 }
@@ -341,15 +345,15 @@ func (s *CompareExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type ParenExpContext struct {
-	*QueryContext
+	QueryContext
 }
 
 func NewParenExpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ParenExpContext {
 	var p = new(ParenExpContext)
 
-	p.QueryContext = NewEmptyQueryContext()
+	InitEmptyQueryContext(&p.QueryContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*QueryContext))
+	p.CopyAll(ctx.(*QueryContext))
 
 	return p
 }
@@ -393,15 +397,15 @@ func (s *ParenExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type PresentExpContext struct {
-	*QueryContext
+	QueryContext
 }
 
 func NewPresentExpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *PresentExpContext {
 	var p = new(PresentExpContext)
 
-	p.QueryContext = NewEmptyQueryContext()
+	InitEmptyQueryContext(&p.QueryContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*QueryContext))
+	p.CopyAll(ctx.(*QueryContext))
 
 	return p
 }
@@ -441,15 +445,15 @@ func (s *PresentExpContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type LogicalExpContext struct {
-	*QueryContext
+	QueryContext
 }
 
 func NewLogicalExpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *LogicalExpContext {
 	var p = new(LogicalExpContext)
 
-	p.QueryContext = NewEmptyQueryContext()
+	InitEmptyQueryContext(&p.QueryContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*QueryContext))
+	p.CopyAll(ctx.(*QueryContext))
 
 	return p
 }
@@ -526,10 +530,8 @@ func (p *JsonQueryParser) Query() (localctx IQueryContext) {
 }
 
 func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
-	this := p
-	_ = this
-
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
 	_parentState := p.GetState()
 	localctx = NewQueryContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IQueryContext = localctx
@@ -538,28 +540,16 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 	p.EnterRecursionRule(localctx, 0, JsonQueryParserRULE_query, _p)
 	var _la int
 
-	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(41)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewParenExpContext(p, localctx)
 		p.SetParserRuleContext(localctx)
@@ -567,29 +557,47 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 
 		p.SetState(22)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == JsonQueryParserNOT {
 			{
 				p.SetState(21)
 				p.Match(JsonQueryParserNOT)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 
 		}
 		p.SetState(25)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == JsonQueryParserSP {
 			{
 				p.SetState(24)
 				p.Match(JsonQueryParserSP)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 
 		}
 		{
 			p.SetState(27)
 			p.Match(JsonQueryParserT__0)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(28)
@@ -598,6 +606,10 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 		{
 			p.SetState(29)
 			p.Match(JsonQueryParserT__1)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 2:
@@ -611,10 +623,18 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 		{
 			p.SetState(32)
 			p.Match(JsonQueryParserSP)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(33)
 			p.Match(JsonQueryParserT__2)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 3:
@@ -628,6 +648,10 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 		{
 			p.SetState(36)
 			p.Match(JsonQueryParserSP)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(37)
@@ -638,7 +662,7 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 
 			_la = p.GetTokenStream().LA(1)
 
-			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<JsonQueryParserIN)|(1<<JsonQueryParserEQ)|(1<<JsonQueryParserNE)|(1<<JsonQueryParserGT)|(1<<JsonQueryParserLT)|(1<<JsonQueryParserGE)|(1<<JsonQueryParserLE)|(1<<JsonQueryParserCO)|(1<<JsonQueryParserSW)|(1<<JsonQueryParserEW))) != 0) {
+			if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&4190208) != 0) {
 				var _ri = p.GetErrorHandler().RecoverInline(p)
 
 				localctx.(*CompareExpContext).op = _ri
@@ -650,18 +674,29 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 		{
 			p.SetState(38)
 			p.Match(JsonQueryParserSP)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(39)
 			p.Value()
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(50)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
-
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
 			if p.GetParseListeners() != nil {
@@ -673,19 +708,32 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 			p.SetState(43)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 3)) {
-				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+				goto errorExit
 			}
 			{
 				p.SetState(44)
 				p.Match(JsonQueryParserSP)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 			{
 				p.SetState(45)
 				p.Match(JsonQueryParserLOGICAL_OPERATOR)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 			{
 				p.SetState(46)
 				p.Match(JsonQueryParserSP)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 			{
 				p.SetState(47)
@@ -695,10 +743,26 @@ func (p *JsonQueryParser) query(_p int) (localctx IQueryContext) {
 		}
 		p.SetState(52)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IAttrPathContext is an interface to support dynamic dispatch.
@@ -708,20 +772,29 @@ type IAttrPathContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	ATTRNAME() antlr.TerminalNode
+	SubAttr() ISubAttrContext
+
 	// IsAttrPathContext differentiates from other interfaces.
 	IsAttrPathContext()
 }
 
 type AttrPathContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyAttrPathContext() *AttrPathContext {
 	var p = new(AttrPathContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_attrPath
 	return p
+}
+
+func InitEmptyAttrPathContext(p *AttrPathContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_attrPath
 }
 
 func (*AttrPathContext) IsAttrPathContext() {}
@@ -729,7 +802,7 @@ func (*AttrPathContext) IsAttrPathContext() {}
 func NewAttrPathContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *AttrPathContext {
 	var p = new(AttrPathContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_attrPath
@@ -778,36 +851,24 @@ func (s *AttrPathContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *JsonQueryParser) AttrPath() (localctx IAttrPathContext) {
-	this := p
-	_ = this
-
 	localctx = NewAttrPathContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 2, JsonQueryParserRULE_attrPath)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(53)
 		p.Match(JsonQueryParserATTRNAME)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(55)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == JsonQueryParserT__3 {
@@ -818,7 +879,17 @@ func (p *JsonQueryParser) AttrPath() (localctx IAttrPathContext) {
 
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISubAttrContext is an interface to support dynamic dispatch.
@@ -828,20 +899,28 @@ type ISubAttrContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AttrPath() IAttrPathContext
+
 	// IsSubAttrContext differentiates from other interfaces.
 	IsSubAttrContext()
 }
 
 type SubAttrContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySubAttrContext() *SubAttrContext {
 	var p = new(SubAttrContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_subAttr
 	return p
+}
+
+func InitEmptySubAttrContext(p *SubAttrContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_subAttr
 }
 
 func (*SubAttrContext) IsSubAttrContext() {}
@@ -849,7 +928,7 @@ func (*SubAttrContext) IsSubAttrContext() {}
 func NewSubAttrContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SubAttrContext {
 	var p = new(SubAttrContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_subAttr
@@ -894,39 +973,33 @@ func (s *SubAttrContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *JsonQueryParser) SubAttr() (localctx ISubAttrContext) {
-	this := p
-	_ = this
-
 	localctx = NewSubAttrContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, JsonQueryParserRULE_subAttr)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(57)
 		p.Match(JsonQueryParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(58)
 		p.AttrPath()
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IValueContext is an interface to support dynamic dispatch.
@@ -935,21 +1008,25 @@ type IValueContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsValueContext differentiates from other interfaces.
 	IsValueContext()
 }
 
 type ValueContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyValueContext() *ValueContext {
 	var p = new(ValueContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_value
 	return p
+}
+
+func InitEmptyValueContext(p *ValueContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_value
 }
 
 func (*ValueContext) IsValueContext() {}
@@ -957,7 +1034,7 @@ func (*ValueContext) IsValueContext() {}
 func NewValueContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ValueContext {
 	var p = new(ValueContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_value
@@ -967,8 +1044,8 @@ func NewValueContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoki
 
 func (s *ValueContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ValueContext) CopyFrom(ctx *ValueContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ValueContext) CopyAll(ctx *ValueContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ValueContext) GetRuleContext() antlr.RuleContext {
@@ -980,15 +1057,15 @@ func (s *ValueContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) 
 }
 
 type ListOfDoublesContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewListOfDoublesContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ListOfDoublesContext {
 	var p = new(ListOfDoublesContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1024,15 +1101,15 @@ func (s *ListOfDoublesContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type ListOfStringsContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewListOfStringsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ListOfStringsContext {
 	var p = new(ListOfStringsContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1068,15 +1145,15 @@ func (s *ListOfStringsContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type BooleanContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewBooleanContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *BooleanContext {
 	var p = new(BooleanContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1100,15 +1177,15 @@ func (s *BooleanContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type NullContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewNullContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NullContext {
 	var p = new(NullContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1132,15 +1209,15 @@ func (s *NullContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type StringContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewStringContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringContext {
 	var p = new(StringContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1164,15 +1241,15 @@ func (s *StringContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type DoubleContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewDoubleContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *DoubleContext {
 	var p = new(DoubleContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1196,15 +1273,15 @@ func (s *DoubleContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type VersionContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewVersionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *VersionContext {
 	var p = new(VersionContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1228,15 +1305,15 @@ func (s *VersionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type LongContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewLongContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *LongContext {
 	var p = new(LongContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1264,15 +1341,15 @@ func (s *LongContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type ListOfIntsContext struct {
-	*ValueContext
+	ValueContext
 }
 
 func NewListOfIntsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ListOfIntsContext {
 	var p = new(ListOfIntsContext)
 
-	p.ValueContext = NewEmptyValueContext()
+	InitEmptyValueContext(&p.ValueContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ValueContext))
+	p.CopyAll(ctx.(*ValueContext))
 
 	return p
 }
@@ -1308,38 +1385,27 @@ func (s *ListOfIntsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *JsonQueryParser) Value() (localctx IValueContext) {
-	this := p
-	_ = this
-
 	localctx = NewValueContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, JsonQueryParserRULE_value)
 	var _la int
 
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(75)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 7, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewBooleanContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(60)
 			p.Match(JsonQueryParserBOOLEAN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 2:
@@ -1348,6 +1414,10 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		{
 			p.SetState(61)
 			p.Match(JsonQueryParserNULL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 3:
@@ -1356,6 +1426,10 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		{
 			p.SetState(62)
 			p.Match(JsonQueryParserVERSION)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 4:
@@ -1364,6 +1438,10 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		{
 			p.SetState(63)
 			p.Match(JsonQueryParserSTRING)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 5:
@@ -1372,6 +1450,10 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		{
 			p.SetState(64)
 			p.Match(JsonQueryParserDOUBLE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 6:
@@ -1379,28 +1461,45 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 		p.EnterOuterAlt(localctx, 6)
 		p.SetState(66)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == JsonQueryParserT__4 {
 			{
 				p.SetState(65)
 				p.Match(JsonQueryParserT__4)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 
 		}
 		{
 			p.SetState(68)
 			p.Match(JsonQueryParserINT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		p.SetState(70)
 		p.GetErrorHandler().Sync(p)
 
-		if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext()) == 1 {
+		if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 6, p.GetParserRuleContext()) == 1 {
 			{
 				p.SetState(69)
 				p.Match(JsonQueryParserEXP)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
 			}
 
+		} else if p.HasError() { // JIM
+			goto errorExit
 		}
 
 	case 7:
@@ -1427,9 +1526,21 @@ func (p *JsonQueryParser) Value() (localctx IValueContext) {
 			p.ListStrings()
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IListStringsContext is an interface to support dynamic dispatch.
@@ -1439,20 +1550,28 @@ type IListStringsContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	SubListOfStrings() ISubListOfStringsContext
+
 	// IsListStringsContext differentiates from other interfaces.
 	IsListStringsContext()
 }
 
 type ListStringsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyListStringsContext() *ListStringsContext {
 	var p = new(ListStringsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_listStrings
 	return p
+}
+
+func InitEmptyListStringsContext(p *ListStringsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_listStrings
 }
 
 func (*ListStringsContext) IsListStringsContext() {}
@@ -1460,7 +1579,7 @@ func (*ListStringsContext) IsListStringsContext() {}
 func NewListStringsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ListStringsContext {
 	var p = new(ListStringsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_listStrings
@@ -1505,39 +1624,33 @@ func (s *ListStringsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 func (p *JsonQueryParser) ListStrings() (localctx IListStringsContext) {
-	this := p
-	_ = this
-
 	localctx = NewListStringsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 8, JsonQueryParserRULE_listStrings)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(77)
 		p.Match(JsonQueryParserT__5)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(78)
 		p.SubListOfStrings()
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISubListOfStringsContext is an interface to support dynamic dispatch.
@@ -1547,20 +1660,30 @@ type ISubListOfStringsContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	STRING() antlr.TerminalNode
+	COMMA() antlr.TerminalNode
+	SubListOfStrings() ISubListOfStringsContext
+
 	// IsSubListOfStringsContext differentiates from other interfaces.
 	IsSubListOfStringsContext()
 }
 
 type SubListOfStringsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySubListOfStringsContext() *SubListOfStringsContext {
 	var p = new(SubListOfStringsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_subListOfStrings
 	return p
+}
+
+func InitEmptySubListOfStringsContext(p *SubListOfStringsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_subListOfStrings
 }
 
 func (*SubListOfStringsContext) IsSubListOfStringsContext() {}
@@ -1568,7 +1691,7 @@ func (*SubListOfStringsContext) IsSubListOfStringsContext() {}
 func NewSubListOfStringsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SubListOfStringsContext {
 	var p = new(SubListOfStringsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_subListOfStrings
@@ -1621,40 +1744,32 @@ func (s *SubListOfStringsContext) Accept(visitor antlr.ParseTreeVisitor) interfa
 }
 
 func (p *JsonQueryParser) SubListOfStrings() (localctx ISubListOfStringsContext) {
-	this := p
-	_ = this
-
 	localctx = NewSubListOfStringsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 10, JsonQueryParserRULE_subListOfStrings)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(85)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 8, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(80)
 			p.Match(JsonQueryParserSTRING)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(81)
 			p.Match(JsonQueryParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(82)
@@ -1666,15 +1781,35 @@ func (p *JsonQueryParser) SubListOfStrings() (localctx ISubListOfStringsContext)
 		{
 			p.SetState(83)
 			p.Match(JsonQueryParserSTRING)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(84)
 			p.Match(JsonQueryParserT__6)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IListDoublesContext is an interface to support dynamic dispatch.
@@ -1684,20 +1819,28 @@ type IListDoublesContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	SubListOfDoubles() ISubListOfDoublesContext
+
 	// IsListDoublesContext differentiates from other interfaces.
 	IsListDoublesContext()
 }
 
 type ListDoublesContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyListDoublesContext() *ListDoublesContext {
 	var p = new(ListDoublesContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_listDoubles
 	return p
+}
+
+func InitEmptyListDoublesContext(p *ListDoublesContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_listDoubles
 }
 
 func (*ListDoublesContext) IsListDoublesContext() {}
@@ -1705,7 +1848,7 @@ func (*ListDoublesContext) IsListDoublesContext() {}
 func NewListDoublesContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ListDoublesContext {
 	var p = new(ListDoublesContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_listDoubles
@@ -1750,39 +1893,33 @@ func (s *ListDoublesContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 func (p *JsonQueryParser) ListDoubles() (localctx IListDoublesContext) {
-	this := p
-	_ = this
-
 	localctx = NewListDoublesContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 12, JsonQueryParserRULE_listDoubles)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(87)
 		p.Match(JsonQueryParserT__5)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(88)
 		p.SubListOfDoubles()
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISubListOfDoublesContext is an interface to support dynamic dispatch.
@@ -1792,20 +1929,30 @@ type ISubListOfDoublesContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	DOUBLE() antlr.TerminalNode
+	COMMA() antlr.TerminalNode
+	SubListOfDoubles() ISubListOfDoublesContext
+
 	// IsSubListOfDoublesContext differentiates from other interfaces.
 	IsSubListOfDoublesContext()
 }
 
 type SubListOfDoublesContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySubListOfDoublesContext() *SubListOfDoublesContext {
 	var p = new(SubListOfDoublesContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_subListOfDoubles
 	return p
+}
+
+func InitEmptySubListOfDoublesContext(p *SubListOfDoublesContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_subListOfDoubles
 }
 
 func (*SubListOfDoublesContext) IsSubListOfDoublesContext() {}
@@ -1813,7 +1960,7 @@ func (*SubListOfDoublesContext) IsSubListOfDoublesContext() {}
 func NewSubListOfDoublesContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SubListOfDoublesContext {
 	var p = new(SubListOfDoublesContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_subListOfDoubles
@@ -1866,40 +2013,32 @@ func (s *SubListOfDoublesContext) Accept(visitor antlr.ParseTreeVisitor) interfa
 }
 
 func (p *JsonQueryParser) SubListOfDoubles() (localctx ISubListOfDoublesContext) {
-	this := p
-	_ = this
-
 	localctx = NewSubListOfDoublesContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 14, JsonQueryParserRULE_subListOfDoubles)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(95)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 9, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(90)
 			p.Match(JsonQueryParserDOUBLE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(91)
 			p.Match(JsonQueryParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(92)
@@ -1911,15 +2050,35 @@ func (p *JsonQueryParser) SubListOfDoubles() (localctx ISubListOfDoublesContext)
 		{
 			p.SetState(93)
 			p.Match(JsonQueryParserDOUBLE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(94)
 			p.Match(JsonQueryParserT__6)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IListIntsContext is an interface to support dynamic dispatch.
@@ -1929,20 +2088,28 @@ type IListIntsContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	SubListOfInts() ISubListOfIntsContext
+
 	// IsListIntsContext differentiates from other interfaces.
 	IsListIntsContext()
 }
 
 type ListIntsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyListIntsContext() *ListIntsContext {
 	var p = new(ListIntsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_listInts
 	return p
+}
+
+func InitEmptyListIntsContext(p *ListIntsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_listInts
 }
 
 func (*ListIntsContext) IsListIntsContext() {}
@@ -1950,7 +2117,7 @@ func (*ListIntsContext) IsListIntsContext() {}
 func NewListIntsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ListIntsContext {
 	var p = new(ListIntsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_listInts
@@ -1995,39 +2162,33 @@ func (s *ListIntsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *JsonQueryParser) ListInts() (localctx IListIntsContext) {
-	this := p
-	_ = this
-
 	localctx = NewListIntsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 16, JsonQueryParserRULE_listInts)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(97)
 		p.Match(JsonQueryParserT__5)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(98)
 		p.SubListOfInts()
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISubListOfIntsContext is an interface to support dynamic dispatch.
@@ -2037,20 +2198,30 @@ type ISubListOfIntsContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	INT() antlr.TerminalNode
+	COMMA() antlr.TerminalNode
+	SubListOfInts() ISubListOfIntsContext
+
 	// IsSubListOfIntsContext differentiates from other interfaces.
 	IsSubListOfIntsContext()
 }
 
 type SubListOfIntsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySubListOfIntsContext() *SubListOfIntsContext {
 	var p = new(SubListOfIntsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = JsonQueryParserRULE_subListOfInts
 	return p
+}
+
+func InitEmptySubListOfIntsContext(p *SubListOfIntsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = JsonQueryParserRULE_subListOfInts
 }
 
 func (*SubListOfIntsContext) IsSubListOfIntsContext() {}
@@ -2058,7 +2229,7 @@ func (*SubListOfIntsContext) IsSubListOfIntsContext() {}
 func NewSubListOfIntsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SubListOfIntsContext {
 	var p = new(SubListOfIntsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = JsonQueryParserRULE_subListOfInts
@@ -2111,40 +2282,32 @@ func (s *SubListOfIntsContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 func (p *JsonQueryParser) SubListOfInts() (localctx ISubListOfIntsContext) {
-	this := p
-	_ = this
-
 	localctx = NewSubListOfIntsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 18, JsonQueryParserRULE_subListOfInts)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(105)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 10, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 10, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(100)
 			p.Match(JsonQueryParserINT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(101)
 			p.Match(JsonQueryParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(102)
@@ -2156,15 +2319,35 @@ func (p *JsonQueryParser) SubListOfInts() (localctx ISubListOfIntsContext) {
 		{
 			p.SetState(103)
 			p.Match(JsonQueryParserINT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(104)
 			p.Match(JsonQueryParserT__6)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 func (p *JsonQueryParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
@@ -2182,9 +2365,6 @@ func (p *JsonQueryParser) Sempred(localctx antlr.RuleContext, ruleIndex, predInd
 }
 
 func (p *JsonQueryParser) Query_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	this := p
-	_ = this
-
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 3)

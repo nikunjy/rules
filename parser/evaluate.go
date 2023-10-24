@@ -3,7 +3,7 @@ package parser
 import (
 	"fmt"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 type Evaluator struct {

@@ -190,7 +190,10 @@ func TestLogicalExpWithAnd(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
-		assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		t.Run(tt.rule, func(t *testing.T) {
+			assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+			assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		})
+
 	}
 }
