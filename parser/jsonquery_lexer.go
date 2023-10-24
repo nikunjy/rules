@@ -1,13 +1,12 @@
-// Code generated from JsonQuery.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from JsonQuery.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser
 
 import (
 	"fmt"
+	"github.com/antlr4-go/antlr/v4"
 	"sync"
 	"unicode"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Suppress unused import error
@@ -22,45 +21,45 @@ type JsonQueryLexer struct {
 	// TODO: EOF string
 }
 
-var jsonquerylexerLexerStaticData struct {
+var JsonQueryLexerLexerStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	channelNames           []string
-	modeNames              []string
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	ChannelNames           []string
+	ModeNames              []string
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func jsonquerylexerLexerInit() {
-	staticData := &jsonquerylexerLexerStaticData
-	staticData.channelNames = []string{
+	staticData := &JsonQueryLexerLexerStaticData
+	staticData.ChannelNames = []string{
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN",
 	}
-	staticData.modeNames = []string{
+	staticData.ModeNames = []string{
 		"DEFAULT_MODE",
 	}
-	staticData.literalNames = []string{
+	staticData.LiteralNames = []string{
 		"", "'('", "')'", "'pr'", "'.'", "'-'", "'['", "']'", "", "", "", "'null'",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "'\\n'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "NOT", "LOGICAL_OPERATOR", "BOOLEAN",
 		"NULL", "IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW", "EW",
 		"ATTRNAME", "VERSION", "STRING", "DOUBLE", "INT", "EXP", "NEWLINE",
 		"COMMA", "SP",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "NOT", "LOGICAL_OPERATOR",
 		"BOOLEAN", "NULL", "IN", "EQ", "NE", "GT", "LT", "GE", "LE", "CO", "SW",
 		"EW", "ATTRNAME", "ATTR_NAME_CHAR", "DIGIT", "ALPHA", "VERSION", "STRING",
 		"ESC", "UNICODE", "HEX", "DOUBLE", "INT", "EXP", "NEWLINE", "COMMA",
 		"SP",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 0, 30, 279, 6, -1, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2,
 		4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2,
@@ -208,7 +207,7 @@ func jsonquerylexerLexerInit() {
 // NewJsonQueryLexer(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func JsonQueryLexerInit() {
-	staticData := &jsonquerylexerLexerStaticData
+	staticData := &JsonQueryLexerLexerStaticData
 	staticData.once.Do(jsonquerylexerLexerInit)
 }
 
@@ -217,13 +216,13 @@ func NewJsonQueryLexer(input antlr.CharStream) *JsonQueryLexer {
 	JsonQueryLexerInit()
 	l := new(JsonQueryLexer)
 	l.BaseLexer = antlr.NewBaseLexer(input)
-	staticData := &jsonquerylexerLexerStaticData
-	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	l.channelNames = staticData.channelNames
-	l.modeNames = staticData.modeNames
-	l.RuleNames = staticData.ruleNames
-	l.LiteralNames = staticData.literalNames
-	l.SymbolicNames = staticData.symbolicNames
+	staticData := &JsonQueryLexerLexerStaticData
+	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	l.channelNames = staticData.ChannelNames
+	l.modeNames = staticData.ModeNames
+	l.RuleNames = staticData.RuleNames
+	l.LiteralNames = staticData.LiteralNames
+	l.SymbolicNames = staticData.SymbolicNames
 	l.GrammarFileName = "JsonQuery.g4"
 	// TODO: l.EOF = antlr.TokenEOF
 
