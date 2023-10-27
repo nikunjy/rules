@@ -43,24 +43,30 @@ Here are some examples:
 
 All the operations can be written capitalized or lowercase (ex: `eq` or `EQ` can be used)
 
-Logical Operations supported are `AND OR`
+Logical Operations supported are `and` `or`
 
-Compare Expression and their definitions (a|b means you can use either one of the two a or b):
+Compare Expression and their definitions
 
-```
-eq|==: equals to
-ne|!=: not equals to
-lt|<: less than
-gt|>: greater than
-le|<=: less than equal to
-ge|>=: greater than equal to
-co: contains
-sw: starts with
-ew: ends with
-in: in a list
-pr: present
-not: not of a logical expression
-```
+| expression | meaning   | 
+-------------|------------
+| eq         | equals to |
+| ==         | equals to |
+| ne         | not equal to |
+| !=         | not equal to |
+| lt         | less than |
+| <          | less than |
+| gt         | greater than |
+| >          | greter than |
+| le         | less than or equal to |
+| <=          | less than or equal to  |
+| ge          | greater than or equal to|
+| >=          | greater than or equal to|
+| co         | contains  |
+| sw         | starts with  |
+| ew         | ends with  |
+| in         | in a list  |
+| pr         | present, will be true if you have a key as true  |
+| not         | not of a logical expression  |
 
 ## How to use it
 
