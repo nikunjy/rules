@@ -56,7 +56,7 @@ Compare Expression and their definitions
 | lt         | less than |
 | <          | less than |
 | gt         | greater than |
-| >          | greter than |
+| >          | greater than |
 | le         | less than or equal to |
 | <=          | less than or equal to  |
 | ge          | greater than or equal to|
