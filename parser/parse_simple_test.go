@@ -1235,6 +1235,70 @@ func TestString(t *testing.T) {
 			false,
 			false,
 		},
+		{
+			`x regx "^\d.*"`,
+			obj{
+				"x": "123bbc",
+			},
+			true,
+			false,
+		},
+		{
+			`x regx "^\d.*"`,
+			obj{
+				"x": "bbc123",
+			},
+			false,
+			false,
+		},
+		{
+			`x like "a{3}|b[c-d]"`,
+			obj{
+				"x": "aaa",
+			},
+			true,
+			false,
+		},
+		{
+			`x like "a{3}|b[c-d]"`,
+			obj{
+				"x": "baa",
+			},
+			false,
+			false,
+		},
+		{
+			`x like "^(https?://)?(www\.)?([a-zA-Z0-9-]{1,63}\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}\.[a-zA-Z]{2,}(:\d+)?(/.*)?$"`,
+			obj{
+				"x": "https://subdomain.example.org",
+			},
+			true,
+			false,
+		},
+		{
+			`x like "^(https?://)?(www\.)?([a-zA-Z0-9-]{1,63}\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}\.[a-zA-Z]{2,}(:\d+)?(/.*)?$"`,
+			obj{
+				"x": "ws-https://subdomain.example.org",
+			},
+			false,
+			false,
+		},
+		{
+			`x like ".*世界\s.*"`,
+			obj{
+				"x": "Hello, 世界 means world in Chinese.",
+			},
+			true,
+			false,
+		},
+		{
+			`x like "[\\u4e00-\\u9fa5]+"`,
+			obj{
+				"x": "Hello, 中国means world in Chinese.",
+			},
+			true,
+			false,
+		},
 	}
 
 	for _, tt := range tests {

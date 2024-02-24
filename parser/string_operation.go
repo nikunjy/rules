@@ -2,11 +2,13 @@ package parser
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 )
 
 type StringOperation struct {
 	NullOperation
+	RegexPatternMap map[string]*regexp.Regexp
 }
 
 func (o *StringOperation) getString(operand Operand) (string, error) {
@@ -124,4 +126,29 @@ func (o *StringOperation) IN(left Operand, right Operand) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func (o *StringOperation) LIKE(left Operand, right Operand) (bool, error) {
+	l, r, err := o.get(left, right)
+	if err != nil {
+		return false, err
+	}
+
+	if o.RegexPatternMap == nil {
+		o.RegexPatternMap = make(map[string]*regexp.Regexp)
+	}
+
+	if regx, ok := o.RegexPatternMap[r]; ok {
+		match := regx.MatchString(l)
+		return match, nil
+	}
+
+	regx, err := regexp.Compile(r)
+	if err != nil {
+		return false, err
+	}
+
+	o.RegexPatternMap[r] = regx
+	match := regx.MatchString(l)
+	return match, nil
 }

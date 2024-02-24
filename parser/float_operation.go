@@ -80,3 +80,16 @@ func (o *FloatOperation) IN(left Operand, right Operand) (bool, error) {
 	}
 	return false, nil
 }
+
+func (o *FloatOperation) LIKE(left Operand, right Operand) (bool, error) {
+	leftVal, err := toFloat(left)
+	if err != nil {
+		return false, newErrInvalidOperand(left, leftVal)
+	}
+	rightVal, ok := right.(string)
+	if !ok {
+		return false, newErrInvalidOperand(right, rightVal)
+	}
+
+	return false, nil
+}

@@ -145,6 +145,8 @@ func (j *JsonQueryVisitorImpl) VisitCompareExp(ctx *CompareExpContext) interface
 		apply = currentOp.EW
 	case JsonQueryParserIN:
 		apply = currentOp.IN
+	case JsonQueryLexerLIKE:
+		apply = currentOp.LIKE
 	default:
 		j.setErr(fmt.Errorf("Unknown operation %s", ctx.op.GetText()))
 		return false

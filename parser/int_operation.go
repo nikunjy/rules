@@ -84,3 +84,15 @@ func (o *IntOperation) IN(left Operand, right Operand) (bool, error) {
 	}
 	return false, nil
 }
+
+func (o *IntOperation) LIKE(left Operand, right Operand) (bool, error) {
+	leftVal, ok := left.(int)
+	if !ok {
+		return false, newErrInvalidOperand(left, leftVal)
+	}
+	rightVal, ok := right.(string)
+	if !ok {
+		return false, newErrInvalidOperand(right, rightVal)
+	}
+	return false, nil
+}
