@@ -70,4 +70,5 @@ type Operation interface {
 	SW(left Operand, right Operand) (bool, error)
 	EW(left Operand, right Operand) (bool, error)
 	IN(left Operand, right Operand) (bool, error)
+	LIKE(left Operand, right Operand) (bool, error)
 }

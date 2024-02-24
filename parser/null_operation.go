@@ -42,3 +42,7 @@ func (o *NullOperation) EW(left Operand, right Operand) (bool, error) {
 func (o *NullOperation) IN(left Operand, right Operand) (bool, error) {
 	return false, ErrInvalidOperation
 }
+
+func (o *NullOperation) LIKE(left Operand, right Operand) (bool, error) {
+	return false, ErrInvalidOperation
+}

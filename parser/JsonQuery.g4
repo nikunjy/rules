@@ -4,7 +4,7 @@ query
    : NOT? SP? '(' SP? query SP? ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
    | attrPath SP 'pr'                                                                               #presentExp
-   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN ) SP value       #compareExp
+   | attrPath SP op=( EQ | NE | GT | LT | GE | LE | CO | SW | EW | IN | LIKE ) SP value       #compareExp
    ;
 
 NOT
@@ -21,6 +21,10 @@ BOOLEAN
 
 NULL
    : 'null'
+   ;
+
+LIKE
+   : 'like' | 'regx'
    ;
 
 IN:  'IN' | 'in';
@@ -74,8 +78,25 @@ VERSION
    ;
 
 STRING
-   : '"' (ESC | ~ ["\\])* '"'
+   : '"' (ESC | ~ ["\\] | REGEX)* '"'
    ;
+
+fragment REGEX: CHOICE | ATOM_CHARACTER+;
+
+fragment  CHOICE: GROUP ('|' GROUP)*;
+
+fragment  GROUP: '(' (ATOM_CHARACTER | GROUP)* ')';
+
+fragment ATOM_CHARACTER: CHAR | ESCAPE_CHAR | SPECIAL_CHAR | REPEAT;
+
+fragment  REPEAT: '{' INT '}';
+
+fragment CHAR: [a-zA-Z0-9];
+
+fragment SPECIAL_CHAR:  ',' | '.' | ':' | ';' | '!' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '-' | '=' | '>' | '<' | '\'' | '\\' | '&' | '|' | '+' | '*' | '$' | '%' | '/' | '^' | '~' | '`' | ' ';
+
+fragment ESCAPE_CHAR: '\\' ~[abfnrtv];
+
 
 listStrings
    : '[' subListOfStrings

@@ -12,6 +12,9 @@ var conditions = []string{
 	`(a > 123 or b <= 456)`,
 	`(aa == 123123131.1232313131312312 or bb == 1231.1312313123123131231)`,
 	`(jh gt "1.2.3" or kl le "1.4.56")`,
+	`o like "^(https?://)?(www\.)?([a-zA-Z0-9-]{1,63}\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}\.[a-zA-Z]{2,}(:\d+)?(/.*)?$"`,
+	`p like ".*世界\s.*"`,
+	`q like "离职.*未关闭"`,
 }
 
 func BenchmarkLogicalExpression(b *testing.B) {
@@ -31,6 +34,9 @@ func BenchmarkLogicalExpression(b *testing.B) {
 		"b":  123131,
 		"aa": 123123.123131232113,
 		"jh": "1.2.3",
+		"o":  "https://subdomain.example.org",
+		"p":  "Hello, 世界 means world in Chinese.",
+		"q":  "员工离职后系统账未关闭",
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -58,6 +64,9 @@ func BenchmarkLogicalExpressionBig(b *testing.B) {
 		"b":  123131,
 		"aa": 123123.123131232113,
 		"jh": "1.2.3",
+		"o":  "https://subdomain.example.org",
+		"p":  "Hello, 世界 means world in Chinese.",
+		"q":  "员工离职后系统账未关闭",
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -86,6 +95,9 @@ func BenchmarkLogicalExpressionBigTreeCached(b *testing.B) {
 		"b":  123131,
 		"aa": 123123.123131232113,
 		"jh": "1.2.3",
+		"o":  "https://subdomain.example.org",
+		"p":  "Hello, 世界 means world in Chinese.",
+		"q":  "员工离职后系统账未关闭",
 	}
 	b.ResetTimer()
 	ev, _ := NewEvaluator(rule)
@@ -113,6 +125,9 @@ func BenchmarkLogicalExpressionNested(b *testing.B) {
 		"b":  123131,
 		"aa": 123123.123131232113,
 		"jh": "1.2.3",
+		"o":  "https://subdomain.example.org",
+		"p":  "Hello, 世界 means world in Chinese.",
+		"q":  "员工离职后系统账未关闭",
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
