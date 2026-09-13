@@ -146,3 +146,20 @@ func TestNestedNonObjectPath(t *testing.T) {
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "cannot read attribute")
 }
+
+func TestFloatINMissingLeft(t *testing.T) {
+	ev, err := NewEvaluator(`x IN [1.0, 2.0]`)
+	require.NoError(t, err)
+	result, err := ev.Process(obj{})
+	assert.False(t, result)
+	assert.NoError(t, err)
+	require.Error(t, ev.LastDebugErr())
+	assert.NotPanics(t, func() { _ = ev.LastDebugErr().Error() })
+}
+
+func TestErrInvalidOperandNilVal(t *testing.T) {
+	err := newErrInvalidOperand(nil, float64(0))
+	var msg string
+	assert.NotPanics(t, func() { msg = err.Error() })
+	assert.Contains(t, msg, "nil")
+}
