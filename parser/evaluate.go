@@ -24,14 +24,24 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 			retErr = fmt.Errorf("%q", info)
 		}
 	}()
-	input := antlr.NewInputStream(rule)
+	normalized := normalizeLogicalKeywords(rule)
+	input := antlr.NewInputStream(normalized)
 	lex := NewJsonQueryLexer(input)
+	errListener := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
 	lex.RemoveErrorListeners()
+	lex.AddErrorListener(errListener)
 	tokens := antlr.NewCommonTokenStream(lex, antlr.TokenDefaultChannel)
 	p := NewJsonQueryParser(tokens)
-	// TODO: maybe log properly
 	p.RemoveErrorListeners()
+	p.AddErrorListener(errListener)
 	tree := p.Query()
+	if len(errListener.errs) > 0 {
+		return nil, fmt.Errorf("invalid rule %q: %s", rule, errListener.errs[0])
+	}
+	consumeTrailingWhitespace(tokens)
+	if tokens.LA(1) != antlr.TokenEOF {
+		return nil, fmt.Errorf("invalid rule %q: unexpected input %q", rule, tokens.LT(1).GetText())
+	}
 
 	return &Evaluator{
 		rule: rule,

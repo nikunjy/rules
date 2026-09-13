@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
 )
@@ -98,7 +99,7 @@ func (j *JsonQueryVisitorImpl) VisitParenExp(ctx *ParenExpContext) interface{} {
 func (j *JsonQueryVisitorImpl) VisitLogicalExp(ctx *LogicalExpContext) interface{} {
 	left := ctx.Query(0).Accept(j).(bool)
 	op := ctx.LOGICAL_OPERATOR().GetText()
-	if op == "or" {
+	if strings.EqualFold(op, "or") {
 		if left {
 			return left
 		}
@@ -210,7 +211,11 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 		if item == nil {
 			return nil
 		}
-		m := item.(map[string]interface{})
+		m, ok := asObject(item)
+		if !ok {
+			j.setErr(fmt.Errorf("cannot read attribute %q: value is not an object", ctx.ATTRNAME().GetText()))
+			return nil
+		}
 		j.leftOp = m[ctx.ATTRNAME().GetText()]
 		j.stack.clear()
 		return nil
@@ -223,9 +228,18 @@ func (j *JsonQueryVisitorImpl) VisitAttrPath(ctx *AttrPathContext) interface{} {
 	if item == nil {
 		return nil
 	}
-	m := item.(map[string]interface{})
+	m, ok := asObject(item)
+	if !ok {
+		j.setErr(fmt.Errorf("cannot read attribute %q: value is not an object", ctx.ATTRNAME().GetText()))
+		return nil
+	}
 	j.stack.push(m[ctx.ATTRNAME().GetText()])
 	return ctx.SubAttr().Accept(j)
+}
+
+func asObject(item interface{}) (map[string]interface{}, bool) {
+	m, ok := item.(map[string]interface{})
+	return m, ok
 }
 
 func (j *JsonQueryVisitorImpl) VisitSubAttr(ctx *SubAttrContext) interface{} {
@@ -266,7 +280,7 @@ func (j *JsonQueryVisitorImpl) VisitString(ctx *StringContext) interface{} {
 
 func (j *JsonQueryVisitorImpl) VisitDouble(ctx *DoubleContext) interface{} {
 	j.currentOperation = &FloatOperation{}
-	val, err := strconv.ParseFloat(ctx.GetText(), 10)
+	val, err := strconv.ParseFloat(ctx.GetText(), 64)
 	if err != nil {
 		// TODO set err somewhere
 		j.rightOp = nil
@@ -334,7 +348,7 @@ func (j *JsonQueryVisitorImpl) VisitSubListOfDoubles(ctx *SubListOfDoublesContex
 		j.rightOp = make([]float64, 0)
 	}
 	list := j.rightOp.([]float64)
-	val, err := strconv.ParseFloat(ctx.DOUBLE().GetText(), 10)
+	val, err := strconv.ParseFloat(ctx.DOUBLE().GetText(), 64)
 	if err != nil {
 		j.setErr(err)
 		return nil
