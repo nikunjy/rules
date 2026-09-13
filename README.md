@@ -43,7 +43,7 @@ Here are some examples:
 
 All the operations can be written capitalized or lowercase (ex: `eq` or `EQ` can be used)
 
-Logical Operations supported are `and` `or`
+Logical Operations supported are `and` `or` (also `AND` / `OR`)
 
 Compare Expression and their definitions
 

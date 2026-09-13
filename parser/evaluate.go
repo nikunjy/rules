@@ -25,7 +25,8 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 			retErr = fmt.Errorf("%q", info)
 		}
 	}()
-	input := antlr.NewInputStream(normalizeRuleInput(rule))
+	normalized := normalizeLogicalKeywords(normalizeRuleInput(rule))
+	input := antlr.NewInputStream(normalized)
 	lex := NewJsonQueryLexer(input)
 	errListener := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
 	lex.RemoveErrorListeners()

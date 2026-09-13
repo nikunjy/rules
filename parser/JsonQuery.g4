@@ -14,7 +14,7 @@ NOT
    ;
 
 LOGICAL_OPERATOR
-   : 'and' | 'or'
+   : 'and' | 'or' | 'AND' | 'OR'
    ;
 
 BOOLEAN
