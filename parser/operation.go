@@ -10,6 +10,12 @@ func toFloat(op Operand) (float64, error) {
 	switch val := op.(type) {
 	case int:
 		return float64(val), nil
+	case int32:
+		return float64(val), nil
+	case int64:
+		return float64(val), nil
+	case float32:
+		return float64(val), nil
 	case float64:
 		return val, nil
 	}
