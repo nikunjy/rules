@@ -246,6 +246,152 @@ func TestVersions(t *testing.T) {
 			true,
 			true,
 		},
+		// ensure prerelease comparisons work per semver spec
+		{
+			`x LT 1.1.0`,
+			obj{
+				"x": "1.1.0-alpha",
+			},
+			true,
+			false,
+		},
+		{
+			`x GT 1.1.0-alpha`,
+			obj{
+				"x": "1.1.0-beta",
+			},
+			true,
+			false,
+		},
+		{
+			`x EQ 1.1.0-alpha.1`,
+			obj{
+				"x": "1.1.0-alpha.1",
+			},
+			true,
+			false,
+		},
+		{
+			`x EQ 1.0.0-0`,
+			obj{
+				"x": "1.0.0-0",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-alpha`,
+			obj{
+				"x": "1.0.0-0",
+			},
+			true,
+			false,
+		},
+		{
+			`x GT 1.0.0-alpha.1`,
+			obj{
+				"x": "1.0.0-alpha.beta",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-beta.2`,
+			obj{
+				"x": "1.0.0-alpha.beta",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-beta.11`,
+			obj{
+				"x": "1.0.0-beta.2",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-rc.1`,
+			obj{
+				"x": "1.0.0-beta.11",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0`,
+			obj{
+				"x": "1.0.0-rc.1",
+			},
+			true,
+			false,
+		},
+		// build metadata is ignored in comparisons per semver spec
+		{
+			`x EQ 1.0.0`,
+			obj{
+				"x": "1.0.0+20130313144700",
+			},
+			true,
+			false,
+		},
+		{
+			`x EQ 1.0.0-beta`,
+			obj{
+				"x": "1.0.0-beta+exp.sha.5114f85",
+			},
+			true,
+			false,
+		},
+		{
+			`x EQ 1.1.0+build.1`,
+			obj{
+				"x": "1.1.0+build.2",
+			},
+			true,
+			false,
+		},
+		{
+			`x EQ 1.1.0-alpha+build.1`,
+			obj{
+				"x": "1.1.0-alpha+build.2",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-alpha.10`,
+			obj{
+				"x": "1.0.0-alpha.2",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-alpha`,
+			obj{
+				"x": "1.0.0-1",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-alpha.beta`,
+			obj{
+				"x": "1.0.0-alpha.1",
+			},
+			true,
+			false,
+		},
+		{
+			`x LT 1.0.0-alpha.1`,
+			obj{
+				"x": "1.0.0-alpha",
+			},
+			true,
+			false,
+		},
 	}
 
 	for _, tt := range tests {

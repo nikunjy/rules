@@ -1,5 +1,7 @@
 grammar JsonQuery;
 
+import SemverGrammar;
+
 query
    : NOT? SP? '(' SP? query SP? ')'                                                                         #parenExp
    | query SP LOGICAL_OPERATOR SP query                                                             #logicalExp
@@ -70,7 +72,7 @@ value
    ;
 
 VERSION
-   : INT '.' INT '.' INT
+   : VALID_SEMVER
    ;
 
 STRING

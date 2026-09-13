@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/blang/semver"
+	"github.com/blang/semver/v4"
 )
 
 type VersionOperation struct {
