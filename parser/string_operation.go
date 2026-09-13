@@ -109,6 +109,9 @@ func (o *StringOperation) EW(left Operand, right Operand) (bool, error) {
 }
 
 func (o *StringOperation) IN(left Operand, right Operand) (bool, error) {
+	if left == nil {
+		return false, ErrEvalOperandMissing
+	}
 	leftVal, err := o.getString(left)
 	if err != nil {
 		return false, err
@@ -116,10 +119,11 @@ func (o *StringOperation) IN(left Operand, right Operand) (bool, error) {
 
 	rightVal, ok := right.([]string)
 	if !ok {
-		return ok, newErrInvalidOperand(right, rightVal)
+		return false, newErrInvalidOperand(right, rightVal)
 	}
+	leftVal = strings.ToLower(leftVal)
 	for _, val := range rightVal {
-		if leftVal == val {
+		if leftVal == strings.ToLower(val) {
 			return true, nil
 		}
 	}
