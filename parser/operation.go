@@ -60,9 +60,20 @@ func newErrInvalidOperand(val Operand, typeObj interface{}) *ErrInvalidOperand {
 func (e *ErrInvalidOperand) Error() string {
 	return fmt.Sprintf("Operand %v is not the correct type. Expected: %s, Actual: %s",
 		e.Val,
-		reflect.TypeOf(e.typeObj).String(),
-		reflect.TypeOf(e.Val).String(),
+		typeName(e.typeObj),
+		typeName(e.Val),
 	)
+}
+
+func typeName(v interface{}) string {
+	if v == nil {
+		return "nil"
+	}
+	t := reflect.TypeOf(v)
+	if t == nil {
+		return "nil"
+	}
+	return t.String()
 }
 
 type Operation interface {

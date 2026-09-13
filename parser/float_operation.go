@@ -65,6 +65,9 @@ func (o *FloatOperation) LE(left Operand, right Operand) (bool, error) {
 }
 
 func (o *FloatOperation) IN(left Operand, right Operand) (bool, error) {
+	if left == nil {
+		return false, ErrEvalOperandMissing
+	}
 	leftVal, err := toFloat(left)
 	if err != nil {
 		return false, err
