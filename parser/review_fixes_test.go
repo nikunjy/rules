@@ -40,6 +40,22 @@ func TestLogicalKeywordsInsideStringsAndNames(t *testing.T) {
 	result, err = eval(t, `order eq 1`, obj{"order": 1})
 	require.NoError(t, err)
 	assert.True(t, result)
+
+	result, err = eval(t, `x.AND eq 1`, obj{"x": obj{"AND": 1}})
+	require.NoError(t, err)
+	assert.True(t, result)
+
+	result, err = eval(t, `x.OR eq 1`, obj{"x": obj{"OR": 1}})
+	require.NoError(t, err)
+	assert.True(t, result)
+
+	result, err = eval(t, `AND eq 1`, obj{"AND": 1})
+	require.NoError(t, err)
+	assert.True(t, result)
+
+	result, err = eval(t, `OR eq 1`, obj{"OR": 1})
+	require.NoError(t, err)
+	assert.True(t, result)
 }
 
 func TestInvalidRuleRejectedAtParse(t *testing.T) {
@@ -48,6 +64,30 @@ func TestInvalidRuleRejectedAtParse(t *testing.T) {
 
 	_, err = NewEvaluator(`x eq 1 leftover`)
 	require.Error(t, err)
+}
+
+func TestTrailingWhitespaceAccepted(t *testing.T) {
+	for _, rule := range []string{
+		`x eq 1 `,
+		"x eq 1\n",
+		"x eq 1 \n",
+	} {
+		result, err := eval(t, rule, obj{"x": 1})
+		require.NoError(t, err, rule)
+		assert.True(t, result, rule)
+	}
+}
+
+func TestNormalizeLogicalKeywordsLeavesAttributeSegments(t *testing.T) {
+	assert.Equal(t, `x eq 1 and y eq 2`, normalizeLogicalKeywords(`x eq 1 AND y eq 2`))
+	assert.Equal(t, `x eq 1 or y eq 2`, normalizeLogicalKeywords(`x eq 1 OR y eq 2`))
+	assert.Equal(t, `x eq 1 and y eq 2`, normalizeLogicalKeywords(`x eq 1 And y eq 2`))
+	assert.Equal(t, `x.AND eq 1`, normalizeLogicalKeywords(`x.AND eq 1`))
+	assert.Equal(t, `x.OR eq 1`, normalizeLogicalKeywords(`x.OR eq 1`))
+	assert.Equal(t, `AND.x eq 1`, normalizeLogicalKeywords(`AND.x eq 1`))
+	assert.Equal(t, `AND eq 1`, normalizeLogicalKeywords(`AND eq 1`))
+	assert.Equal(t, `x eq "AND"`, normalizeLogicalKeywords(`x eq "AND"`))
+	assert.Equal(t, `ANDROID eq 1`, normalizeLogicalKeywords(`ANDROID eq 1`))
 }
 
 func TestIntINAcceptsJSONAndWiderInts(t *testing.T) {
