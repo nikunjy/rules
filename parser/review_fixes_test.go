@@ -41,11 +41,11 @@ func TestLogicalKeywordsInsideStringsAndNames(t *testing.T) {
 	require.NoError(t, err)
 	assert.True(t, result)
 
-	result, err = eval(t, `x.AND eq 1`, obj{"x": obj{"AND": 1}})
+	result, err = eval(t, `x.AND eq 1`, obj{"x": map[string]interface{}{"AND": 1}})
 	require.NoError(t, err)
 	assert.True(t, result)
 
-	result, err = eval(t, `x.OR eq 1`, obj{"x": obj{"OR": 1}})
+	result, err = eval(t, `x.OR eq 1`, obj{"x": map[string]interface{}{"OR": 1}})
 	require.NoError(t, err)
 	assert.True(t, result)
 
