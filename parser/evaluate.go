@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
 )
@@ -24,7 +25,7 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 			retErr = fmt.Errorf("%q", info)
 		}
 	}()
-	input := antlr.NewInputStream(rule)
+	input := antlr.NewInputStream(normalizeRuleInput(rule))
 	lex := NewJsonQueryLexer(input)
 	errListener := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
 	lex.RemoveErrorListeners()
@@ -35,7 +36,7 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 	p.AddErrorListener(errListener)
 	tree := p.Query()
 	if len(errListener.errs) > 0 {
-		return nil, fmt.Errorf("invalid rule %q: %s", rule, errListener.errs[0])
+		return nil, fmt.Errorf("invalid rule %q: %s", rule, strings.Join(errListener.errs, "; "))
 	}
 	consumeTrailingWhitespace(tokens)
 	if tokens.LA(1) != antlr.TokenEOF {

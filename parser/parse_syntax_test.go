@@ -37,47 +37,111 @@ func TestIssue41RuleValidator(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := evalSyntax(tt.rule)
+			ev, err := NewEvaluator(tt.rule)
 			if tt.wantErr {
 				assert.Error(t, err, tt.rule)
+				assert.Nil(t, ev)
 				return
 			}
 			assert.NoError(t, err, tt.rule)
+			assert.NotNil(t, ev)
 		})
 	}
 }
 
 func TestNewEvaluatorRejectsInvalidSyntax(t *testing.T) {
-	invalid := []string{
-		`((env eq "pro") and (company eq "my-company")`,
-		`env eq "pro" eq "dev"`,
-		`invalid`,
-		`x eq 1 leftover`,
-		`(env eq "pro"))`,
-		``,
+	tests := []struct {
+		name string
+		rule string
+	}{
+		{name: "missing closing parenthesis", rule: `((env eq "pro") and (company eq "my-company")`},
+		{name: "extra operator", rule: `env eq "pro" eq "dev"`},
+		{name: "no operator", rule: `invalid`},
+		{name: "leftover tokens", rule: `x eq 1 leftover`},
+		{name: "extra closing parenthesis", rule: `(env eq "pro"))`},
+		{name: "empty rule", rule: ``},
+		{name: "unclosed string", rule: `x eq "abc`},
+		{name: "incomplete and", rule: `x eq 1 and`},
 	}
-	for _, rule := range invalid {
-		t.Run(rule, func(t *testing.T) {
-			ev, err := NewEvaluator(rule)
-			assert.Error(t, err, rule)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ev, err := NewEvaluator(tt.rule)
+			assert.Error(t, err, tt.rule)
 			assert.Nil(t, ev)
 		})
 	}
 }
 
-func TestNewEvaluatorAllowsTrailingWhitespace(t *testing.T) {
-	ev, err := NewEvaluator("env eq \"pro\"  \n")
-	require.NoError(t, err)
-	result, err := ev.Process(obj{"env": "pro"})
-	require.NoError(t, err)
-	assert.True(t, result)
+func TestNewEvaluatorWhitespacePolicy(t *testing.T) {
+	tests := []struct {
+		name  string
+		rule  string
+		input obj
+		want  bool
+	}{
+		{
+			name:  "leading space",
+			rule:  ` env eq "pro"`,
+			input: obj{"env": "pro"},
+			want:  true,
+		},
+		{
+			name:  "trailing CRLF",
+			rule:  "env eq \"pro\"\r\n",
+			input: obj{"env": "pro"},
+			want:  true,
+		},
+		{
+			name:  "CRLF only",
+			rule:  "env eq \"pro\"\r",
+			input: obj{"env": "pro"},
+			want:  true,
+		},
+		{
+			name:  "double space before and evaluates both sides",
+			rule:  `x eq 1  and y eq 2`,
+			input: obj{"x": 1, "y": 2},
+			want:  true,
+		},
+		{
+			name:  "double space before and is not a prefix of the left clause",
+			rule:  `x eq 1  and y eq 2`,
+			input: obj{"x": 1, "y": 99},
+			want:  false,
+		},
+		{
+			name:  "extra spaces around operator",
+			rule:  `x eq  1`,
+			input: obj{"x": 1},
+			want:  true,
+		},
+		{
+			name:  "spaces inside string are preserved",
+			rule:  `x eq "a  b"`,
+			input: obj{"x": "a  b"},
+			want:  true,
+		},
+		{
+			name:  "trailing spaces and newline",
+			rule:  "env eq \"pro\"  \n",
+			input: obj{"env": "pro"},
+			want:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ev, err := NewEvaluator(tt.rule)
+			require.NoError(t, err, tt.rule)
+			result, err := ev.Process(tt.input)
+			require.NoError(t, err, tt.rule)
+			assert.Equal(t, tt.want, result, tt.rule)
+		})
+	}
 }
 
-func evalSyntax(rule string) error {
-	ev, err := NewEvaluator(rule)
-	if err != nil {
-		return err
-	}
-	_, err = ev.Process(map[string]interface{}{})
-	return err
+func TestNormalizeRuleInput(t *testing.T) {
+	assert.Equal(t, `x eq 1 and y eq 2`, normalizeRuleInput("x eq 1  and y eq 2"))
+	assert.Equal(t, `env eq "pro"`, normalizeRuleInput(" env eq \"pro\" \r\n"))
+	assert.Equal(t, `x eq "a  b"`, normalizeRuleInput(`x eq "a  b"`))
 }
