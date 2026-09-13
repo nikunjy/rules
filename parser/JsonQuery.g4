@@ -51,9 +51,7 @@ fragment ATTR_NAME_CHAR
    : '-' | '_' | ':' | DIGIT | ALPHA
    ;
 
-fragment DIGIT
-   : ('0'..'9')
-   ;
+// DIGIT is imported from SemverGrammar (0-9). Do not redefine it here.
 
 fragment ALPHA
    : ( 'A'..'Z' | 'a'..'z' )
