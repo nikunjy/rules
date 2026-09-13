@@ -110,6 +110,77 @@ func TestNestedObject(t *testing.T) {
 	}
 }
 
+func TestIssue42VersionAndLogicalOrder(t *testing.T) {
+	input := obj{
+		"x": "abc",
+		"y": "11.3.0",
+	}
+	parenInput := obj{
+		"x": "2.2.0",
+		"y": "z",
+	}
+	tests := []testCase{
+		{
+			`y gt 11.1.0-0 and not(x IN ["abc","cde","fgh"])`,
+			input,
+			false,
+			false,
+		},
+		{
+			`not(x IN ["abc","cde","fgh"]) and y gt 11.1.0-0`,
+			input,
+			false,
+			false,
+		},
+		{
+			`y gt 11.1.0-0 and not(x IN ["cde","fgh"])`,
+			input,
+			true,
+			false,
+		},
+		{
+			`not(x IN ["cde","fgh"]) and y gt 11.1.0-0`,
+			input,
+			true,
+			false,
+		},
+		{
+			`x gt 2.1.0-0 and not(y in ["a", "b", "c"])`,
+			parenInput,
+			true,
+			false,
+		},
+		{
+			`(x gt 2.1.0-0) and not(y in ["a", "b", "c"])`,
+			parenInput,
+			true,
+			false,
+		},
+		{
+			`((x gt 2.1.0-0) and not(y in ["a", "b", "c"]))`,
+			parenInput,
+			true,
+			false,
+		},
+		{
+			`(x gt 2.1.0-0 and not(y in ["a", "b", "c"]))`,
+			parenInput,
+			true,
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.rule, func(t *testing.T) {
+			result, err := eval(t, tt.rule, tt.input)
+			assert.NoError(t, err, tt.rule)
+			assert.Equal(t, tt.result, result, tt.rule)
+			assert.Equal(t, tt.result, Evaluate(tt.rule, tt.input), tt.rule)
+			assert.Equal(t, tt.result, Evaluate(fmt.Sprintf("(%s)", tt.rule), tt.input), tt.rule)
+		})
+	}
+}
+
 func TestLogicalExpWithAnd(t *testing.T) {
 	tests := []testCase{
 		{
