@@ -1,4 +1,4 @@
 {
   "name": "rules",
-  "install": "go mod download && go build ./..."
+  "install": "go mod download && go build ./... && go test -count=0 ./..."
 }
