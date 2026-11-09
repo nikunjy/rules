@@ -36,13 +36,13 @@ func (e *NestedError) Original() error {
 	}
 }
 
+// Error renders Vals plus "err" and "msg" as JSON. It marshals a copy so
+// e is never written to and concurrent Error calls are safe.
 func (e *NestedError) Error() string {
-	if e.Vals == nil {
-		e.Vals = make(map[string]interface{})
-	}
-	e.Vals["err"] = e.Err.Error()
-	e.Vals["msg"] = e.Msg
-	data, err := json.Marshal(e.Vals.Dupe())
+	vals := e.Vals.Dupe()
+	vals["err"] = e.Err.Error()
+	vals["msg"] = e.Msg
+	data, err := json.Marshal(vals)
 	if err != nil {
 		return fmt.Sprintf("%s: %s", e.Msg, e.Err.Error())
 	}
