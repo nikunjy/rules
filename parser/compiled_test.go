@@ -803,6 +803,31 @@ func testProcessStaleDebugErr(t *testing.T) {
 	}
 }
 
+// TestPanicClearsDebugErrStoredByOverlappingCall checks that a panicking call
+// does not leave the debug error another call stored while it was running.
+func TestPanicClearsDebugErrStoredByOverlappingCall(t *testing.T) {
+	t.Parallel()
+	ev, err := NewEvaluator(`x in [1, 2]`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ev.testHookPanic = func() {
+		ev.testHookPanic = nil
+		// stands in for an overlapping call that failed after this one started
+		ev.Process(map[string]interface{}{"x": "not a number"})
+		if ev.LastDebugErr() == nil {
+			t.Error("overlapping call should have stored a debug error")
+		}
+		panic("p")
+	}
+	if _, err := ev.Process(map[string]interface{}{"x": 1}); err == nil {
+		t.Fatal("want the recovered panic as an error")
+	}
+	if got := ev.LastDebugErr(); got != nil {
+		t.Fatalf("stale debug error %v", got)
+	}
+}
+
 func TestParsePlainVersion(t *testing.T) {
 	t.Parallel()
 

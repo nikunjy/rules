@@ -129,6 +129,9 @@ func (e *Evaluator) process(items map[string]interface{}, compiled bool) (ret bo
 		if info != nil {
 			retErr = fmt.Errorf("%q", info)
 			ret = false
+			// a call that panics has no debug error, even if an overlapping
+			// call stored its own after this one started
+			e.setDebugErr(nil)
 		}
 	}()
 
