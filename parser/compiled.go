@@ -56,12 +56,10 @@ type compareNode struct {
 	// compare
 	attrPath string
 	opType   int
-	opText   string
 	apply    func(Operand, Operand) (bool, error)
 	version  *versionCompare // set instead of using apply for a pre-parsed rule version
 	valKind  valueKind
 	rightOp  Operand // valueConst: operand set for the rule value
-	boolErr  error   // valueConst: failed boolean parse, reported on eval
 	valErr   error   // valueConst: error set on eval (invalid integer)
 	listErr  error   // lists: parse error of the first bad element; the list then holds the elements before it
 	listOp   Operand // lists: the parsed list ([]int, []float64 or []string)
@@ -230,9 +228,6 @@ func (n *compareNode) setRight(st *evalState) {
 		st.rightOp = append(list, n.listOp.([]string)...)
 	default:
 		st.rightOp = n.rightOp
-		if n.boolErr != nil {
-			st.err = newNestedError(n.boolErr, "Error converting boolean")
-		}
 		if n.valErr != nil {
 			st.err = cloneErr(n.valErr)
 		}
@@ -243,10 +238,6 @@ func (n *compareNode) evalCompare(st *evalState) bool {
 	st.resolve(n.path)
 	n.setRight(st)
 	if st.err != nil {
-		return false
-	}
-	if n.apply == nil {
-		st.err = fmt.Errorf("Unknown operation %s", n.opText)
 		return false
 	}
 	var ret bool
@@ -342,7 +333,6 @@ func compileQuery(tree antlr.ParseTree) *node {
 		n := newCompareNode(nodeCompare, compileAttrPath(val.AttrPath()))
 		n.attrPath = val.AttrPath().GetText()
 		n.opType = val.op.GetTokenType()
-		n.opText = val.op.GetText()
 		op := compileValue(n, val.Value())
 		n.apply = applyFor(op, n.opType)
 		if _, ok := op.(*VersionOperation); ok {
@@ -350,7 +340,9 @@ func compileQuery(tree antlr.ParseTree) *node {
 		}
 		return &n.node
 	default:
-		return &node{kind: nodeInvalid}
+		// unreachable with the grammar; compile recovers and falls back to
+		// the visitor
+		panic(fmt.Sprintf("unexpected parse tree node %T", tree))
 	}
 }
 
@@ -522,12 +514,8 @@ func validBuild(s string) bool {
 func compileValue(n *compareNode, v IValueContext) Operation {
 	switch ctx := v.(type) {
 	case *BooleanContext:
-		val, err := strconv.ParseBool(ctx.GetText())
-		if err != nil {
-			n.boolErr = err
-		} else {
-			n.rightOp = val
-		}
+		// the BOOLEAN token only matches true or false, so this cannot fail
+		n.rightOp = ctx.GetText() == "true"
 		return &BoolOperation{}
 	case *NullContext:
 		return &NullOperation{}
