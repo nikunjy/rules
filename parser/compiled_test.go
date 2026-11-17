@@ -673,20 +673,19 @@ func testProcessCompileFailureFallsBack(t *testing.T) {
 	// half-initialized evaluator.
 	tests := []struct {
 		name  string
+		tree  antlr.ParseTree
 		items map[string]interface{}
 	}{
-		{name: "nil items"},
-		{name: "items", items: map[string]interface{}{"x": 1}},
+		{name: "nil items", tree: &CompareExpContext{}},
+		{name: "items", tree: &CompareExpContext{}, items: map[string]interface{}{"x": 1}},
+		{name: "unexpected tree node", tree: &QueryContext{}, items: map[string]interface{}{"x": 1}},
 	}
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			wantRet, wantErr, wantDebug := visitorProcess(&CompareExpContext{}, tt.items)
-			if wantErr == nil {
-				t.Fatal("the visitor reference must fail on the broken tree")
-			}
-			ev := &Evaluator{tree: &CompareExpContext{}}
+			wantRet, wantErr, wantDebug := visitorProcess(tt.tree, tt.items)
+			ev := &Evaluator{tree: tt.tree}
 			for call := 0; call < 2; call++ {
 				gotRet, gotErr := ev.Process(tt.items)
 				if gotRet != wantRet || errString(gotErr) != errString(wantErr) || errString(ev.LastDebugErr()) != errString(wantDebug) {

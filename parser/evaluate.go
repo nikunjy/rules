@@ -14,8 +14,9 @@ import (
 //
 // It is safe for concurrent Process calls. It must not be copied after first
 // use: it holds a sync.Once and an atomic.Pointer, and go vet's copylocks
-// check flags copies. LastDebugErr reflects whichever call finished last; a
-// call that completes cleanly or panics clears it.
+// check flags copies. Each call clears LastDebugErr on entry; once calls
+// quiesce it holds the error of the last call to finish (nil if that call was
+// clean or panicked). Reset clears it.
 type Evaluator struct {
 	// lastDebugErr is atomic so concurrent Process calls do not race on it;
 	// with concurrent callers it holds the error of whichever call finished last.

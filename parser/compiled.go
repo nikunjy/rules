@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -13,8 +12,7 @@ import (
 type nodeKind int
 
 const (
-	nodeInvalid nodeKind = iota
-	nodeParen
+	nodeParen nodeKind = iota
 	nodeLogical
 	nodePresent
 	nodeCompare
@@ -185,8 +183,7 @@ func (n *node) eval(st *evalState) bool {
 	case nodeCompare:
 		return n.cmp.evalCompare(st)
 	default:
-		st.err = errors.New("Invalid rule")
-		return false
+		panic(fmt.Sprintf("unexpected node kind %d", n.kind))
 	}
 }
 
@@ -335,6 +332,9 @@ func compileQuery(tree antlr.ParseTree) *node {
 		n.opType = val.op.GetTokenType()
 		op := compileValue(n, val.Value())
 		n.apply = applyFor(op, n.opType)
+		if n.apply == nil {
+			panic(fmt.Sprintf("no operation for operator token %d", n.opType))
+		}
 		if _, ok := op.(*VersionOperation); ok {
 			n.version = compileVersionCompare(n.rightOp.(string), n.opType)
 		}
