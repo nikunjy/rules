@@ -10,6 +10,12 @@ import (
 	"github.com/antlr4-go/antlr/v4"
 )
 
+// Evaluator evaluates a single parsed rule against attribute maps.
+//
+// It is safe for concurrent Process calls. It must not be copied after first
+// use: it holds a sync.Once and an atomic.Pointer, and go vet's copylocks
+// check flags copies. LastDebugErr reflects whichever call finished last; a
+// call that completes cleanly or panics clears it.
 type Evaluator struct {
 	// lastDebugErr is atomic so concurrent Process calls do not race on it;
 	// with concurrent callers it holds the error of whichever call finished last.
@@ -113,14 +119,8 @@ func (e *Evaluator) compile() {
 	e.tree = nil
 }
 
-func (e *Evaluator) Process(items map[string]interface{}) (bool, error) {
-	return e.process(items, true)
-}
-
-// process evaluates items against the rule. With compiled set the rule is
-// compiled on first use; otherwise it is walked with the visitor, which avoids
-// the compile cost for one-shot evaluations.
-func (e *Evaluator) process(items map[string]interface{}, compiled bool) (ret bool, retErr error) {
+// Process evaluates items against the rule. The rule is compiled on first use.
+func (e *Evaluator) Process(items map[string]interface{}) (ret bool, retErr error) {
 	e.setDebugErr(nil)
 	// antlr lib has panics for exceptions so we have to put a recover here
 	// in the unlikely case there is an exception
@@ -135,9 +135,7 @@ func (e *Evaluator) process(items map[string]interface{}, compiled bool) (ret bo
 		}
 	}()
 
-	if compiled {
-		e.once.Do(e.compile)
-	}
+	e.once.Do(e.compile)
 	var result bool
 	var err error
 	if e.root != nil {
@@ -176,6 +174,6 @@ func Evaluate(rule string, items map[string]interface{}) bool {
 	if err != nil {
 		return false
 	}
-	result, _ := ev.process(items, false)
+	result, _ := ev.Process(items)
 	return result
 }
