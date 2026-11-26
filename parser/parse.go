@@ -1,34 +1,39 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
-
-	"github.com/antlr4-go/antlr/v4"
 )
 
-// collectingErrorListener records ANTLR syntax errors instead of writing them
-// to stderr. NewEvaluator uses this so invalid rules fail at construction time.
-type collectingErrorListener struct {
-	*antlr.DefaultErrorListener
-	errs []string
-}
-
-func (l *collectingErrorListener) SyntaxError(_ antlr.Recognizer, _ interface{}, line, column int, msg string, _ antlr.RecognitionException) {
-	l.errs = append(l.errs, fmt.Sprintf("line %d:%d %s", line, column, msg))
-}
-
-func consumeTrailingWhitespace(tokens *antlr.CommonTokenStream) {
-	for {
-		tok := tokens.LT(1)
-		if tok == nil || tok.GetTokenType() == antlr.TokenEOF {
-			return
+// syntaxErrors are the errors ANTLR's parser and lexer report for the rule in
+// ts, in the order they report them: a token recognition error comes before
+// the first syntax error reported once the parse has read past it, and one
+// the parse never reads up to is not reported. tree is the parse's tree.
+func syntaxErrors(ts *JsonQueryTokens, tree *JsonQueryTree, parseErrs []JsonQueryParseError) []string {
+	var errs []string
+	lex := 0
+	lexUpTo := func(read int) {
+		for ; lex < len(ts.Errors) && int(ts.ErrorAt[lex]) <= read; lex++ {
+			errs = append(errs, ts.Errors[lex].Error())
 		}
-		switch tok.GetTokenType() {
-		case JsonQueryLexerSP, JsonQueryLexerNEWLINE:
-			tokens.Consume()
+	}
+	for _, e := range parseErrs {
+		lexUpTo(e.Read)
+		errs = append(errs, e.Error())
+	}
+	lexUpTo(tree.Read)
+	return errs
+}
+
+// trailingInput is the first token after the rule's input other than spaces
+// and newlines, or EOF.
+func trailingInput(tree *JsonQueryTree) int {
+	i := tree.Next
+	for {
+		switch tree.Tokens[i].Type {
+		case JsonQuerySP, JsonQueryNEWLINE:
+			i++
 		default:
-			return
+			return i
 		}
 	}
 }
