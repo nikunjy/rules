@@ -3,15 +3,13 @@ package parser
 import (
 	"fmt"
 	"strings"
-
-	"github.com/antlr4-go/antlr/v4"
 )
 
 type Evaluator struct {
 	lastDebugErr error
 
 	rule string
-	tree antlr.ParseTree
+	tree QueryNode
 
 	testHookPanic func()
 }
@@ -25,22 +23,13 @@ func NewEvaluator(rule string) (ret *Evaluator, retErr error) {
 			retErr = fmt.Errorf("%q", info)
 		}
 	}()
-	input := antlr.NewInputStream(normalizeRuleInput(rule))
-	lex := NewJsonQueryLexer(input)
-	errListener := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
-	lex.RemoveErrorListeners()
-	lex.AddErrorListener(errListener)
-	tokens := antlr.NewCommonTokenStream(lex, antlr.TokenDefaultChannel)
-	p := NewJsonQueryParser(tokens)
-	p.RemoveErrorListeners()
-	p.AddErrorListener(errListener)
-	tree := p.Query()
-	if len(errListener.errs) > 0 {
-		return nil, fmt.Errorf("invalid rule %q: %s", rule, strings.Join(errListener.errs, "; "))
+	ts := JsonQueryLex(normalizeRuleInput(rule))
+	tree, parseErrs := ParseQueryWithRecovery(ts)
+	if errs := syntaxErrors(ts, tree.Tree(), parseErrs); len(errs) > 0 {
+		return nil, fmt.Errorf("invalid rule %q: %s", rule, strings.Join(errs, "; "))
 	}
-	consumeTrailingWhitespace(tokens)
-	if tokens.LA(1) != antlr.TokenEOF {
-		return nil, fmt.Errorf("invalid rule %q: unexpected input %q", rule, tokens.LT(1).GetText())
+	if next := trailingInput(tree.Tree()); tree.Tree().Tokens[next].Type != JsonQueryEOF {
+		return nil, fmt.Errorf("invalid rule %q: unexpected input %q", rule, ts.Text(next))
 	}
 
 	return &Evaluator{
